@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>docker&#43;mysql主从复制 - Summer&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Summer" /><meta name="description" content="基于docker搭建mysql主从复制结构" /><meta name="keywords" content="mysql, docker" />
+
+
+<meta name="baidu-site-verification" content="QuqVC3Anf0" />
+
+
+
+<meta name="generator" content="Hugo 0.74.3 with theme even" />
+
+
+<link rel="canonical" href="https://summer90xia.github.io/post/mysql-replication/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.8c3cbcb0324c2bb4875ceccba4007cbad4b4ac8377f33af9953c3e7684534a50.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/">
+
+
+<meta property="og:title" content="docker&#43;mysql主从复制" />
+<meta property="og:description" content="基于docker搭建mysql主从复制结构" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://summer90xia.github.io/post/mysql-replication/" />
+<meta property="article:published_time" content="2019-12-31T14:56:20+08:00" />
+<meta property="article:modified_time" content="2019-12-31T14:56:20+08:00" />
+<meta itemprop="name" content="docker&#43;mysql主从复制">
+<meta itemprop="description" content="基于docker搭建mysql主从复制结构">
+<meta itemprop="datePublished" content="2019-12-31T14:56:20+08:00" />
+<meta itemprop="dateModified" content="2019-12-31T14:56:20+08:00" />
+<meta itemprop="wordCount" content="695">
+
+
+
+<meta itemprop="keywords" content="mysql,docker," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="docker&#43;mysql主从复制"/>
+<meta name="twitter:description" content="基于docker搭建mysql主从复制结构"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Summer&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">栏目</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Summer&#39;s Blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">栏目</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">docker&#43;mysql主从复制</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2019-12-31 </span>
+        <div class="post-category">
+            <a href="/categories/%E5%AD%A6%E7%94%B5%E8%84%91/"> 学电脑 </a>
+            </div>
+          <span class="more-meta"> 约 695 字 </span>
+          <span class="more-meta"> 预计阅读 2 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents"></nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p>使用docker搭建mysql主从复制架构</p>
+</blockquote>
+<p>1、在工作目录创建<code>docker-compose.yml</code>，内容如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="k">version</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;2&#39;</span><span class="w">
+</span><span class="w"></span><span class="k">services</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="k">mysql-master</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span><span class="k">build</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span><span class="k">context</span><span class="p">:</span><span class="w"> </span>./<span class="w">
+</span><span class="w">      </span><span class="k">dockerfile</span><span class="p">:</span><span class="w"> </span>master/Dockerfile<span class="w">
+</span><span class="w">    </span><span class="k">environment</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span>- <span class="s2">&#34;MYSQL_ROOT_PASSWORD=root&#34;</span><span class="w">
+</span><span class="w">      </span>- <span class="s2">&#34;MYSQL_DATABASE=replicas_db&#34;</span><span class="w">
+</span><span class="w">    </span><span class="k">links</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span>- mysql-slave<span class="w">
+</span><span class="w">    </span><span class="k">ports</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span>- <span class="s2">&#34;33065:3306&#34;</span><span class="w">
+</span><span class="w">    </span><span class="k">restart</span><span class="p">:</span><span class="w"> </span>always<span class="w">
+</span><span class="w">    </span><span class="k">hostname</span><span class="p">:</span><span class="w"> </span>mysql-master<span class="w">
+</span><span class="w">    </span><span class="k">volumes</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span>- /home/summer/homework/mysql/mysql-files<span class="p">:</span>/var/lib/mysql-files/<span class="w">
+</span><span class="w">  </span><span class="k">mysql-slave</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span><span class="k">build</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span><span class="k">context</span><span class="p">:</span><span class="w"> </span>./<span class="w">
+</span><span class="w">      </span><span class="k">dockerfile</span><span class="p">:</span><span class="w"> </span>slave/Dockerfile<span class="w">
+</span><span class="w">    </span><span class="k">environment</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span>- <span class="s2">&#34;MYSQL_ROOT_PASSWORD=root&#34;</span><span class="w">
+</span><span class="w">      </span>- <span class="s2">&#34;MYSQL_DATABASE=replicas_db&#34;</span><span class="w">
+</span><span class="w">    </span><span class="k">ports</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span>- <span class="s2">&#34;33066:3306&#34;</span><span class="w">
+</span><span class="w">    </span><span class="k">restart</span><span class="p">:</span><span class="w"> </span>always<span class="w">
+</span><span class="w">    </span><span class="k">hostname</span><span class="p">:</span><span class="w"> </span>mysql-slave<span class="w">
+</span><span class="w">    </span><span class="k">volumes</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span>- /home/summer/homework/mysql/mysql-files<span class="p">:</span>/var/lib/mysql-files/<span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><p>2、在工作目录下创建master/Dockerfile、slave/Dockerfile 文件，内容如下</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="k">FROM</span><span class="s"> mysql:latest</span><span class="err">
+</span><span class="err"></span><span class="k">MAINTAINER</span><span class="s"> harrison</span><span class="err">
+</span><span class="err"></span><span class="k">ADD</span> ./master/my.cnf /etc/mysql/my.cnf<span class="err">
+</span></code></pre></td></tr></table>
+</div>
+</div><p>3、分别在master、slave目录下创建my.cnf，内容如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-mysql" data-lang="mysql"><span class="p">[</span><span class="n">mysqld</span><span class="p">]</span>
+<span class="c1">## 设置server_id，一般设置为IP，注意要唯一
+</span><span class="c1"></span><span class="n">server_id</span><span class="o">=</span><span class="mi">100</span>  
+<span class="c1">## 复制过滤：也就是指定哪个数据库不用同步（mysql库一般不同步）
+</span><span class="c1"></span><span class="n">binlog</span><span class="o">-</span><span class="k">ignore</span><span class="o">-</span><span class="n">db</span><span class="o">=</span><span class="n">mysql</span>  
+<span class="c1">## 开启二进制日志功能，可以随便取，最好有含义（关键就是这里了）
+</span><span class="c1"></span><span class="n">log</span><span class="o">-</span><span class="n">bin</span><span class="o">=</span><span class="n">replicas</span><span class="o">-</span><span class="n">mysql</span><span class="o">-</span><span class="n">bin</span>  
+<span class="c1">## 为每个session分配的内存，在事务过程中用来存储二进制日志的缓存
+</span><span class="c1"></span><span class="n">binlog_cache_size</span><span class="o">=</span><span class="mi">1</span><span class="n">M</span>  
+<span class="c1">## 主从复制的格式（mixed,statement,row，默认格式是statement）
+</span><span class="c1"></span><span class="n">binlog_format</span><span class="o">=</span><span class="n">mixed</span>  
+<span class="c1">## 二进制日志自动删除/过期的天数。默认值为0，表示不自动删除。
+</span><span class="c1"></span><span class="n">expire_logs_days</span><span class="o">=</span><span class="mi">7</span>  
+<span class="c1">## 跳过主从复制中遇到的所有错误或指定类型的错误，避免slave端复制中断。
+</span><span class="c1">## 如：1062错误是指一些主键重复，1032错误是因为主从数据库数据不一致
+</span><span class="c1"></span><span class="n">slave_skip_errors</span><span class="o">=</span><span class="mi">1062</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>4、创建docker容器，在工作目录下执行  <code>docker-compose up -d</code></p>
+<p>5、主从配置</p>
+<p>5.1 进入<code>mysql-master</code>容器中，查看主库信息，执行 <code>show master status</code>，得道如下信息</p>
+<p><img src="https://blog.summer90.top/images/mysql/mysql-master.png" style="zoom:75%;" /></p>
+<p>5.2 配置从库</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-mysql" data-lang="mysql"><span class="n">stop</span> <span class="n">slave</span><span class="p">;</span>
+
+<span class="k">CHANGE</span> <span class="n">MASTER</span> <span class="k">TO</span>
+    <span class="n">MASTER_HOST</span><span class="o">=</span><span class="s1">&#39;172.21.0.3&#39;</span><span class="p">,</span> <span class="c1"># 获取主库的ip地址 cat /etc/hosts
+</span><span class="c1"></span>    <span class="n">MASTER_USER</span><span class="o">=</span><span class="s1">&#39;root&#39;</span><span class="p">,</span>
+    <span class="n">MASTER_PASSWORD</span><span class="o">=</span><span class="s1">&#39;root&#39;</span><span class="p">,</span>
+    <span class="n">MASTER_LOG_FILE</span><span class="o">=</span><span class="s1">&#39;replicas-mysql-bin.000003&#39;</span><span class="p">,</span>
+    <span class="n">MASTER_LOG_POS</span><span class="o">=</span><span class="mi">155</span><span class="p">;</span>
+    
+<span class="n">start</span> <span class="n">slave</span><span class="p">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>6、测试是否生效</p>
+<p>6.1 在mysql-master容器中执行以下操作</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-mysql" data-lang="mysql"><span class="k">use</span> <span class="n">replicas_db</span><span class="p">;</span>
+
+<span class="k">CREATE</span> <span class="k">TABLE</span> <span class="o">`</span><span class="n">test</span><span class="o">`</span> <span class="p">(</span>
+  <span class="o">`</span><span class="n">id</span><span class="o">`</span> <span class="kt">int</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span> <span class="k">NOT</span> <span class="no">NULL</span> <span class="kp">AUTO_INCREMENT</span><span class="p">,</span>
+  <span class="o">`</span><span class="n">name</span><span class="o">`</span> <span class="kt">varchar</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="k">NOT</span> <span class="no">NULL</span><span class="p">,</span>
+  <span class="o">`</span><span class="n">age</span><span class="o">`</span> <span class="kt">tinyint</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="k">DEFAULT</span> <span class="no">NULL</span><span class="p">,</span>
+  <span class="k">PRIMARY</span> <span class="k">KEY</span> <span class="p">(</span><span class="o">`</span><span class="n">id</span><span class="o">`</span><span class="p">)</span>
+<span class="p">)</span> <span class="kp">ENGINE</span><span class="o">=</span><span class="n">InnoDB</span> <span class="k">DEFAULT</span> <span class="kp">CHARSET</span><span class="o">=</span><span class="n">utf8mb4</span><span class="p">;</span>
+
+<span class="k">insert</span> <span class="k">into</span> <span class="nf">test</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="n">age</span><span class="p">)</span> <span class="k">values</span> <span class="p">(</span><span class="s1">&#39;summer&#39;</span><span class="p">,</span><span class="mi">20</span><span class="p">);</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>6.2 查看主从配置结果</p>
+<p><img src="https://blog.summer90.top/images/mysql/mysql-replication.png" style="zoom:75%;width: 75%" /></p>
+<hr>
+<p>参考资料：</p>
+<p><a href="https://www.cnblogs.com/xinysu/p/6607658.html">biglog详解及参数配置</a></p>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Summer</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2019-12-31
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/mysql/">mysql</a>
+          <a href="/tags/docker/">docker</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/minikube/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">本地搭建k8s集群</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/mysql/">
+            <span class="next-text nav-default">Mysql-从优化到高可用</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+  <a href="https://summer90xia.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2016 - 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Summer</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/raphael@2.2.7/raphael.min.js" integrity="sha256-67By+NpOtm9ka1R6xpUefeGOY8kWWHHRAKlvaTJ7ONI=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/flowchart.js@1.8.0/release/flowchart.min.js" integrity="sha256-zNGWjubXoY6rb5MnmpBNefO0RgoVYfle9p0tvOQM+6k=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.js" integrity="sha256-4O4pS1SH31ZqrSO2A/2QJTVjTPqVe+jnYgOWUVr7EEc=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/snapsvg@0.5.1/dist/snap.svg-min.js" integrity="sha256-oI+elz+sIm+jpn8F/qEspKoKveTc5uKeFHNNVexe6d8=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/underscore@1.8.3/underscore-min.js" integrity="sha256-obZACiHd7gkOk9iIL/pimWMTJ4W/pBsKu+oZnSeBIek=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.js" integrity="sha384-8748Vn52gHJYJI0XEuPB2QlPVNUkJlJn9tHqKec6J3q2r9l8fvRxrgn/E5ZHV0sP" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.css" integrity="sha384-6QbLKJMz5dS3adWSeINZe74uSydBGFbnzaAYmp+tKyq60S7H2p6V7g1TysM5lAaF" crossorigin="anonymous">
+
+
+
+<script type="text/javascript" src="/js/main.min.d7b7ada643c9c1a983026e177f141f7363b4640d619caf01d8831a6718cd44ea.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+<script id="baidu_analytics">
+  var _hmt = _hmt || [];
+  (function() {
+    if (window.location.hostname === 'localhost') return;
+    var hm = document.createElement("script"); hm.async = true;
+    hm.src = "https://hm.baidu.com/hm.js?fc8cf18648f58ac4ad0594547ec6c1e3";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+<script id="baidu_push">
+  (function(){
+    if (window.location.hostname === 'localhost') return;
+    var bp = document.createElement('script'); bp.async = true;
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+      bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+      bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+  })();
+</script>
+
+
+<script src="/js/"></script>
+
+
+</body>
+</html>

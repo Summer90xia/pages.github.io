@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>nginx学习笔记 - Summer&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Summer" /><meta name="description" content="《深入理解Nginx》读书笔记" /><meta name="keywords" content="nginx" />
+
+
+<meta name="baidu-site-verification" content="QuqVC3Anf0" />
+
+
+
+<meta name="generator" content="Hugo 0.74.3 with theme even" />
+
+
+<link rel="canonical" href="https://summer90xia.github.io/post/nginx1/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.8c3cbcb0324c2bb4875ceccba4007cbad4b4ac8377f33af9953c3e7684534a50.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/">
+
+
+<meta property="og:title" content="nginx学习笔记" />
+<meta property="og:description" content="《深入理解Nginx》读书笔记" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://summer90xia.github.io/post/nginx1/" />
+<meta property="article:published_time" content="2019-12-16T09:19:34+08:00" />
+<meta property="article:modified_time" content="2019-12-16T09:19:34+08:00" />
+<meta itemprop="name" content="nginx学习笔记">
+<meta itemprop="description" content="《深入理解Nginx》读书笔记">
+<meta itemprop="datePublished" content="2019-12-16T09:19:34+08:00" />
+<meta itemprop="dateModified" content="2019-12-16T09:19:34+08:00" />
+<meta itemprop="wordCount" content="5954">
+
+
+
+<meta itemprop="keywords" content="nginx," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="nginx学习笔记"/>
+<meta name="twitter:description" content="《深入理解Nginx》读书笔记"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Summer&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">栏目</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Summer&#39;s Blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">栏目</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">nginx学习笔记</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2019-12-16 </span>
+        <div class="post-category">
+            <a href="/categories/%E5%AD%A6%E7%94%B5%E8%84%91/"> 学电脑 </a>
+            </div>
+          <span class="more-meta"> 约 5954 字 </span>
+          <span class="more-meta"> 预计阅读 12 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#一--nginx特性">一  nginx特性</a></li>
+    <li><a href="#二-linux-内核优化项">二 linux 内核优化项</a></li>
+    <li><a href="#三-nginx-配置参数详解">三 nginx 配置参数详解</a></li>
+    <li><a href="#四-反向代理负载均衡">四 反向代理+负载均衡</a></li>
+    <li><a href="#五-内置变量">五 内置变量</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p>《深入理解Nginx》读书笔记</p>
+</blockquote>
+<h2 id="一--nginx特性">一  nginx特性</h2>
+<p>1.更快</p>
+<ul>
+<li>单次请求会得到更快的相应</li>
+<li>高并发时比其他web服务器更快的响应请求</li>
+</ul>
+<p>2.高扩展性</p>
+<p>nginx的设计机具扩展性，它有多个不同功能，不同层次，不同类型且耦合度极低的模块组成</p>
+<p>3.高可靠性</p>
+<p>nginx的高可靠性来自于其核心框架的优秀设计，每个worker进程都相对独立，当一个worker进程出现错误时，master会及时拉起新的进程提供服务</p>
+<p>4.低内存消耗</p>
+<p>10000个非活跃的 HTTP Keep-Alive 连接在nginx中仅消耗2.5M的内存</p>
+<p>5.单机支持10万以上的并发连接</p>
+<p>6.热部署</p>
+<p>master管理进程与worker工作进程的分离设计，使得nginx能够提供热部署</p>
+<p>7.最自由的BSD许可协议</p>
+<h2 id="二-linux-内核优化项">二 linux 内核优化项</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">fs.file-max <span class="o">=</span> <span class="m">999999</span> <span class="c1"># 一个进程可以同时打开的最大句柄数，直接限制最大并发数</span>
+net.ipv4.tcp_tw_reuse <span class="o">=</span> <span class="m">1</span> <span class="c1"># 表示允许将TIME-WAIT状态的socket重新用于新的TCP连接</span>
+net.ipv4.tcp_keepalive_time <span class="o">=</span> <span class="m">600</span> <span class="c1"># 默认为2小时，设置得小可以更快的清除无效的连接</span>
+net.ipv4.tcp_fin_timeout <span class="o">=</span> <span class="m">30</span> <span class="c1"># 服务器主动关闭连接时，socket保持在FIN-WAIT-2状态的最大时长</span>
+net.ipv4.tcp_max_tw_buckets <span class="o">=</span> <span class="m">5000</span> <span class="c1"># 操作系统允许的TIME-WAIT套接字数量的最大值</span>
+net.ipv4.tcp_rmem <span class="o">=</span> <span class="m">4096</span> <span class="m">32768</span> <span class="m">262142</span> <span class="c1"># TCP 接受缓存的 最小值 默认值 最大值</span>
+net.ipv4.tcp_wmem <span class="o">=</span> <span class="m">4096</span> <span class="m">32768</span> <span class="m">262142</span> <span class="c1"># TCP 发送缓存的 最小值 默认值 最大值</span>
+net.ipv4.ip_local_port_range <span class="o">=</span> <span class="m">1024</span> <span class="m">61000</span> <span class="c1"># 在 tcp udp 连接中，本地端口的取值范围</span>
+net.core.netdev_max_backlog <span class="o">=</span> <span class="m">8096</span> <span class="c1"># 当网卡接受数据包的速度大于内核处理速度时，会有一个队列保存这些数据</span>
+net.core.rmem_default <span class="o">=</span> <span class="m">262144</span> <span class="c1"># 内核套接字接受缓存区默认大小</span>
+net.core.wmem_default <span class="o">=</span> <span class="m">262144</span> <span class="c1"># 内核套接字发送缓存区默认大小</span>
+net.core.rmem_max <span class="o">=</span> <span class="m">2097152</span> <span class="c1"># 内核套接字接受缓存区默认大小</span>
+net.core.wmem_max <span class="o">=</span> <span class="m">2097152</span> <span class="c1"># 内核套接字发送缓存区默认大小</span>
+net.ipv4.tcp_syncookies <span class="o">=</span> <span class="m">1</span> <span class="c1"># 与性能无关，用于解决 TCP的SYN攻击</span>
+net.ipv4.tcp_max_syn.backlog <span class="o">=</span> <span class="m">1024</span>  <span class="c1"># TCP 三次握手期间接受SYN请求队列的最大长度，默认是1024</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="三-nginx-配置参数详解">三 nginx 配置参数详解</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"> <span class="c1">#使用的用户和组</span>
+user  www www<span class="p">;</span>
+
+<span class="c1">#指定工作衍生进程数（一般等于CPU的总核数或总核数的两倍）</span>
+worker_processes 8<span class="p">;</span>
+
+<span class="c1">#前方高能，请注意！下面分别是开启了8个内核，8个进程(如果需要开启16进程，00000001 修改成00000001 00000010 代表第一个CPU内核处理第一个和第二个进程,有多少个进程就写多少个数，每个数的第几位代表对应的第几核）</span>
+worker_cpu_affinity <span class="m">00000001</span> <span class="m">00000010</span> <span class="m">00000100</span> <span class="m">00001000</span> <span class="m">00010000</span> <span class="m">00100000</span> 01000000<span class="p">;</span>
+
+<span class="c1">#下面这个指令是指当一个nginx进程打开的最多文件描述符数目，理论值应该是系统的最多打开文件数（ulimit -n）与nginx进程数相除，但是nginx分配请求并不是那么均匀，所以最好与ulimit -n（需要在Linux上调整这个数）的值保持一致。</span>
+worker_rlimit_nofile 204800<span class="p">;</span>
+
+<span class="c1">#使用epoll的I/O模型，用这个模型来高效处理异步事件</span>
+use epoll<span class="p">;</span>
+
+<span class="c1">#每个进程允许的最多连接数，理论上每台nginx服务器的最大连接数为worker_processes * worker_connections。</span>
+worker_connections 204800<span class="p">;</span>
+
+<span class="c1">#限制用户上传文件的大小</span>
+client_max_body_size 300m<span class="p">;</span>
+
+<span class="c1">#客户端缓存文件的大小</span>
+client_body_buffer_size 128k<span class="p">;</span>
+
+<span class="c1">#客户端请求内容超时时间,1分钟</span>
+client_body_timeout  600<span class="p">;</span>
+
+<span class="c1">#客户端请求header头信息的超时时间,1分钟</span>
+client_header_timeout  600<span class="p">;</span>
+
+<span class="c1">#这个将为打开文件指定缓存，默认是没有启用的，max 指定缓存数量，建议和打开文件数一致，inactive 是指经过多长时间文件没被请求后删除缓存。</span>
+open_file_cache <span class="nv">max</span><span class="o">=</span><span class="m">65535</span> <span class="nv">inactive</span><span class="o">=</span>60s<span class="p">;</span>
+
+<span class="c1">#这个是指多长时间检查一次缓存的有效信息。</span>
+open_file_cache_valid 80s<span class="p">;</span>
+
+<span class="c1">#指令中的inactive参数时间内文件的最少使用次数，如果超过这个数字，文件更改信息一直是在缓存中打开的</span>
+open_file_cache_min_uses 1<span class="p">;</span>
+
+<span class="c1">#URI过长或request header过大导致400错误</span>
+<span class="c1">#start</span>
+<span class="c1">#servername的哈希表大小 -- 客户端请求头缓冲区大小</span>
+server_names_hash_bucket_size 128k<span class="p">;</span>
+
+<span class="c1">#请求头总长度大于128k时使用large_client_header_buffers设置的缓存区。指令参数4为个数，128k为大小，申请4个128k。默认是8k。,</span>
+large_client_header_buffers <span class="m">4</span> 128k<span class="p">;</span>
+<span class="c1">#end</span>
+   
+<span class="c1">#客户端请求头部的缓冲区大小，这个可以根据你的系统分页大小来设置，一般一个请求的头部大小不会超过1k，不过由于一般系统分页都要大于1k，所以这里设置为分页大小。分页大小可以用命令getconf PAGESIZE取得</span>
+client_header_buffer_size 2k<span class="p">;</span>
+ 
+<span class="c1">#可以让sendfile()发挥作用。sendfile()可以在磁盘和TCP socket之间互相拷贝数据(或任意两个文件描述符)。Pre-sendfile是传送数据之前在用户空间申请数据缓冲区。之后用read()将数据从文件拷贝到这个缓冲区，write()将缓冲区数据写入网络。sendfile()是立即将数据从磁盘读到OS缓存。因为这种拷贝是在内核完成的，sendfile()要比组合read()和write()以及打开关闭丢弃缓冲更加有效。</span>
+sendfile on<span class="p">;</span>
+
+<span class="c1">#告诉nginx在一个数据包里发送所有头文件，而不一个接一个的发送。就是说数据包不会马上传送出去，等到数据包最大时，一次性的传输出去，这样有助于解决网络堵塞。tcp_nopush 这个参数只有 sendfile on 的时候才有用。</span>
+tcp_nopush on<span class="p">;</span>
+
+<span class="c1">#告诉nginx不要缓存数据，而是一段一段的发送--当需要及时发送数据时，</span>
+<span class="c1">#就应该给应用设置这个属性，这样发送一小块数据信息时就不能立即得到返回值。</span>
+tcp_nodelay <span class="c1">#只在 keepalive 连接状态中使用。</span>
+tcp_nodelay on<span class="p">;</span>
+
+<span class="c1">#http连接超时时间，默认是60s，功能是使客户端到服务器端的连接在设定的时间内持续有效，当出现对服务器的后继请求时，该功能避免了建立或者重新建立连接。切记这个参数也不能设置过大！否则会导致许多无效的http连接占据着nginx的连接数，终nginx崩溃！在一般情况下，这个配置会减少网络流量的消耗，减少请求连接数，例如用户在浏览网页的时候保持连接，减少连接数的开销。但是在高并发下，这个配置会直接影响NGINX的性能。相反，这个数调小可以提高并发数。</span>
+keepalive_timeout 60<span class="p">;</span>
+
+<span class="c1">#下面这个参数将为打开文件指定缓存，默认是没有启用的，max指定缓存数量，建议和打开文件数一致，inactive是指经过多长时间文件没被请求后删除缓存。</span>
+open_file_cache <span class="nv">max</span><span class="o">=</span><span class="m">204800</span> <span class="nv">inactive</span><span class="o">=</span>20s<span class="p">;</span>
+
+<span class="c1">#open_file_cache指令中的inactive参数时间内文件的最少使用次数，如果超过这个数字，</span>
+<span class="c1">#文件描述符一直是在缓存中打开的，如上例，如果有一个文件在inactive时间内一次没被使用，它将被移除</span>
+open_file_cache_min_uses 1<span class="p">;</span>
+  
+<span class="c1">#下面这个是指多长时间检查一次缓存的有效信息。</span>
+open_file_cache_valid 30s<span class="p">;</span>
+  
+<span class="c1">#隐藏响应头中的有关操作系统和web server（Nginx）版本号的信息，这样对于安全性是有好处的。</span>
+server_tokens off<span class="p">;</span>
+
+<span class="c1"># 开启gzip</span>
+gzip on<span class="p">;</span>
+gzip_min_length 1k<span class="p">;</span>
+gzip_buffers <span class="m">4</span> 16k<span class="p">;</span>
+gzip_http_version 1.0<span class="p">;</span>
+gzip_comp_level 2<span class="p">;</span>
+gzip_types text/plain application/x-javascript text/css
+application/xml<span class="p">;</span>
+gzip_vary on<span class="p">;</span>
+
+<span class="c1"># 缓存静态文件：</span>
+location ~* ^.+<span class="se">\.</span><span class="o">(</span>swf<span class="p">|</span>gif<span class="p">|</span>png<span class="p">|</span>jpg<span class="p">|</span>js<span class="p">|</span>css<span class="o">)</span>$ <span class="o">{</span>
+	root /usr/local/ku6/ktv/show.ku6.com/<span class="p">;</span>
+	expires 1m<span class="p">;</span>
+<span class="o">}</span>
+
+<span class="c1">#另外，FastCGI自身也有一些配置需要进行优化，如果你使用php-fpm来管理FastCGI，可以修改php-fpm的配置文件中的以下值：</span>
+
+<span class="c1">#同时处理的并发请求数，即它将开启最多60个子线程来处理并发连接。</span>
+<span class="nv">max_children</span> <span class="o">=</span> <span class="m">60</span>
+
+<span class="c1">#最多打开文件数。</span>
+<span class="nv">rlimit_files</span> <span class="o">=</span> <span class="m">65535</span>
+
+<span class="c1">#每个进程在重置之前能够执行的最多请求数。</span>
+<span class="nv">max_requests</span> <span class="o">=</span> <span class="m">65535</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="四-反向代理负载均衡">四 反向代理+负载均衡</h2>
+<blockquote>
+<p>反向代理，主要用于服务器集群分布式部署的情况下，反向代理隐藏了服务器的信息。如浏览器中输入baidu.com，则会将用户请求发送到百度服务器集群中的某一个服务器上</p>
+</blockquote>
+<p><a href="https://segmentfault.com/a/1190000014483200">nginx负载均衡的5种策略</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="c1"># nginx 配置文件内容</span>
+upstream webserver1 <span class="o">{</span>
+    ip_hash<span class="p">;</span> <span class="c1"># 采用ip_hash算法，就是根据ip做转发</span>
+    server 192.168.1.19:8080<span class="p">;</span>
+    server 192.168.1.20:8080<span class="p">;</span>
+<span class="o">}</span>
+
+upstream webserver2 <span class="o">{</span> <span class="c1"># 设置服务器转发权重</span>
+    server 192.168.1.21:8080 <span class="nv">weight</span><span class="o">=</span>5<span class="p">;</span>
+    server 192.168.1.22:8080 <span class="nv">weight</span><span class="o">=</span>3<span class="p">;</span>
+    server 192.168.1.23:8080 <span class="nv">weight</span><span class="o">=</span>2<span class="p">;</span>
+<span class="o">}</span>
+
+server <span class="o">{</span>
+    listen 80<span class="p">;</span>
+    server_name tomcat1.com tomcat2.com<span class="p">;</span>
+
+    location / <span class="o">{</span>
+        proxy_pass http://webserver1<span class="p">;</span>
+    <span class="o">}</span>
+    location /hello <span class="o">{</span>
+        proxy_pass http://webserver1/hello<span class="p">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+server <span class="o">{</span>
+    listen 80<span class="p">;</span>
+    server_name tomcat3.com tomcat4.com tomcat5.com<span class="p">;</span>
+
+    location / <span class="o">{</span>
+        proxy_pass http://webserver2<span class="p">;</span>
+    <span class="o">}</span>
+    location /world <span class="o">{</span>
+        proxy_pass http://webserver2/world<span class="p">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+server <span class="o">{</span>
+    listen 80<span class="p">;</span>
+    server_name pc.com<span class="p">;</span>
+
+    location / <span class="o">{</span>
+		proxy_pass https://www.baidu.com/<span class="p">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="c1"># hosts 文件内容，根据实际情况配置</span>
+192.168.1.13 tomcat1.com
+192.168.1.13 tomcat2.com
+192.168.1.13 tomcat3.com
+192.168.1.13 tomcat4.com
+192.168.1.13 tomcat5.com
+192.168.1.13 pc.com
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="五-内置变量">五 内置变量</h2>
+<blockquote>
+<p>nginx的配置文件中可以使用的内置变量以美元符$开始，也有人叫全局变量，可见范围是整个 Nginx 配置,甚至可以跨越不同虚拟主机的 server 配置块。其中，部分预定义的变量的值是可以改变的。Nginx 变量的创建和赋值操作发生在全然不同的时间阶段。Nginx 变量的创建只能发生在 Nginx 配置加载的时候,或者说 Nginx 启动的时候;而赋值操作则只会发生在请求实际处理的时候。这意味着不创建而直接使用变量会导致启动失败,同时也意味着我们无法在请求处理时动态创建新的 Nginx 变量。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>变量名</th>
+<th>定义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$arg_PARAMETER</td>
+<td>这个变量值为：GET请求中变量名PARAMETER参数的值。</td>
+</tr>
+<tr>
+<td>$args</td>
+<td>这个变量等于GET请求中的参数。例如，foo=123&amp;bar=blahblah;这个变量只可以被修改</td>
+</tr>
+<tr>
+<td>$binary_remote_addr</td>
+<td>二进制码形式的客户端地址。</td>
+</tr>
+<tr>
+<td>$body_bytes_sent</td>
+<td>传送页面的字节数</td>
+</tr>
+<tr>
+<td>$content_length</td>
+<td>请求头中的Content-length字段。</td>
+</tr>
+<tr>
+<td>$content_type</td>
+<td>请求头中的Content-Type字段。</td>
+</tr>
+<tr>
+<td>$cookie_COOKIE</td>
+<td>cookie COOKIE的值。</td>
+</tr>
+<tr>
+<td>$document_root</td>
+<td>当前请求在root指令中指定的值。</td>
+</tr>
+<tr>
+<td>$document_uri</td>
+<td>与$uri相同。</td>
+</tr>
+<tr>
+<td>$host</td>
+<td>请求中的主机头(Host)字段，如果请求中的主机头不可用或者空，则为处理请求的server名称( 处理请求的server的server_name指令的值)。值为小写，不包含端口。</td>
+</tr>
+<tr>
+<td>$hostname</td>
+<td>机器名使用 gethostname系统调用的值</td>
+</tr>
+<tr>
+<td>$http_HEADER</td>
+<td>HTTP请求头中的内容，HEADER为HTTP请求中的内容转为小写，-变为_(破折号变为下划线) ，例如：$http_user_agent(Uaer-Agent的值), $http_referer&hellip;;</td>
+</tr>
+<tr>
+<td>$sent_http_HEADER</td>
+<td>HTTP响应头中的内容，HEADER为HTTP响应中的内容转为小写，-变为_(破折号变为下划线)，例如：  $sent_http_cache_control, $sent_http_content_type&hellip;;</td>
+</tr>
+<tr>
+<td>$is_args</td>
+<td>如果$args设置，值为&rdquo;?&quot;，否则为&rdquo;&quot;。</td>
+</tr>
+<tr>
+<td>$limit_rate</td>
+<td>这个变量可以限制连接速率。</td>
+</tr>
+<tr>
+<td>$nginx_version</td>
+<td>当前运行的nginx版本号。</td>
+</tr>
+<tr>
+<td>$query_string</td>
+<td>与$args相同。</td>
+</tr>
+<tr>
+<td>$remote_addr</td>
+<td>客户端的IP地址。</td>
+</tr>
+<tr>
+<td>$remote_port</td>
+<td>客户端的端口。</td>
+</tr>
+<tr>
+<td>$remote_user</td>
+<td>已经经过Auth Basic Module验证的用户名。</td>
+</tr>
+<tr>
+<td>$request_filename</td>
+<td>当前连接请求的文件路径，由root或alias指令与URI请求生成。</td>
+</tr>
+<tr>
+<td>$request_body</td>
+<td>这个变量（0.7.58+）包含请求的主要信息。在使用proxy_pass或fastcgi_pass指令的location中比较有意义。</td>
+</tr>
+<tr>
+<td>$request_body_file</td>
+<td>客户端请求主体信息的临时文件名。</td>
+</tr>
+<tr>
+<td>$request_completion</td>
+<td>如果请求成功，设为&quot;OK&rdquo;；如果请求未完成或者不是一系列请求中最后一部分则设为空。</td>
+</tr>
+<tr>
+<td>$request_method</td>
+<td>这个变量是客户端请求的动作，通常为GET或POST。包括0.8.20及之前的版本中，这个变量总为main</td>
+</tr>
+<tr>
+<td>$request_uri</td>
+<td>这个变量等于包含一些客户端请求参数的原始URI，它无法修改，请查看$uri更改或重写URI。</td>
+</tr>
+<tr>
+<td>$scheme</td>
+<td>所用的协议，比如http或者是https，比如rewrite ^(.+)$ $scheme://example.com$1 redirect;</td>
+</tr>
+<tr>
+<td>$server_addr</td>
+<td>服务器地址，在完成一次系统调用后可以确定这个值，如果要绕开系统调用，则必须在listen中指定地址并且使用bind参数。</td>
+</tr>
+<tr>
+<td>$server_name</td>
+<td>服务器名称。</td>
+</tr>
+<tr>
+<td>$server_port</td>
+<td>请求到达服务器的端口号。</td>
+</tr>
+<tr>
+<td>$server_protocol</td>
+<td>请求使用的协议，通常是HTTP/1.0或HTTP/1.1。</td>
+</tr>
+<tr>
+<td>$uri</td>
+<td>请求中的当前URI(不带请求参数，参数位于$args) ，不同于浏览器传递的$request_uri的值，它可以通过内部重定向，或者使用index指令进行修改。不包括协议和主机名，例如/foo/bar.html</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<p><strong>nginx 问答：</strong></p>
+<p>1.Master进程的作用是？</p>
+<p>读取并验证配置文件nginx.conf；管理worker进程；</p>
+<p>2.Worker进程的作用是？</p>
+<p>每一个Worker进程都维护一个线程（避免线程切换），处理连接和请求；注意Worker进程的个数由配置文件决定，一般和CPU个数相关（有利于进程切换），配置几个就有几个Worker进程。</p>
+<p>3.思考：Nginx如何做到热部署？</p>
+<p>所谓热部署，就是配置文件nginx.conf修改后，不需要stop Nginx，不需要中断请求，就能让配置文件生效！</p>
+<p>执行命令 <code>nginx -s reload</code> 重新加载</p>
+<p>原理：修改配置文件nginx.conf后，重新生成新的worker进程，当然会以新的配置进行处理请求，而且新的请求必须都交给新的worker进程，至于老的worker进程，等把那些以前的请求处理完毕后，kill掉即可。</p>
+<p>4.Nginx如何做到高并发下的高效处理？</p>
+<p>Nginx采用了Linux的epoll模型，epoll模型基于事件驱动机制，它可以监控多个事件是否准备完毕，如果OK，那么放入epoll队列中，这个过程是异步的。worker只需要从epoll队列循环处理即可。</p>
+<blockquote>
+<p>什么是epoll</p>
+<ul>
+<li>改进的pool，一种I/O多路复用技术，可管理大批量文件描述符。</li>
+</ul>
+<p>工作原理</p>
+<ul>
+<li>内核中，一切皆文件，epoll向内核注册一个文件系统，用于存储要管理的文件描述符号。调用epoll_create时，会在虚拟文件系统中创建一个file节点服务epool同时也会创建就绪事件list链表。
+操作系统启动后，会开辟出自己的高速cache，socket问价描述符会以红黑树存入cache，方便查找、插入、删除。
+epool_ctl，把socket放到epool文件系统里file对应的红黑树，也会注册一个回调函数，文件描述符有信号后，会调用该组册函数，内核把网卡数据copy到内核中把socket插入就绪列表中。
+epoll_wait调用时候，看一眼就绪列表，所以效率很高。监控百万描述符，但是准备就绪fd（文件描述符）却很少。</li>
+</ul>
+</blockquote>
+<p>5.Nginx挂了怎么办？</p>
+<p>Nginx既然作为入口网关，很重要，如果出现单点问题，显然是不可接受的。</p>
+<p>答案是：<strong>Keepalived+Nginx实现高可用</strong>。</p>
+<blockquote>
+<p>Keepalived是基于vrrp协议的一款高可用软件。Keepailived有一台主服务器和多台备份服务器，在主服务器和备份服务器上面部署相同的服务配置，使用一个虚拟IP地址对外提供服务，当主服务器出现故障时，虚拟IP地址会自动漂移到备份服务器。Keepalived是一个高可用解决方案，主要是用来防止服务器单点发生故障，可以通过和Nginx配合来实现Web服务的高可用。（其实，Keepalived不仅仅可以和Nginx配合，还可以和很多其他服务配合）</p>
+</blockquote>
+<p>Keepalived+Nginx实现高可用的思路：</p>
+<p>第一：请求不要直接打到Nginx上，应该先通过Keepalived（这就是所谓虚拟IP，VIP）</p>
+<p>第二：Keepalived应该能监控Nginx的生命状态（提供一个用户自定义的脚本，定期检查Nginx进程状态，进行权重变化,，从而实现Nginx故障切换）</p>
+<p>6.负载均衡可能带来的问题</p>
+<p>负载均衡所带来的明显的问题是，一个请求，可以到A server，也可以到B server，这完全不受我们的控制，当然这也不是什么问题，只是我们得注意的是：<strong>用户状态的保存问题，如Session会话信息，不能在保存到服务器上。</strong>
+当然，我们可以采用<strong>ip_hash</strong>策略解决这个问题，如果客户已经访问了某个服务器，当用户再次访问时，会将该请求通过<strong>哈希算法，自动定位到该服务器</strong>。每个请求按访问ip的hash结果分配，这样每个访客固定访问一个后端服务器，可以解决<strong>session的问题</strong>。</p>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Summer</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2019-12-16
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/nginx/">nginx</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/nginx2/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">使用docker实现nginx负载均衡</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/laravel&#43;protobuf/">
+            <span class="next-text nav-default">laravel中使用protobuf</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+  <a href="https://summer90xia.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2016 - 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Summer</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/raphael@2.2.7/raphael.min.js" integrity="sha256-67By+NpOtm9ka1R6xpUefeGOY8kWWHHRAKlvaTJ7ONI=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/flowchart.js@1.8.0/release/flowchart.min.js" integrity="sha256-zNGWjubXoY6rb5MnmpBNefO0RgoVYfle9p0tvOQM+6k=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.js" integrity="sha256-4O4pS1SH31ZqrSO2A/2QJTVjTPqVe+jnYgOWUVr7EEc=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/snapsvg@0.5.1/dist/snap.svg-min.js" integrity="sha256-oI+elz+sIm+jpn8F/qEspKoKveTc5uKeFHNNVexe6d8=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/underscore@1.8.3/underscore-min.js" integrity="sha256-obZACiHd7gkOk9iIL/pimWMTJ4W/pBsKu+oZnSeBIek=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.js" integrity="sha384-8748Vn52gHJYJI0XEuPB2QlPVNUkJlJn9tHqKec6J3q2r9l8fvRxrgn/E5ZHV0sP" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.css" integrity="sha384-6QbLKJMz5dS3adWSeINZe74uSydBGFbnzaAYmp+tKyq60S7H2p6V7g1TysM5lAaF" crossorigin="anonymous">
+
+
+
+<script type="text/javascript" src="/js/main.min.d7b7ada643c9c1a983026e177f141f7363b4640d619caf01d8831a6718cd44ea.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+<script id="baidu_analytics">
+  var _hmt = _hmt || [];
+  (function() {
+    if (window.location.hostname === 'localhost') return;
+    var hm = document.createElement("script"); hm.async = true;
+    hm.src = "https://hm.baidu.com/hm.js?fc8cf18648f58ac4ad0594547ec6c1e3";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+<script id="baidu_push">
+  (function(){
+    if (window.location.hostname === 'localhost') return;
+    var bp = document.createElement('script'); bp.async = true;
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+      bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+      bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+  })();
+</script>
+
+
+<script src="/js/"></script>
+
+
+</body>
+</html>

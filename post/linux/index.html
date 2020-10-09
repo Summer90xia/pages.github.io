@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>shell基础 - Summer&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Summer" /><meta name="description" content="shell基础知识" /><meta name="keywords" content="linux, shell" />
+
+
+<meta name="baidu-site-verification" content="QuqVC3Anf0" />
+
+
+
+<meta name="generator" content="Hugo 0.74.3 with theme even" />
+
+
+<link rel="canonical" href="https://summer90xia.github.io/post/linux/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.8c3cbcb0324c2bb4875ceccba4007cbad4b4ac8377f33af9953c3e7684534a50.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/">
+
+
+<meta property="og:title" content="shell基础" />
+<meta property="og:description" content="shell基础知识" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://summer90xia.github.io/post/linux/" />
+<meta property="article:published_time" content="2019-02-13T14:44:40+08:00" />
+<meta property="article:modified_time" content="2019-02-13T14:44:40+08:00" />
+<meta itemprop="name" content="shell基础">
+<meta itemprop="description" content="shell基础知识">
+<meta itemprop="datePublished" content="2019-02-13T14:44:40+08:00" />
+<meta itemprop="dateModified" content="2019-02-13T14:44:40+08:00" />
+<meta itemprop="wordCount" content="1960">
+
+
+
+<meta itemprop="keywords" content="linux," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="shell基础"/>
+<meta name="twitter:description" content="shell基础知识"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Summer&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">栏目</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Summer&#39;s Blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">栏目</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">shell基础</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2019-02-13 </span>
+        <div class="post-category">
+            <a href="/categories/%E5%AD%A6%E7%94%B5%E8%84%91/"> 学电脑 </a>
+            </div>
+          <span class="more-meta"> 约 1960 字 </span>
+          <span class="more-meta"> 预计阅读 4 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#输出重定向">输出重定向</a></li>
+    <li><a href="#特殊shell变量">特殊shell变量</a></li>
+    <li><a href="#二元比较">二元比较</a></li>
+    <li><a href="#文件测试类型">文件测试类型</a></li>
+    <li><a href="#参数替换和扩展">参数替换和扩展</a></li>
+    <li><a href="#shell-中的-括号们">shell 中的 括号们</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p>对 shell 知识点做一个规整</p>
+</blockquote>
+<h2 id="输出重定向">输出重定向</h2>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>command &gt; file</td>
+<td>将输出重定向到 file</td>
+</tr>
+<tr>
+<td>command &lt; file</td>
+<td>将输入重定向到 file</td>
+</tr>
+<tr>
+<td>command &raquo; file</td>
+<td>将输出以追加的方式重定向到 file</td>
+</tr>
+<tr>
+<td>n &gt; file</td>
+<td>将文件描述符为 n 的文件重定向到 file</td>
+</tr>
+<tr>
+<td>n &raquo; file</td>
+<td>将文件描述符为 n 的文件以追加的方式重定向到 file</td>
+</tr>
+<tr>
+<td>n &gt;&amp; m</td>
+<td>将输出文件 m 和 n 合并</td>
+</tr>
+<tr>
+<td>n &lt;&amp; m</td>
+<td>将输入文件 m 和 n 合并</td>
+</tr>
+<tr>
+<td>&laquo; tag</td>
+<td>将开始标记 tag 和结束标记 tag 之间的内容作为输入</td>
+</tr>
+<tr>
+<td>$command &gt; /dev/null</td>
+<td>将命令的输出重定向到 /dev/null 中</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>/dev/null 是一个特殊的文件，写入到它的内容都会被丢弃；如果尝试从该文件读取内容，那么什么也读不到。但是 /dev/null 文件非常有用，将命令的输出重定向到它，会起到&quot;禁止输出&quot;的效果。
+如果希望屏蔽 stdout 和 $ command &gt; /dev/null 2&gt;&amp;1</p>
+</blockquote>
+<h2 id="特殊shell变量">特殊shell变量</h2>
+<table>
+<thead>
+<tr>
+<th>变量</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$0</td>
+<td>脚本名字</td>
+</tr>
+<tr>
+<td>$1</td>
+<td>位置参数 #1</td>
+</tr>
+<tr>
+<td>$2 ~ $9</td>
+<td>位置参数 #2 - #9</td>
+</tr>
+<tr>
+<td>${10}</td>
+<td>位置参数 #10</td>
+</tr>
+<tr>
+<td>$#</td>
+<td>位置参数的个数</td>
+</tr>
+<tr>
+<td>&ldquo;$*&rdquo; 和 &ldquo;$@&rdquo;</td>
+<td>所有的位置参数</td>
+</tr>
+<tr>
+<td><code>${#*}</code> 和 <code>${#@}</code></td>
+<td>传递到脚本中的命令行参数的个数</td>
+</tr>
+<tr>
+<td>$?</td>
+<td>脚本返回值</td>
+</tr>
+<tr>
+<td>$$</td>
+<td>脚本的进程ID(PID)</td>
+</tr>
+<tr>
+<td>$-</td>
+<td>传递到脚本中的标志(使用set)</td>
+</tr>
+<tr>
+<td>$_</td>
+<td>之前命令的最后一个参数</td>
+</tr>
+<tr>
+<td>$!</td>
+<td>运行在后台的最后一个作业的进程ID(PID)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="二元比较">二元比较</h2>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-eq | = | ==</td>
+<td>等于</td>
+</tr>
+<tr>
+<td>-ne | !=</td>
+<td>不等于</td>
+</tr>
+<tr>
+<td>-lt | &lt;</td>
+<td>小于</td>
+</tr>
+<tr>
+<td>-gt | &gt;</td>
+<td>大于</td>
+</tr>
+<tr>
+<td>-ge | &gt;=</td>
+<td>大于等于</td>
+</tr>
+<tr>
+<td>-le | &lt;=</td>
+<td>小于等于</td>
+</tr>
+<tr>
+<td>-z</td>
+<td>字符串为空</td>
+</tr>
+<tr>
+<td>-n</td>
+<td>字符串不为空</td>
+</tr>
+</tbody>
+</table>
+<p>​</p>
+<h2 id="文件测试类型">文件测试类型</h2>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-e</td>
+<td>文件是否存在</td>
+</tr>
+<tr>
+<td>-s</td>
+<td>文件大小不为0</td>
+</tr>
+<tr>
+<td>-f</td>
+<td>是一个标准文件</td>
+</tr>
+<tr>
+<td>-d</td>
+<td>是一个目录</td>
+</tr>
+<tr>
+<td>-r</td>
+<td>文件有读权限</td>
+</tr>
+<tr>
+<td>-w</td>
+<td>文件有写权限</td>
+</tr>
+<tr>
+<td>-x</td>
+<td>文件有执行权限</td>
+</tr>
+<tr>
+<td>-h</td>
+<td>文件是一个符号链接</td>
+</tr>
+<tr>
+<td>-L</td>
+<td>文件是一个符号链接</td>
+</tr>
+<tr>
+<td>-b</td>
+<td>文件是一块设备</td>
+</tr>
+<tr>
+<td>-c</td>
+<td>文件是一个字符设备</td>
+</tr>
+<tr>
+<td>-g</td>
+<td>设置了sgid标记</td>
+</tr>
+<tr>
+<td>-p</td>
+<td>文件是一个管道</td>
+</tr>
+<tr>
+<td>-u</td>
+<td>设置了suid标记</td>
+</tr>
+<tr>
+<td>-S</td>
+<td>文件是一个socket</td>
+</tr>
+<tr>
+<td>-k</td>
+<td>设置了&quot;粘贴位&rdquo;</td>
+</tr>
+<tr>
+<td>-t</td>
+<td>文件与一个终端相关联</td>
+</tr>
+<tr>
+<td>-N</td>
+<td>从这个文件最后一次被读取之后, 它被修改过</td>
+</tr>
+<tr>
+<td>-O</td>
+<td>这个文件的宿主是你</td>
+</tr>
+<tr>
+<td>-G</td>
+<td>文件的组id与你所属的组相同</td>
+</tr>
+<tr>
+<td>F1 -nt F2</td>
+<td>文件F1比文件F2新</td>
+</tr>
+<tr>
+<td>F1 -ot F2</td>
+<td>文件F1比文件F2旧</td>
+</tr>
+<tr>
+<td>F1 -ef F2</td>
+<td>件F1和文件F2都是同一个文件的硬链接</td>
+</tr>
+<tr>
+<td>！</td>
+<td>&ldquo;非&rdquo;  ，取反</td>
+</tr>
+</tbody>
+</table>
+<h2 id="参数替换和扩展">参数替换和扩展</h2>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>${var}</td>
+<td>变量var的值, 与$var相同</td>
+</tr>
+<tr>
+<td>${var-DEFAULT}</td>
+<td>如果var没 有被声明, 那么就以$DEFAULT作为其值 *</td>
+</tr>
+<tr>
+<td>${var:-DEFAULT}</td>
+<td>如果var没 有被声明, 或者其值为空, 那么就以$DEFAULT作为其值 *</td>
+</tr>
+<tr>
+<td>${var=DEFAULT}</td>
+<td>如果var没 有被声明, 那么就以$DEFAULT作为其值 *</td>
+</tr>
+<tr>
+<td>${var:=DEFAULT}</td>
+<td>如果var没 有被声明, 或者其值为空, 那么就以$DEFAULT作为其值 *</td>
+</tr>
+<tr>
+<td>${var+OTHER}</td>
+<td>如果var声 明了, 那么其值就是$OTHER, 否则就为null字符串</td>
+</tr>
+<tr>
+<td>${var:+OTHER}</td>
+<td>如 果var被设置了, 那么其值就是$OTHER, 否则就为null字符串</td>
+</tr>
+<tr>
+<td>${var?ERR_MSG}</td>
+<td>如果var没 被声明, 那么就打印$ERR_MSG *</td>
+</tr>
+<tr>
+<td>${var:?ERR_MSG}</td>
+<td>如果var没 被设置, 那么就打印$ERR_MSG *</td>
+</tr>
+<tr>
+<td>${!varprefix*}</td>
+<td>匹配之前所有以varprefix开头进行声明的变量</td>
+</tr>
+<tr>
+<td>${!varprefix@}</td>
+<td>匹配之前所有以varprefix开头进行声明的变量</td>
+</tr>
+<tr>
+<td><code>${#string}</code></td>
+<td>$string的长度</td>
+</tr>
+<tr>
+<td>${string:position}</td>
+<td>在$string中, 从位置$position开始提取子串</td>
+</tr>
+<tr>
+<td>${string:position:length}</td>
+<td>在$string中, 从位置$position开始提取长度为$length的子串</td>
+</tr>
+<tr>
+<td>${string#substring}</td>
+<td>从 变量$string的开头, 删除最短匹配$substring的子串</td>
+</tr>
+<tr>
+<td>${string##substring}</td>
+<td>从 变量$string的开头, 删除最长匹配$substring的子串</td>
+</tr>
+<tr>
+<td>${string%substring}</td>
+<td>从 变量$string的结尾, 删除最短匹配$substring的子串</td>
+</tr>
+<tr>
+<td>${string%%substring}</td>
+<td>从 变量$string的结尾, 删除最长匹配$substring的子串</td>
+</tr>
+<tr>
+<td>${string/substring/replacement}</td>
+<td>使用$replacement, 来代替第一个匹配的$substring</td>
+</tr>
+<tr>
+<td>${string//substring/replacement}</td>
+<td>使 用$replacement, 代替所有匹配的$substring</td>
+</tr>
+<tr>
+<td>${string/#substring/replacement}</td>
+<td>如 果$string的前缀匹配$substring, 么就用$replacement来代替匹配到的$substring</td>
+</tr>
+<tr>
+<td>${string/%substring/replacement}</td>
+<td>如果$string的后缀匹配$substring, 么就用$replacement来代替匹配到的$substring</td>
+</tr>
+<tr>
+<td>expr &ldquo;$string&rdquo; : &lsquo;$substring&rsquo;</td>
+<td>匹配$string开头的$substring* 的长度</td>
+</tr>
+<tr>
+<td>expr index &ldquo;$string&rdquo; $substring</td>
+<td>在$string中匹配到的$substring的第一个字符出现的位置</td>
+</tr>
+<tr>
+<td>expr substr $string $position $length</td>
+<td>在$string中从位置$position开始提取长度为$length的子串</td>
+</tr>
+<tr>
+<td>expr match &ldquo;$string&rdquo; &lsquo;($substring)&rsquo;</td>
+<td>从$string的 开头位置提取$substring*</td>
+</tr>
+<tr>
+<td>expr &ldquo;$string&rdquo; : &lsquo;($substring)&rsquo;</td>
+<td>从$string的 开头位置提取$substring*</td>
+</tr>
+<tr>
+<td>expr match &ldquo;$string&rdquo; &lsquo;.*($substring)&rsquo;</td>
+<td>从$string的 结尾提取$substring*</td>
+</tr>
+<tr>
+<td>expr &ldquo;$string&rdquo; : &lsquo;.*($substring)&rsquo;</td>
+<td>从$string的 结尾提取$substring*</td>
+</tr>
+</tbody>
+</table>
+<h2 id="shell-中的-括号们">shell 中的 括号们</h2>
+<ul>
+<li>圆括号
+<ul>
+<li>( command1; command2 )   子shell中 执行的命令组</li>
+<li>Array=(element1 element2 element3)  数组初始化</li>
+<li>result=$(COMMAND)  在子shell中执行命令, 并将结果赋值给变量（命令替换）</li>
+<li>&gt;(command) &lt;(command) <code>进程替换</code>*【把一个命令的结果发送给另一个命令，类似于 管道】*</li>
+<li>var=$(( 20 + 5 ))  整型运算, 并将结果赋值给变量</li>
+</ul>
+</li>
+<li>中括号
+<ul>
+<li>if [ command ]  测试结构 test命令的简写</li>
+<li>if [[ command ]] 扩展测试结构，可以进行字符串高级比较和正则匹配</li>
+<li>array[1] 做数组下标，取出数组中的元素</li>
+<li>[ a-z ] 正则表达式，表取值范围</li>
+<li>$[1+5] 可作为数字计算 n=$[$n+1] ，类似于 $n++</li>
+</ul>
+</li>
+<li>大括号
+<ul>
+<li>${variable} 参数替换 ， 如 ${11} 表示第11个参数</li>
+<li>${!variable} 间接参数引用</li>
+<li>{ command1; command2; . . . commandN; } 代码块</li>
+<li>{string1,string2,string3,&hellip;}			大 括号扩展</li>
+</ul>
+</li>
+</ul>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Summer</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2019-02-13
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/linux/">linux</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/laravel_predis/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Laravel redis使用教程</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/echarts/">
+            <span class="next-text nav-default">Echarts表格使用</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+  <a href="https://summer90xia.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2016 - 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Summer</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/raphael@2.2.7/raphael.min.js" integrity="sha256-67By+NpOtm9ka1R6xpUefeGOY8kWWHHRAKlvaTJ7ONI=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/flowchart.js@1.8.0/release/flowchart.min.js" integrity="sha256-zNGWjubXoY6rb5MnmpBNefO0RgoVYfle9p0tvOQM+6k=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.js" integrity="sha256-4O4pS1SH31ZqrSO2A/2QJTVjTPqVe+jnYgOWUVr7EEc=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/snapsvg@0.5.1/dist/snap.svg-min.js" integrity="sha256-oI+elz+sIm+jpn8F/qEspKoKveTc5uKeFHNNVexe6d8=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/underscore@1.8.3/underscore-min.js" integrity="sha256-obZACiHd7gkOk9iIL/pimWMTJ4W/pBsKu+oZnSeBIek=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.js" integrity="sha384-8748Vn52gHJYJI0XEuPB2QlPVNUkJlJn9tHqKec6J3q2r9l8fvRxrgn/E5ZHV0sP" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.css" integrity="sha384-6QbLKJMz5dS3adWSeINZe74uSydBGFbnzaAYmp+tKyq60S7H2p6V7g1TysM5lAaF" crossorigin="anonymous">
+
+
+
+<script type="text/javascript" src="/js/main.min.d7b7ada643c9c1a983026e177f141f7363b4640d619caf01d8831a6718cd44ea.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+<script id="baidu_analytics">
+  var _hmt = _hmt || [];
+  (function() {
+    if (window.location.hostname === 'localhost') return;
+    var hm = document.createElement("script"); hm.async = true;
+    hm.src = "https://hm.baidu.com/hm.js?fc8cf18648f58ac4ad0594547ec6c1e3";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+<script id="baidu_push">
+  (function(){
+    if (window.location.hostname === 'localhost') return;
+    var bp = document.createElement('script'); bp.async = true;
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+      bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+      bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+  })();
+</script>
+
+
+<script src="/js/"></script>
+
+
+</body>
+</html>

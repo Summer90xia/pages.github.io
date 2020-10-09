@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>php实现各种排序算法 - Summer&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Summer" /><meta name="description" content="php实现各种排序算法" /><meta name="keywords" content="php, 算法" />
+
+
+<meta name="baidu-site-verification" content="QuqVC3Anf0" />
+
+
+
+<meta name="generator" content="Hugo 0.74.3 with theme even" />
+
+
+<link rel="canonical" href="https://summer90xia.github.io/post/algorithm/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.8c3cbcb0324c2bb4875ceccba4007cbad4b4ac8377f33af9953c3e7684534a50.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/">
+
+
+<meta property="og:title" content="php实现各种排序算法" />
+<meta property="og:description" content="php实现各种排序算法" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://summer90xia.github.io/post/algorithm/" />
+<meta property="article:published_time" content="2020-01-14T11:12:09+08:00" />
+<meta property="article:modified_time" content="2020-01-14T11:12:09+08:00" />
+<meta itemprop="name" content="php实现各种排序算法">
+<meta itemprop="description" content="php实现各种排序算法">
+<meta itemprop="datePublished" content="2020-01-14T11:12:09+08:00" />
+<meta itemprop="dateModified" content="2020-01-14T11:12:09+08:00" />
+<meta itemprop="wordCount" content="1218">
+
+
+
+<meta itemprop="keywords" content="算法," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="php实现各种排序算法"/>
+<meta name="twitter:description" content="php实现各种排序算法"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Summer&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">栏目</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Summer&#39;s Blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">栏目</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">php实现各种排序算法</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-01-14 </span>
+        <div class="post-category">
+            <a href="/categories/%E5%AD%A6%E7%94%B5%E8%84%91/"> 学电脑 </a>
+            </div>
+          <span class="more-meta"> 约 1218 字 </span>
+          <span class="more-meta"> 预计阅读 3 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents"></nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p>使用php实现一些排序算法</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>算法名称</th>
+<th>时间复杂度（平均）</th>
+<th>空间复杂度（平均）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>冒泡排序</td>
+<td>O(n²)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>选择排序</td>
+<td>O(n²)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>插入排序</td>
+<td>O(n²)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>快速排序</td>
+<td>O(n²)</td>
+<td>O(1)</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span><span class="lnt">112
+</span><span class="lnt">113
+</span><span class="lnt">114
+</span><span class="lnt">115
+</span><span class="lnt">116
+</span><span class="lnt">117
+</span><span class="lnt">118
+</span><span class="lnt">119
+</span><span class="lnt">120
+</span><span class="lnt">121
+</span><span class="lnt">122
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+
+<span class="nv">$arr</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">52</span><span class="p">,</span><span class="mi">785</span><span class="p">,</span><span class="mi">13</span><span class="p">,</span><span class="mi">24</span><span class="p">,</span><span class="mi">89</span><span class="p">,</span><span class="mi">35</span><span class="p">];</span>
+
+<span class="c1">// 1、冒泡算法 
+</span><span class="c1">// 原理：逐个排查，每轮选出最大的
+</span><span class="c1"></span><span class="k">function</span> <span class="nf">bubble</span><span class="p">(</span><span class="nv">$arr</span><span class="p">){</span>
+    <span class="nv">$lenght</span> <span class="o">=</span> <span class="nx">count</span><span class="p">(</span><span class="nv">$arr</span><span class="p">);</span>
+    <span class="k">for</span><span class="p">(</span><span class="nv">$i</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span><span class="nv">$i</span><span class="o">&lt;</span><span class="nv">$lenght</span><span class="p">;</span><span class="nv">$i</span><span class="o">++</span><span class="p">){</span>  <span class="c1">// 要循环的次数
+</span><span class="c1"></span>        <span class="k">for</span><span class="p">(</span><span class="nv">$k</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="nv">$k</span><span class="o">&lt;</span><span class="nv">$lenght</span><span class="o">-</span><span class="nv">$i</span><span class="p">;</span><span class="nv">$k</span><span class="o">++</span><span class="p">){</span> <span class="c1">// 当前数组 键值
+</span><span class="c1"></span>            <span class="k">if</span><span class="p">(</span><span class="nv">$arr</span><span class="p">[</span><span class="nv">$k</span><span class="p">]</span> <span class="o">&gt;</span> <span class="nv">$arr</span><span class="p">[</span><span class="nv">$k</span><span class="o">+</span><span class="mi">1</span><span class="p">]){</span>
+                <span class="nv">$temp</span> <span class="o">=</span> <span class="nv">$arr</span><span class="p">[</span><span class="nv">$k</span><span class="o">+</span><span class="mi">1</span><span class="p">];</span>
+                <span class="nv">$arr</span><span class="p">[</span><span class="nv">$k</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$arr</span><span class="p">[</span><span class="nv">$k</span><span class="p">];</span>
+                <span class="nv">$arr</span><span class="p">[</span><span class="nv">$k</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$temp</span><span class="p">;</span> <span class="c1">// 中间转换变量
+</span><span class="c1"></span>            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nv">$arr</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="sd">/**
+</span><span class="sd">2. 选择排序法： 
+</span><span class="sd">思路： 每次选择一个相应的元素，然后将其放到指定的位置
+</span><span class="sd">*/</span>
+<span class="k">function</span> <span class="nf">select_sort</span><span class="p">(</span><span class="nv">$arr</span><span class="p">)</span> <span class="p">{</span>
+<span class="c1">//实现思路 双重循环完成，外层控制轮数，当前的最小值。内层 控制的比较次数
+</span><span class="c1"></span>    <span class="c1">//$i 当前最小值的位置， 需要参与比较的元素
+</span><span class="c1"></span>    <span class="k">for</span><span class="p">(</span><span class="nv">$i</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nv">$len</span><span class="o">=</span><span class="nx">count</span><span class="p">(</span><span class="nv">$arr</span><span class="p">);</span> <span class="nv">$i</span><span class="o">&lt;</span><span class="nv">$len</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="nv">$i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">//先假设最小的值的位置
+</span><span class="c1"></span>        <span class="nv">$p</span> <span class="o">=</span> <span class="nv">$i</span><span class="p">;</span>
+        <span class="c1">//$j 当前都需要和哪些元素比较，$i 后边的。
+</span><span class="c1"></span>        <span class="k">for</span><span class="p">(</span><span class="nv">$j</span><span class="o">=</span><span class="nv">$i</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span> <span class="nv">$j</span><span class="o">&lt;</span><span class="nv">$len</span><span class="p">;</span> <span class="nv">$j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="c1">//$arr[$p] 是 当前已知的最小值
+</span><span class="c1"></span>            <span class="k">if</span><span class="p">(</span><span class="nv">$arr</span><span class="p">[</span><span class="nv">$p</span><span class="p">]</span> <span class="o">&gt;</span> <span class="nv">$arr</span><span class="p">[</span><span class="nv">$j</span><span class="p">])</span> <span class="p">{</span>
+     <span class="c1">//比较，发现更小的,记录下最小值的位置；并且在下次比较时，
+</span><span class="c1"></span> <span class="c1">// 应该采用已知的最小值进行比较。
+</span><span class="c1"></span>                <span class="nv">$p</span> <span class="o">=</span> <span class="nv">$j</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="c1">//已经确定了当前的最小值的位置，保存到$p中。
+</span><span class="c1"></span> <span class="c1">//如果发现 最小值的位置与当前假设的位置$i不同，则位置互换即可
+</span><span class="c1"></span>        <span class="k">if</span><span class="p">(</span><span class="nv">$p</span> <span class="o">!=</span> <span class="nv">$i</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nv">$tmp</span> <span class="o">=</span> <span class="nv">$arr</span><span class="p">[</span><span class="nv">$p</span><span class="p">];</span>
+            <span class="nv">$arr</span><span class="p">[</span><span class="nv">$p</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$arr</span><span class="p">[</span><span class="nv">$i</span><span class="p">];</span>
+            <span class="nv">$arr</span><span class="p">[</span><span class="nv">$i</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$tmp</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="c1">//返回最终结果
+</span><span class="c1"></span>    <span class="k">return</span> <span class="nv">$arr</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="sd">/**
+</span><span class="sd">3.插入排序法 
+</span><span class="sd">插入排序法思路：将要排序的元素插入到已经 假定排序号的数组的指定位置。
+</span><span class="sd">*/</span>
+<span class="k">function</span> <span class="nf">insert_sort</span><span class="p">(</span><span class="nv">$arr</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">//区分 哪部分是已经排序好的
+</span><span class="c1"></span>    <span class="c1">//哪部分是没有排序的
+</span><span class="c1"></span>    <span class="c1">//找到其中一个需要排序的元素
+</span><span class="c1"></span>    <span class="c1">//这个元素 就是从第二个元素开始，到最后一个元素都是这个需要排序的元素
+</span><span class="c1"></span>    <span class="c1">//利用循环就可以标志出来
+</span><span class="c1"></span>    <span class="c1">//i循环控制 每次需要插入的元素，一旦需要插入的元素控制好了，
+</span><span class="c1"></span>    <span class="c1">//间接已经将数组分成了2部分，下标小于当前的（左边的），是排序好的序列
+</span><span class="c1"></span>    <span class="k">for</span><span class="p">(</span><span class="nv">$i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nv">$len</span><span class="o">=</span><span class="nx">count</span><span class="p">(</span><span class="nv">$arr</span><span class="p">);</span> <span class="nv">$i</span><span class="o">&lt;</span><span class="nv">$len</span><span class="p">;</span> <span class="nv">$i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">//获得当前需要比较的元素值。
+</span><span class="c1"></span>        <span class="nv">$tmp</span> <span class="o">=</span> <span class="nv">$arr</span><span class="p">[</span><span class="nv">$i</span><span class="p">];</span>
+        <span class="c1">//内层循环控制 比较 并 插入
+</span><span class="c1"></span>        <span class="k">for</span><span class="p">(</span><span class="nv">$j</span><span class="o">=</span><span class="nv">$i</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span><span class="nv">$j</span><span class="o">&gt;=</span><span class="mi">0</span><span class="p">;</span><span class="nv">$j</span><span class="o">--</span><span class="p">)</span> <span class="p">{</span>
+   <span class="c1">//$arr[$i];//需要插入的元素; $arr[$j];//需要比较的元素
+</span><span class="c1"></span>            <span class="k">if</span><span class="p">(</span><span class="nv">$tmp</span> <span class="o">&lt;</span> <span class="nv">$arr</span><span class="p">[</span><span class="nv">$j</span><span class="p">])</span> <span class="p">{</span>
+                <span class="c1">//发现插入的元素要小，交换位置
+</span><span class="c1"></span>                <span class="c1">//将后边的元素与前面的元素互换
+</span><span class="c1"></span>                <span class="nv">$arr</span><span class="p">[</span><span class="nv">$j</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$arr</span><span class="p">[</span><span class="nv">$j</span><span class="p">];</span>
+                <span class="c1">//将前面的数设置为 当前需要交换的数
+</span><span class="c1"></span>                <span class="nv">$arr</span><span class="p">[</span><span class="nv">$j</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$tmp</span><span class="p">;</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="c1">//如果碰到不需要移动的元素
+</span><span class="c1"></span>           <span class="c1">//由于是已经排序好是数组，则前面的就不需要再次比较了。
+</span><span class="c1"></span>                <span class="k">break</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="c1">//将这个元素 插入到已经排序好的序列内。
+</span><span class="c1"></span>    <span class="c1">//返回
+</span><span class="c1"></span>    <span class="k">return</span> <span class="nv">$arr</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="sd">/**
+</span><span class="sd">    4.快速排序法  
+</span><span class="sd">*/</span>
+<span class="k">function</span> <span class="nf">quick_sort</span><span class="p">(</span><span class="nv">$arr</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">//先判断是否需要继续进行
+</span><span class="c1"></span>    <span class="nv">$length</span> <span class="o">=</span> <span class="nx">count</span><span class="p">(</span><span class="nv">$arr</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span><span class="nv">$length</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nv">$arr</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="c1">//如果没有返回，说明数组内的元素个数 多余1个，需要排序
+</span><span class="c1"></span>    <span class="c1">//选择一个标尺
+</span><span class="c1"></span>    <span class="c1">//选择第一个元素
+</span><span class="c1"></span>    <span class="nv">$base_num</span> <span class="o">=</span> <span class="nv">$arr</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+    <span class="c1">//遍历 除了标尺外的所有元素，按照大小关系放入两个数组内
+</span><span class="c1"></span>    <span class="c1">//初始化两个数组
+</span><span class="c1"></span>    <span class="nv">$left_array</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span><span class="c1">//小于标尺的
+</span><span class="c1"></span>    <span class="nv">$right_array</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span><span class="c1">//大于标尺的
+</span><span class="c1"></span>    <span class="k">for</span><span class="p">(</span><span class="nv">$i</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span> <span class="nv">$i</span><span class="o">&lt;</span><span class="nv">$length</span><span class="p">;</span> <span class="nv">$i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="nv">$base_num</span> <span class="o">&gt;</span> <span class="nv">$arr</span><span class="p">[</span><span class="nv">$i</span><span class="p">])</span> <span class="p">{</span>
+            <span class="c1">//放入左边数组
+</span><span class="c1"></span>            <span class="nv">$left_array</span><span class="p">[]</span> <span class="o">=</span> <span class="nv">$arr</span><span class="p">[</span><span class="nv">$i</span><span class="p">];</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="c1">//放入右边
+</span><span class="c1"></span>            <span class="nv">$right_array</span><span class="p">[]</span> <span class="o">=</span> <span class="nv">$arr</span><span class="p">[</span><span class="nv">$i</span><span class="p">];</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="c1">//再分别对 左边 和 右边的数组进行相同的排序处理方式
+</span><span class="c1"></span>    <span class="c1">//递归调用这个函数,并记录结果
+</span><span class="c1"></span>    <span class="nv">$left_array</span> <span class="o">=</span> <span class="nx">quick_sort</span><span class="p">(</span><span class="nv">$left_array</span><span class="p">);</span>
+    <span class="nv">$right_array</span> <span class="o">=</span> <span class="nx">quick_sort</span><span class="p">(</span><span class="nv">$right_array</span><span class="p">);</span>
+    <span class="c1">//合并左边 标尺 右边
+</span><span class="c1"></span>    <span class="k">return</span> <span class="nx">array_merge</span><span class="p">(</span><span class="nv">$left_array</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="nv">$base_num</span><span class="p">),</span> <span class="nv">$right_array</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nx">print_r</span><span class="p">(</span><span class="nx">quick_sort</span><span class="p">(</span><span class="nv">$arr</span><span class="p">));</span>
+</code></pre></td></tr></table>
+</div>
+</div>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Summer</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-01-14
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/%E7%AE%97%E6%B3%95/">算法</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/hash/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">php实现Hash一致性算法</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/beego/">
+            <span class="next-text nav-default">使用beego实现用户管理</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+  <a href="https://summer90xia.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2016 - 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Summer</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/raphael@2.2.7/raphael.min.js" integrity="sha256-67By+NpOtm9ka1R6xpUefeGOY8kWWHHRAKlvaTJ7ONI=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/flowchart.js@1.8.0/release/flowchart.min.js" integrity="sha256-zNGWjubXoY6rb5MnmpBNefO0RgoVYfle9p0tvOQM+6k=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.js" integrity="sha256-4O4pS1SH31ZqrSO2A/2QJTVjTPqVe+jnYgOWUVr7EEc=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/snapsvg@0.5.1/dist/snap.svg-min.js" integrity="sha256-oI+elz+sIm+jpn8F/qEspKoKveTc5uKeFHNNVexe6d8=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/underscore@1.8.3/underscore-min.js" integrity="sha256-obZACiHd7gkOk9iIL/pimWMTJ4W/pBsKu+oZnSeBIek=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.js" integrity="sha384-8748Vn52gHJYJI0XEuPB2QlPVNUkJlJn9tHqKec6J3q2r9l8fvRxrgn/E5ZHV0sP" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.css" integrity="sha384-6QbLKJMz5dS3adWSeINZe74uSydBGFbnzaAYmp+tKyq60S7H2p6V7g1TysM5lAaF" crossorigin="anonymous">
+
+
+
+<script type="text/javascript" src="/js/main.min.d7b7ada643c9c1a983026e177f141f7363b4640d619caf01d8831a6718cd44ea.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+<script id="baidu_analytics">
+  var _hmt = _hmt || [];
+  (function() {
+    if (window.location.hostname === 'localhost') return;
+    var hm = document.createElement("script"); hm.async = true;
+    hm.src = "https://hm.baidu.com/hm.js?fc8cf18648f58ac4ad0594547ec6c1e3";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+<script id="baidu_push">
+  (function(){
+    if (window.location.hostname === 'localhost') return;
+    var bp = document.createElement('script'); bp.async = true;
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+      bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+      bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+  })();
+</script>
+
+
+<script src="/js/"></script>
+
+
+</body>
+</html>

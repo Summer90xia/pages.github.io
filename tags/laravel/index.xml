@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>laravel on Summer&#39;s Blog</title>
+    <link>https://summer90xia.github.io/tags/laravel/</link>
+    <description>Recent content in laravel on Summer&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Fri, 06 Dec 2019 17:24:06 +0800</lastBuildDate>
+    
+	<atom:link href="https://summer90xia.github.io/tags/laravel/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>laravel中使用protobuf</title>
+      <link>https://summer90xia.github.io/post/laravel&#43;protobuf/</link>
+      <pubDate>Fri, 06 Dec 2019 17:24:06 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/laravel&#43;protobuf/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;简单介绍下如何在laravel中使用protobuf。&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>laradock 使用文档</title>
+      <link>https://summer90xia.github.io/post/laradock/</link>
+      <pubDate>Mon, 09 Sep 2019 15:07:36 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/laradock/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;工作之余，对laradock的使用方法做了一个说明&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>docker &#43; laravel &#43; swagger</title>
+      <link>https://summer90xia.github.io/post/docker_laravel_swagger/</link>
+      <pubDate>Sat, 09 Mar 2019 10:26:20 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/docker_laravel_swagger/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;在docker中安装swagger，并在laravel中进行使用&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>Laravel redis使用教程</title>
+      <link>https://summer90xia.github.io/post/laravel_predis/</link>
+      <pubDate>Sat, 23 Feb 2019 15:03:42 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/laravel_predis/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;laravel + predis 的安装与使用&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

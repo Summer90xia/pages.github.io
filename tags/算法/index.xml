@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>算法 on Summer&#39;s Blog</title>
+    <link>https://summer90xia.github.io/tags/%E7%AE%97%E6%B3%95/</link>
+    <description>Recent content in 算法 on Summer&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Fri, 17 Jan 2020 18:07:43 +0800</lastBuildDate>
+    
+	<atom:link href="https://summer90xia.github.io/tags/%E7%AE%97%E6%B3%95/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>公交线路查询算法</title>
+      <link>https://summer90xia.github.io/post/bus/</link>
+      <pubDate>Fri, 17 Jan 2020 18:07:43 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/bus/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;一直很好奇百度地图中公交路线查询的算法是怎么样实现的，我们只要输入起点和终点就能很快的计算出最短、最快、最少换乘等几种乘车方案。今天通过查询资料和自己的理解对这个问题有了一个基本的了解&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>php实现Hash一致性算法</title>
+      <link>https://summer90xia.github.io/post/hash/</link>
+      <pubDate>Thu, 16 Jan 2020 16:44:48 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/hash/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;Hash一致性算法的原理和php代码实现&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>php实现各种排序算法</title>
+      <link>https://summer90xia.github.io/post/algorithm/</link>
+      <pubDate>Tue, 14 Jan 2020 11:12:09 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/algorithm/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;使用php实现一些排序算法&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

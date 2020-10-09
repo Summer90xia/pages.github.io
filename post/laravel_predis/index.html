@@ -1,0 +1,1367 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Laravel redis使用教程 - Summer&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Summer" /><meta name="description" content=" laravel &#43; predis 的安装与使用
+" /><meta name="keywords" content="laravel, predis" />
+
+
+<meta name="baidu-site-verification" content="QuqVC3Anf0" />
+
+
+
+<meta name="generator" content="Hugo 0.74.3 with theme even" />
+
+
+<link rel="canonical" href="https://summer90xia.github.io/post/laravel_predis/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.8c3cbcb0324c2bb4875ceccba4007cbad4b4ac8377f33af9953c3e7684534a50.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/">
+
+
+<meta property="og:title" content="Laravel redis使用教程" />
+<meta property="og:description" content="
+laravel &#43; predis 的安装与使用
+" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://summer90xia.github.io/post/laravel_predis/" />
+<meta property="article:published_time" content="2019-02-23T15:03:42+08:00" />
+<meta property="article:modified_time" content="2019-02-23T15:03:42+08:00" />
+<meta itemprop="name" content="Laravel redis使用教程">
+<meta itemprop="description" content="
+laravel &#43; predis 的安装与使用
+">
+<meta itemprop="datePublished" content="2019-02-23T15:03:42+08:00" />
+<meta itemprop="dateModified" content="2019-02-23T15:03:42+08:00" />
+<meta itemprop="wordCount" content="5313">
+
+
+
+<meta itemprop="keywords" content="laravel," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Laravel redis使用教程"/>
+<meta name="twitter:description" content="
+laravel &#43; predis 的安装与使用
+"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Summer&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">栏目</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Summer&#39;s Blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">栏目</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Laravel redis使用教程</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2019-02-23 </span>
+        <div class="post-category">
+            <a href="/categories/%E5%AD%A6%E7%94%B5%E8%84%91/"> 学电脑 </a>
+            </div>
+          <span class="more-meta"> 约 5313 字 </span>
+          <span class="more-meta"> 预计阅读 11 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1安装">1、安装</a></li>
+    <li><a href="#2配置">2、配置</a>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+    <li><a href="#与redis交互实例">与Redis交互实例</a>
+      <ul>
+        <li><a href="#简介">简介</a></li>
+        <li><a href="#命名">命名：</a></li>
+        <li><a href="#配置">配置：</a></li>
+        <li><a href="#使用">使用：</a></li>
+        <li><a href="#队列操作">队列操作</a></li>
+        <li><a href="#set-集合操作">set 集合操作</a></li>
+        <li><a href="#有序set表操作">有序set表操作</a></li>
+        <li><a href="#hash表操作">Hash表操作</a></li>
+        <li><a href="#排序操作">排序操作</a></li>
+        <li><a href="#redis管理操作">Redis管理操作</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p>laravel + predis 的安装与使用</p>
+</blockquote>
+<h2 id="1安装">1、安装</h2>
+<p>在 Laravel 中使用 Redis 之前，需要通过 Composer 安装 <code>predis/predis</code> 包：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">composer require predis/predis
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="2配置">2、配置</h2>
+<p>应用的 Redis 配置位于配置文件 <code>config/database.php</code>。在这个文件中，可以看到包含被应用使用的 Redis 服务器的 redis 数组：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">&#39;redis&#39; =&gt; [
+
+    &#39;client&#39; =&gt; &#39;predis&#39;,
+
+    &#39;default&#39; =&gt; [
+        &#39;host&#39; =&gt; env(&#39;REDIS_HOST&#39;, &#39;localhost&#39;),
+        &#39;password&#39; =&gt; env(&#39;REDIS_PASSWORD&#39;, null),
+        &#39;port&#39; =&gt; env(&#39;REDIS_PORT&#39;, 6379),
+        &#39;database&#39; =&gt; 0,
+    ],
+
+],
+</code></pre></td></tr></table>
+</div>
+</div><p>默认服务器配置可以满足开发需要，不过，你可以基于自己的环境修改该数组。配置文件中定义的每个 Redis 服务器需要一个名字并指定该 Redis 服务器使用的主机和接口。</p>
+<p><strong>配置集群</strong></p>
+<p>如果应用使用了 Redis 服务器集群，需要在 Redis 配置中通过 <code>clusters</code> 定义这些集群：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">&#39;redis&#39; =&gt; [
+
+    &#39;client&#39; =&gt; &#39;predis&#39;,
+
+    &#39;clusters&#39; =&gt; [
+        &#39;default&#39; =&gt; [
+            [
+                &#39;host&#39; =&gt; env(&#39;REDIS_HOST&#39;, &#39;localhost&#39;),
+                &#39;password&#39; =&gt; env(&#39;REDIS_PASSWORD&#39;, null),
+                &#39;port&#39; =&gt; env(&#39;REDIS_PORT&#39;, 6379),
+                &#39;database&#39; =&gt; 0,
+            ],
+        ],
+    ],
+
+],
+</code></pre></td></tr></table>
+</div>
+</div><p>默认情况下，集群将会在节点之间进行客户端分区，从而允许你构建节点池并创建大量可用内存。不过，客户端分片并不处理故障转移，所以，非常适合从另一个主数据存储那里获取有效的缓存数据。如果你想要使用本地 Redis 集群，需要在 Redis 配置的 <code>options</code> 中进行指定：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">&#39;redis&#39; =&gt; [
+
+    &#39;client&#39; =&gt; &#39;predis&#39;,
+
+    &#39;options&#39; =&gt; [
+        &#39;cluster&#39; =&gt; &#39;redis&#39;,
+    ],
+
+    &#39;clusters&#39; =&gt; [
+        // ...
+    ],
+
+],
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="predis">Predis</h4>
+<p>除了默认的 <code>host</code>、<code>port</code>、<code>database</code> 和 <code>password</code> 服务器配置选项，Predis 还支持额外的用于定义每个 Redis 服务器的连接参数，要使用这些额外的配置项，只需在配置文件 <code>config/database.php</code> 中将它们添加到 Redis 服务器配置中：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">&#39;default&#39; =&gt; [
+    &#39;host&#39; =&gt; env(&#39;REDIS_HOST&#39;, &#39;localhost&#39;),
+    &#39;password&#39; =&gt; env(&#39;REDIS_PASSWORD&#39;, null),
+    &#39;port&#39; =&gt; env(&#39;REDIS_PORT&#39;, 6379),
+    &#39;database&#39; =&gt; 0,
+    &#39;read_write_timeout&#39; =&gt; 60,
+],
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="phpredis">PhpRedis</h4>
+<p>注：如果你通过 PECL 安装了 PHP 扩展 PhpRedis，需要在配置文件 <code>config/app.php</code> 中重命名 <code>Redis</code> 别名。</p>
+<p>要使用 PhpRedis 扩展，需要在Redis 配置中将 <code>client</code> 选项修改为 <code>phpredis</code>，该选项位于配置文件 <code>config/database</code>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">&#39;redis&#39; =&gt; [
+
+    &#39;client&#39; =&gt; &#39;phpredis&#39;,
+
+    // Rest of Redis configuration...
+],
+</code></pre></td></tr></table>
+</div>
+</div><p>除了默认的 <code>host</code>、<code>port</code>、<code>database</code> 和 <code>password</code> 服务器配置选项，PhpRedis 还支持额外的连接参数：<code>persistent</code>、<code>prefix</code>、<code>read_timeout</code> 和 <code>timeout</code>，你可以在配置文件 <code>config/database.php</code> 中将它们添加到 Redis 服务器配置中：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">&#39;default&#39; =&gt; [
+    &#39;host&#39; =&gt; env(&#39;REDIS_HOST&#39;, &#39;localhost&#39;),
+    &#39;password&#39; =&gt; env(&#39;REDIS_PASSWORD&#39;, null),
+    &#39;port&#39; =&gt; env(&#39;REDIS_PORT&#39;, 6379),
+    &#39;database&#39; =&gt; 0,
+    &#39;read_timeout&#39; =&gt; 60,
+],
+</code></pre></td></tr></table>
+</div>
+</div><p>以上是官方文档给出的示例，下面是总结的用法；</p>
+<h2 id="与redis交互实例">与Redis交互实例</h2>
+<h3 id="简介">简介</h3>
+<p><code>Redis</code>模块负责与<code>Redis</code>数据库交互，并提供<code>Redis</code>的相关API支持；</p>
+<p><code>Redis</code>模块提供<code>redis</code>与<code>redis.connection</code>这两个服务；<code>redis.connection</code>服务提供<code>redis</code>连接对象；<code>redis</code>服务提供<code>Illuminate\Redis\RedisManager</code>对象，负责与<code>Redis</code>打交道的这部分管理工作；</p>
+<p>下面看下配置自定义连接对象名、redis集群、和默认的示例：</p>
+<h3 id="命名">命名：</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">default是默认的Redis连接对象名，值是连接对象的参数；app(&#39;redis.connection&#39;)返回的就是该默认连接对象；
+
+mydefine是笔者定义的Redis连接对象名；通过执行app(&#39;redis&#39;)-&gt;connection(&#39;mydefine&#39;)可以获取该连接对象；
+
+mycluster1是笔者定义的Redis集群对象名；通过执行app(&#39;redis&#39;)-&gt;connection(&#39;mycluster1&#39;)可以获取该集群对象；
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="配置">配置：</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">&#39;redis&#39; =&gt; [                                                                                    
+    &#39;client&#39; =&gt; &#39;predis&#39;,                                                                       
+    &#39;default&#39; =&gt; [                                                                              
+         &#39;host&#39; =&gt; env(&#39;REDIS_HOST&#39;, &#39;127.0.0.1&#39;),                                               
+         &#39;password&#39; =&gt; env(&#39;REDIS_PASSWORD&#39;, null),                                              
+         &#39;port&#39; =&gt; env(&#39;REDIS_PORT&#39;, 6379),                                                      
+         &#39;database&#39; =&gt; 0,                                                                        
+    ], 
+    &#39;mydefine&#39; =&gt; [                                                                              
+         &#39;host&#39; =&gt; env(&#39;REDIS_HOST&#39;, &#39;127.0.0.1&#39;),                                               
+         &#39;password&#39; =&gt; env(&#39;REDIS_PASSWORD&#39;, null),                                              
+         &#39;port&#39; =&gt; env(&#39;REDIS_PORT&#39;, 6379),                                                      
+         &#39;database&#39; =&gt; 4,                                                                        
+    ],
+    &#39;clusters&#39; =&gt; [                                                                             
+        &#39;mycluster1&#39; =&gt; [                                                                       
+            [                                                                                   
+                &#39;host&#39; =&gt; env(&#39;REDIS_HOST&#39;, &#39;127.0.0.1&#39;),                                       
+                &#39;password&#39; =&gt; env(&#39;REDIS_PASSWORD&#39;, null),                                      
+                &#39;port&#39; =&gt; env(&#39;REDIS_PORT&#39;, 6379),                                              
+                &#39;database&#39; =&gt; 1,                                                                
+            ],                                                                                  
+            [                                                                                   
+                &#39;host&#39; =&gt; env(&#39;REDIS_HOST&#39;, &#39;127.0.0.1&#39;),                                       
+                &#39;password&#39; =&gt; env(&#39;REDIS_PASSWORD&#39;, null),                                      
+                &#39;port&#39; =&gt; env(&#39;REDIS_PORT&#39;, 6379),                                              
+                &#39;database&#39; =&gt; 2,                                                                
+            ],
+            [                                                                                   
+                &#39;host&#39; =&gt; env(&#39;REDIS_HOST&#39;, &#39;127.0.0.1&#39;),                                       
+                &#39;password&#39; =&gt; env(&#39;REDIS_PASSWORD&#39;, null),                                      
+                &#39;port&#39; =&gt; env(&#39;REDIS_PORT&#39;, 6379),                                              
+                &#39;database&#39; =&gt; 3,                                                                
+            ], 
+       ],                                                                                      
+    ],          
+],
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="使用">使用：</h3>
+<p>普通 set / get 操作；set 操作，如果键名存在，则会覆盖原有的值：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$redis = app(&#39;redis.connection&#39;);
+$redis-&gt;set(&#39;library&#39;, &#39;predis&#39;); // 存储 key 为 library， 值为 predis 的记录；
+$redis-&gt;get(&#39;library&#39;); // 获取 key 为 library 的记录值
+</code></pre></td></tr></table>
+</div>
+</div><p>set 、get 多个key-value：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$mkv = array(
+    &#39;usr:0001&#39; =&gt; &#39;First user&#39;,
+    &#39;usr:0002&#39; =&gt; &#39;Second user&#39;,
+    &#39;usr:0003&#39; =&gt; &#39;Third user&#39;
+);
+$redis-&gt;mset($mkv);  // 存储多个 key 对应的 value
+$retval = $redis -&gt; mget (array_keys( $mkv));  //获取多个key对应的value
+</code></pre></td></tr></table>
+</div>
+</div><p>存放带存储时效的记录：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$redis-&gt;setex(&#39;library&#39;, 10, &#39;predis&#39;); // 存储 key 为 library， 值为 predis 的记录, 有效时长为 10 秒
+</code></pre></td></tr></table>
+</div>
+</div><p><code>add</code>操作,不会覆盖已有值：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$redis-&gt;setnx(&#39;foo&#39;, 12) ;  // 返回 true ， 添加成功
+$redis-&gt;setnx(&#39;foo&#39;, 34) ;  // 返回 false， 添加失败，因为已经存在键名为 foo 的记录
+</code></pre></td></tr></table>
+</div>
+</div><p><code>set</code>的变种，结果返回替换前的值：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$redis-&gt;getset(&#39;foo&#39;, 56) ; // 返回 34； 如果之前不存在记录，则返回 null
+</code></pre></td></tr></table>
+</div>
+</div><p><code>incrby</code>/<code>incr</code>/<code>decrby</code>/<code>decr</code> 对值的递增和递减：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$redis-&gt;incr(&#39;foo&#39;) ;  // 返回 57，同时 foo 的值为 57
+$redis-&gt;incrby(&#39;foo&#39;, 2 ) ;  // 返回 59，同时 foo 的值为 59
+</code></pre></td></tr></table>
+</div>
+</div><p>检测某 key 是否存在值：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$redis-&gt;exists(&#39;foo&#39;);
+</code></pre></td></tr></table>
+</div>
+</div><p>删除某 key 值：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$redis-&gt;del(&#39;foo&#39;); // 成功删除返回 true, 失败则返回 false
+type`类型检测，字符串返回 `string`，列表返回 `list`，`set` 表返回 `set`/`zset`，`hash` 表返回 `hash：
+$redis-&gt;type(&#39;foo&#39;);
+</code></pre></td></tr></table>
+</div>
+</div><p><code>append</code> 连接到已存在字符串：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$redis-&gt;get(&#39;str&#39;); // 返回 test
+$redis-&gt;append(&#39;str&#39;, &#39;_123&#39;);  // 返回累加后的字符串长度 8,此时 str 为 &#39;test_123&#39;
+</code></pre></td></tr></table>
+</div>
+</div><p><code>setrange</code> 部分替换操作, 并返回字符串长度：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$redis-&gt;setrange(&#39;str&#39;, 0, &#39;abc&#39;);  // 返回 3, 第2个参数为 0 时等同于 set 操作
+$redis-&gt;setrange(&#39;str&#39;, 2, &#39;cd&#39;); // 返回 4, 表示从第2个字符后替换，这时 &#39;str&#39; 为 &#39;abcd&#39;
+</code></pre></td></tr></table>
+</div>
+</div><p><code>substr</code> 部分获取操作：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$redis-&gt;substr(&#39;str&#39;, 0, 2); // 返回&#39;abc&#39;; 表示从第 0 个起，取到第 2 个字符
+</code></pre></td></tr></table>
+</div>
+</div><p><code>strlen</code> 获取字符串长度：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$redis-&gt;strlen (&#39;str&#39;); // 返回 4; 此时 &#39;str&#39; 为 &#39;abcd&#39;
+</code></pre></td></tr></table>
+</div>
+</div><p><code>setbit</code>位存储：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$redis-&gt;setbit(&#39;binary&#39;, 31, 1); //表示在第31位存入1,这边可能会有大小端问题?不过没关系, getbit 应该不会有问题
+</code></pre></td></tr></table>
+</div>
+</div><p><code>getbit</code>位获取：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$redis-&gt;getbit(&#39;binary&#39;, 31); //返回1
+</code></pre></td></tr></table>
+</div>
+</div><p><code>keys</code> 模糊查找功能,支持 * 号以及 ? 号 (匹配一个字符)：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$redis-&gt;set(&#39;foo1&#39;, 123);
+$redis-&gt;set(&#39;foo2&#39;, 456);
+$redis-&gt;keys(&#39;foo*&#39;);   // 返回 foo1 和 foo2 的 array
+$redis-&gt;keys(&#39;f?o?&#39;);   // 同上
+randomkey`随机返回一个`key：
+$redis-&gt;randomkey() ; // 可能是返回 &#39;foo1&#39; 或者是 &#39;foo2&#39; 及其它任何已存在的 key
+rename`/`renamenx`方法对`key`进行改名，所不同的是`renamenx`不允许改成已存在的`key：
+$redis-&gt;rename(&#39;str&#39;, &#39;str2&#39;); // 把原先命名为&#39;str&#39;的 key 改成了 &#39;str2&#39;
+</code></pre></td></tr></table>
+</div>
+</div><p><code>expire</code> 设置 key-value 的时效性
+<code>ttl</code> 获取剩余有效期
+<code>persist</code> 重新设置为永久存储</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$redis-&gt;expire(&#39;foo&#39;, 10);  // 设置有效期为 10 秒
+$redis-&gt;ttl(&#39;foo&#39;);  // 返回剩余有效期值 10 秒
+$redis-&gt;persist(&#39;foo&#39;);  // 取消 expire 行为
+</code></pre></td></tr></table>
+</div>
+</div><p><code>dbsize</code> 返回<code>redis</code>当前数据库的记录总数：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$redis-&gt;dbsize() ;
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="队列操作">队列操作</h3>
+<p><code>rpush</code>/<code>rpushx</code> 有序列表操作,从队列后插入元素；<code>lpush</code>/<code>lpushx</code> 和 <code>rpush</code>/<code>rpushx</code> 的区别是插入到队列的头部,同上,&lsquo;x&rsquo;含义是只对已存在的 key 进行操作：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$redis-&gt;rpush(&#39;fooList&#39;, &#39;bar1&#39;);  // 返回列表长度 1
+$redis-&gt;lpush(&#39;fooList&#39;, &#39;bar0&#39;);  // 返回列表长度 2
+$redis-&gt;rpushx(&#39;fooList&#39;, &#39;bar2&#39;);  // 返回 3, rpushx只对已存在的队列做添加,否则返回 0
+</code></pre></td></tr></table>
+</div>
+</div><p><code>llen</code>返回当前列表长度：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$redis-&gt;llen(&#39;fooList&#39;); // 返回 3
+</code></pre></td></tr></table>
+</div>
+</div><p><code>lrange</code> 返回队列中一个区间的元素：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$redis-&gt;lrange (&#39;fooList&#39;, 0, 1);  // 返回数组包含第 0 个至第 1 个, 共2个元素
+$redis-&gt;lrange (&#39;fooList&#39;, 0, -1); //返回第0个至倒数第一个, 相当于返回所有元素
+</code></pre></td></tr></table>
+</div>
+</div><p><code>lindex</code> 返回指定顺序位置的 list 元素：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$redis-&gt;lindex(&#39;fooList&#39;, 1) ; // 返回&#39;bar1&#39;
+lset` 修改队列中指定位置的`value：
+$redis-&gt;lset(&#39;fooList&#39;, 1, &#39;123&#39;); // 修改位置 1 的元素, 返回 true
+</code></pre></td></tr></table>
+</div>
+</div><p><code>lrem</code> 删除队列中左起指定数量的字符：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$redis-&gt;lrem(&#39;fooList&#39;, 1, &#39;_&#39;) ; // 删除队列中左起(右起使用-1) 1个 字符&#39;_&#39;(若有)
+</code></pre></td></tr></table>
+</div>
+</div><p><code>lpop</code>/<code>rpop</code> 类似栈结构地弹出(并删除)最左或最右的一个元素：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$redis-&gt;lpop(&#39;fooList&#39;) ;  // 返回 &#39;bar0&#39;
+$redis-&gt;rpop(&#39;fooList&#39;) ;  // 返回 &#39;bar2&#39;
+</code></pre></td></tr></table>
+</div>
+</div><p><code>ltrim</code>队列修改，保留左边起若干元素，其余删除：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$redis-&gt;ltrim(&#39;fooList&#39;, 0, 1) ; // 保留左边起第 0 个至第 1 个元素
+</code></pre></td></tr></table>
+</div>
+</div><p><code>rpoplpush</code> 从一个队列中 <code>pop</code> 出元素并 <code>push</code> 到另一个队列：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$redis-&gt;rpush(&#39;list1&#39;, &#39;ab0&#39;);
+$redis-&gt;rpush(&#39;list1&#39;, &#39;ab1&#39;);
+$redis-&gt;rpush(&#39;list2&#39;, &#39;ab2&#39;);
+$redis-&gt;rpush(&#39;list2&#39;, &#39;ab3&#39;);
+$redis-&gt;rpoplpush(&#39;list1&#39;, &#39;list2&#39;); // 结果list1 =&gt;array(&#39;ab0&#39;), list2 =&gt;array(&#39;ab1&#39;,&#39;ab2&#39;,&#39;ab3&#39;)
+$redis-&gt;rpoplpush(&#39;list2&#39;, &#39;list2&#39;); // 也适用于同一个队列, 把最后一个元素移到头部 list2 =&gt;array(&#39;ab3&#39;,&#39;ab1&#39;,&#39;ab2&#39;)
+</code></pre></td></tr></table>
+</div>
+</div><p><code>linsert</code>在队列的中间指定元素前或后插入元素：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$redis-&gt;linsert(&#39;list2&#39;, &#39;before&#39;, &#39;ab1&#39;, &#39;123&#39;);  //表示在元素 &#39;ab1&#39; 之前插入 &#39;123&#39;
+$redis-&gt;linsert(&#39;list2&#39;, &#39;after&#39;, &#39;ab1&#39;, &#39;456&#39;);   //表示在元素 &#39;ab1&#39; 之后插入 &#39;456&#39;
+</code></pre></td></tr></table>
+</div>
+</div><p><code>blpop</code>/<code>brpop</code> 阻塞并等待一个列队不为空时，再<code>pop</code>出最左或最右的一个元素（这个功能在php以外可以说非常好用）</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$redis-&gt;blpop(&#39;list3&#39;, 10) ; // 如果 list3 为空则一直等待,直到不为空时将第一元素弹出, 10 秒后超时
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="set-集合操作">set 集合操作</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">sadd`增加`set`集合元素， 返回`true`， 重复返回`false：
+$redis-&gt;sadd(&#39;set1&#39;, &#39;ab&#39;);
+$redis-&gt;sadd(&#39;set1&#39;, &#39;cd&#39;);
+$redis-&gt;sadd(&#39;set1&#39;, &#39;ef&#39;);
+</code></pre></td></tr></table>
+</div>
+</div><p><code>srem</code> 移除指定元素：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$redis-&gt;srem(&#39;set1&#39;, &#39;cd&#39;); // 删除&#39;cd&#39;元素
+</code></pre></td></tr></table>
+</div>
+</div><p><code>spop</code> 弹出首元素：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$redis-&gt;spop(&#39;set1&#39;); // 返回 &#39;ab&#39;
+</code></pre></td></tr></table>
+</div>
+</div><p><code>smove</code> 移动当前<code>set</code>集合的指定元素到另一个<code>set</code>集合：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$redis-&gt;sadd(&#39;set2&#39;, &#39;123&#39;);
+$redis-&gt;smove(&#39;set1&#39;, &#39;set2&#39;, &#39;ab&#39;); // 移动&#39;set1&#39;中的&#39;ab&#39;到&#39;set2&#39;, 返回true or false；此时 &#39;set1&#39;集合不存在 &#39;ab&#39; 这个值
+</code></pre></td></tr></table>
+</div>
+</div><p><code>scard</code> 返回当前set表元素个数：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$redis-&gt;scard(&#39;set2&#39;); // 返回 2
+</code></pre></td></tr></table>
+</div>
+</div><p><code>sismember</code> 判断元素是否属于当前<code>set</code>集合：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$redis-&gt;sismember(&#39;set2&#39;, &#39;123&#39;); // 返回 true or false
+</code></pre></td></tr></table>
+</div>
+</div><p><code>smembers</code> 返回当前<code>set</code>集合的所有元素：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$redis-&gt;smembers(&#39;set2&#39;); // 返回 array(&#39;123&#39;,&#39;ab&#39;)
+</code></pre></td></tr></table>
+</div>
+</div><p><code>sinter</code>/<code>sunion</code>/<code>sdiff</code> 返回两个表中元素的交集/并集/补集：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$redis-&gt;sadd(&#39;set1&#39;, &#39;ab&#39;);
+$redis-&gt;sinter(&#39;set2&#39;, &#39;set1&#39;);  //返回array(&#39;ab&#39;)
+</code></pre></td></tr></table>
+</div>
+</div><p><code>sinterstore</code>/<code>sunionstore</code>/<code>sdiffstore</code> 将两个表交集/并集/补集元素 copy 到第三个表中：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$redis-&gt;set(&#39;foo&#39;, 0);
+$redis-&gt;sinterstore(&#39;foo&#39;, &#39;set1&#39;);  // 等同于将&#39;set1&#39;的内容copy到&#39;foo&#39;中，并将&#39;foo&#39;转为set表
+$redis-&gt;sinterstore(&#39;foo&#39;, array(&#39;set1&#39;, &#39;set2&#39;));  // 将&#39;set1&#39;和&#39;set2&#39;中相同的元素 copy 到&#39;foo&#39;表中, 覆盖&#39;foo&#39;原有内容
+</code></pre></td></tr></table>
+</div>
+</div><p><code>srandmember</code> 返回表中一个随机元素：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$redis-&gt;srandmember(&#39;set1&#39;);
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="有序set表操作">有序set表操作</h3>
+<p><code>sadd</code> 增加元素，并设置序号，成功返回true，重复返回false：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$redis-&gt;zadd(&#39;zset1&#39;, 1, &#39;ab&#39;);
+$redis-&gt;zadd(&#39;zset1&#39;, 2, &#39;cd&#39;);
+$redis-&gt;zadd(&#39;zset1&#39;, 3, &#39;ef&#39;);
+</code></pre></td></tr></table>
+</div>
+</div><p><code>zincrby</code> 对指定元素索引值的增减,改变元素排列次序：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$redis -&gt; zincrby ( &#39;zset1&#39; , 10 , &#39;ab&#39; ) ; //返回11
+</code></pre></td></tr></table>
+</div>
+</div><p><code>zrem</code> 移除指定元素：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$redis-&gt;zrem(&#39;zset1&#39;, &#39;ef&#39;); // 返回 true or false
+</code></pre></td></tr></table>
+</div>
+</div><p><code>zrange</code> 按位置次序返回表中指定区间的元素：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$redis-&gt;zrange(&#39;zset1&#39;, 0, 1);  // 返回位置 0 和 1 之间(两个)的元素
+$redis-&gt;zrange(&#39;zset1&#39;, 0, -1); // 返回位置 0 和倒数第一个元素之间的元素(相当于所有元素)
+</code></pre></td></tr></table>
+</div>
+</div><p><code>zrevrange</code> 同上,返回表中指定区间的元素,按次序倒排：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$redis-&gt;zrevrange(&#39;zset1&#39;, 0, -1); // 元素顺序和zrange相反
+</code></pre></td></tr></table>
+</div>
+</div><p><code>zrangebyscore</code>/<code>zrevrangebyscore</code> 按顺序/降序返回表中指定索引区间的元素：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$redis-&gt;zadd(&#39;zset1&#39;, 3, &#39;ef&#39;);
+$redis-&gt;zadd(&#39;zset1&#39;, 5, &#39;gh&#39;);
+$redis-&gt;zrangebyscore(&#39;zset1&#39;, 2, 9);  //返回索引值2-9之间的元素 array(&#39;ef&#39;,&#39;gh&#39;)
+$redis-&gt;zrangebyscore(&#39;zset1&#39;, 2, 9, &#39;withscores&#39;); // 返回索引值2-9之间的元素并包含索引值 array(array(&#39;ef&#39;,3),array(&#39;gh&#39;,5))
+$redis-&gt;zrangebyscore(&#39;zset1&#39;, 2, 9, array(&#39;withscores&#39;=&gt;true, &#39;limit&#39;=&gt;array(1, 2)));
+//返回索引值2-9之间的元素,&#39;withscores&#39; =&gt;true表示包含索引值; &#39;limit&#39;=&gt;array(1, 2),表示偏移1条，返回2条,结果为array(array(&#39;ef&#39;,3),array(&#39;gh&#39;,5))
+</code></pre></td></tr></table>
+</div>
+</div><p><code>zunionstore</code>/<code>zinterstore</code> 将多个表的并集/交集存入另一个表中：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$redis-&gt;zunionstore(&#39;zset3&#39;, array(&#39;zset1&#39;, &#39;zset2&#39;, &#39;zset0&#39;));  //将&#39;zset1&#39;,&#39;zset2&#39;,&#39;zset0&#39;的并集存入&#39;zset3&#39;
+$redis-&gt;zunionstore(&#39;zset3&#39;, array(&#39;zset1&#39;, &#39;zset2&#39;), array(&#39;weights&#39; =&gt; array(2, 1))); //weights参数表示权重，其中表示并集后 zset1集合的分 * 2 后存储到 zset3 集合， zset2集合的分 * 1 后存储到 zset3 集合
+$redis-&gt;zunionstore(&#39;zset3&#39;, array(&#39;zset1&#39;, &#39;zset2&#39;), array(&#39;aggregate&#39; =&gt; &#39;max&#39;)); //&#39;aggregate&#39; =&gt; &#39;max&#39;或&#39;min&#39;表示并集后相同的元素是取大值或是取小值
+</code></pre></td></tr></table>
+</div>
+</div><p><code>zcount</code> 统计一个索引区间的元素个数：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$redis-&gt;zcount(&#39;zset1&#39;, 3, 5); // 返回 2
+$redis-&gt;zcount(&#39;zset1&#39;, &#39;(3&#39;, 5));  //&#39;(3&#39;表示索引值在3-5之间但不含3,同理也可以使用&#39;(5&#39;表示上限为5但不含5
+</code></pre></td></tr></table>
+</div>
+</div><p><code>zcard</code> 统计元素个数：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$redis-&gt;zcard(&#39;zset1&#39;); // 返回 4
+</code></pre></td></tr></table>
+</div>
+</div><p><code>zscore</code> 查询元素的索引：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$redis-&gt;zscore(&#39;zset1&#39;, &#39;ef&#39;); // 返回 3
+</code></pre></td></tr></table>
+</div>
+</div><p><code>zremrangebyscore</code> 删除一个索引区间的元素：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$redis-&gt;zremrangebyscore(&#39;zset1&#39;, 0, 2); // 删除索引在0-2之间的元素(&#39;ab&#39;,&#39;cd&#39;), 返回删除元素个数2
+</code></pre></td></tr></table>
+</div>
+</div><p><code>zrank</code>/<code>zrevrank</code> 返回元素所在表顺序/降序的位置(不是索引)：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$redis-&gt;zrank(&#39;zset1&#39;, &#39;ef&#39;); // 返回0,因为它是第一个元素；zrevrank则返回1(最后一个)
+</code></pre></td></tr></table>
+</div>
+</div><p><code>zremrangebyrank</code> 删除表中指定位置区间的元素：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$redis-&gt;zremrangebyrank(&#39;zset1&#39;, 0, 10); //删除位置为0-10的元素,返回删除的元素个数2
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="hash表操作">Hash表操作</h3>
+<p><code>hset</code>/<code>hget</code> 存取hash表的数据：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$redis-&gt;hset(&#39;hash1&#39;, &#39;key1&#39;, &#39;v1&#39;);  //将key为&#39;key1&#39; value为&#39;v1&#39;的元素存入hash1表
+$redis-&gt;hset(&#39;hash1&#39;, &#39;key2&#39;, &#39;v2&#39;);
+$redis-&gt;hget(&#39;hash1&#39;, &#39;key1&#39;);   //取出表&#39;hash1&#39;中的key &#39;key1&#39;的值,返回&#39;v1&#39;
+</code></pre></td></tr></table>
+</div>
+</div><p><code>hexists</code> 返回hash表中的指定key是否存在：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$redis-&gt;hexists(&#39;hash1&#39;, &#39;key1&#39;) ; //true or false
+</code></pre></td></tr></table>
+</div>
+</div><p><code>hdel</code> 删除hash表中指定key的元素：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$redis-&gt;hdel(&#39;hash1&#39;, &#39;key2&#39;) ; //true or false
+</code></pre></td></tr></table>
+</div>
+</div><p><code>hlen</code> 返回hash表元素个数：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$redis-&gt;hlen(&#39;hash1&#39;); // 返回 1
+</code></pre></td></tr></table>
+</div>
+</div><p><code>hsetnx</code> 增加一个元素,但不能重复：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$redis-&gt;hsetnx(&#39;hash1&#39;, &#39;key1&#39;, &#39;v2&#39;) ;  // false
+$redis-&gt;hsetnx(&#39;hash1&#39;, &#39;key2&#39;, &#39;v2&#39;) ;  // true
+</code></pre></td></tr></table>
+</div>
+</div><p><code>hmset</code>/<code>hmget</code> 存取多个元素到hash表：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$redis-&gt;hmset(&#39;hash1&#39;, array(&#39;key3&#39; =&gt; &#39;v3&#39;, &#39;key4&#39; =&gt; &#39;v4&#39;)); 
+$redis-&gt;hmget(&#39;hash1&#39;, array(&#39;key3&#39;, &#39;key4&#39;));  // 返回相应的值 array(&#39;v3&#39;,&#39;v4&#39;)
+</code></pre></td></tr></table>
+</div>
+</div><p><code>hincrby</code> 对指定key进行累加：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$redis-&gt;hincrby(&#39;hash1&#39;, &#39;key5&#39;, 3);  // 不存在，则存储并返回 3；存在，即返回 原有值 + 3；
+$redis-&gt;hincrby(&#39;hash1&#39;, &#39;key5&#39;, 10);  // 返回13
+</code></pre></td></tr></table>
+</div>
+</div><p><code>hkeys</code> 返回hash表中的所有key：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$redis-&gt;hkeys(&#39;hash1&#39;); // 返回array(&#39;key1&#39;, &#39;key2&#39;, &#39;key3&#39;, &#39;key4&#39;, &#39;key5&#39;)
+</code></pre></td></tr></table>
+</div>
+</div><p><code>hvals</code> 返回hash表中的所有value：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$redis-&gt;hvals(&#39;hash1&#39;); // 返回 array(&#39;v1&#39;,&#39;v2&#39;,&#39;v3&#39;,&#39;v4&#39;,13)
+</code></pre></td></tr></table>
+</div>
+</div><p><code>hgetall</code> 返回整个hash表元素：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$redis-&gt;hgetall(&#39;hash1&#39;); // 返回 array(&#39;key1&#39;=&gt;&#39;v1&#39;,&#39;key2&#39;=&gt;&#39;v2&#39;,&#39;key3&#39;=&gt;&#39;v3&#39;,&#39;key4&#39;=&gt;&#39;v4&#39;,&#39;key5&#39;=&gt;13)
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="排序操作">排序操作</h3>
+<p><code>sort</code> 排序：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$redis-&gt;rpush(&#39;tab&#39;, 3);
+$redis-&gt;rpush(&#39;tab&#39;, 2);
+$redis-&gt;rpush(&#39;tab&#39;, 17);
+$redis-&gt;sort(&#39;tab&#39;);   // 返回 array(2,3,17)
+
+// 使用参数,可组合使用 array(&#39;sort&#39; =&gt; &#39;desc&#39;,&#39;limit&#39; =&gt; array(1, 2))
+$redis-&gt;sort(&#39;tab&#39;, array(&#39;sort&#39; =&gt; &#39;desc&#39;));   // 降序排列，返回 array(17,3,2)
+$redis-&gt;sort(&#39;tab&#39;, array(&#39;limit&#39; =&gt; array(1, 2)));   //返回顺序位置中1的元素2个(这里的2是指个数,而不是位置)，返回array(3,17)
+
+$redis-&gt;sort(&#39;tab&#39;, array(&#39;limit&#39; =&gt; array(&#39;alpha&#39; =&gt; true)));  //按首字符排序返回array(17,2,3)，因为17的首字符是&#39;1&#39;所以排首位置
+$redis-&gt;sort(&#39;tab&#39;, array(&#39;limit&#39; =&gt; array(&#39;store&#39; =&gt; &#39;ordered&#39;)));  //表示永久性排序，返回元素个数
+$redis-&gt;sort(&#39;tab&#39;, array(&#39;limit&#39; =&gt; array(&#39;get&#39; =&gt; &#39;pre_*&#39;)));  //使用了通配符&#39;*&#39;过滤元素，表示只返回以&#39;pre_&#39;开头的元素
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="redis管理操作">Redis管理操作</h3>
+<p><code>info</code> 显示服务当状态信息：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$redis-&gt;info();
+</code></pre></td></tr></table>
+</div>
+</div><p><code>select</code> 指定要操作的数据库：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$redis-&gt;select(4); // 指定数据库的下标
+</code></pre></td></tr></table>
+</div>
+</div><p><code>flushdb</code> 清空当前库：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$redis-&gt;flushdb();
+</code></pre></td></tr></table>
+</div>
+</div><p><code>move</code> 移动当库的元素到其它数据库：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$redis-&gt;set(&#39;tomove&#39;, &#39;bar&#39;);
+$redis-&gt;move(&#39;tomove&#39;, 4);
+</code></pre></td></tr></table>
+</div>
+</div><p><code>slaveof</code> 配置从服务器：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$redis-&gt;slaveof(&#39;127.0.0.1&#39;, 80);  // 配置 127.0.0.1 端口 80 的服务器为从服务器
+$redis-&gt;slaveof();  // 清除从服务器
+</code></pre></td></tr></table>
+</div>
+</div><p>同步保存服务器数据到磁盘：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$redis-&gt;save();
+</code></pre></td></tr></table>
+</div>
+</div><p>异步保存服务器数据到磁盘：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$redis-&gt;bgsave ();
+</code></pre></td></tr></table>
+</div>
+</div><p>返回最后更新磁盘的时间：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$redis-&gt;lastsave();
+</code></pre></td></tr></table>
+</div>
+</div>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Summer</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2019-02-23
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/laravel/">laravel</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/docker_laravel_swagger/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">docker &#43; laravel &#43; swagger</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/linux/">
+            <span class="next-text nav-default">shell基础</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+  <a href="https://summer90xia.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2016 - 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Summer</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/raphael@2.2.7/raphael.min.js" integrity="sha256-67By+NpOtm9ka1R6xpUefeGOY8kWWHHRAKlvaTJ7ONI=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/flowchart.js@1.8.0/release/flowchart.min.js" integrity="sha256-zNGWjubXoY6rb5MnmpBNefO0RgoVYfle9p0tvOQM+6k=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.js" integrity="sha256-4O4pS1SH31ZqrSO2A/2QJTVjTPqVe+jnYgOWUVr7EEc=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/snapsvg@0.5.1/dist/snap.svg-min.js" integrity="sha256-oI+elz+sIm+jpn8F/qEspKoKveTc5uKeFHNNVexe6d8=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/underscore@1.8.3/underscore-min.js" integrity="sha256-obZACiHd7gkOk9iIL/pimWMTJ4W/pBsKu+oZnSeBIek=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.js" integrity="sha384-8748Vn52gHJYJI0XEuPB2QlPVNUkJlJn9tHqKec6J3q2r9l8fvRxrgn/E5ZHV0sP" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.css" integrity="sha384-6QbLKJMz5dS3adWSeINZe74uSydBGFbnzaAYmp+tKyq60S7H2p6V7g1TysM5lAaF" crossorigin="anonymous">
+
+
+
+<script type="text/javascript" src="/js/main.min.d7b7ada643c9c1a983026e177f141f7363b4640d619caf01d8831a6718cd44ea.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+<script id="baidu_analytics">
+  var _hmt = _hmt || [];
+  (function() {
+    if (window.location.hostname === 'localhost') return;
+    var hm = document.createElement("script"); hm.async = true;
+    hm.src = "https://hm.baidu.com/hm.js?fc8cf18648f58ac4ad0594547ec6c1e3";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+<script id="baidu_push">
+  (function(){
+    if (window.location.hostname === 'localhost') return;
+    var bp = document.createElement('script'); bp.async = true;
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+      bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+      bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+  })();
+</script>
+
+
+<script src="/js/"></script>
+
+
+</body>
+</html>

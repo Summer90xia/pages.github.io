@@ -1,0 +1,2 @@
+User-agent: *
+Sitemap: https://summer90xia.github.io/sitemap.xml

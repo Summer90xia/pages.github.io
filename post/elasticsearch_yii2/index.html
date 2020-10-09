@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Elasticsearch&#43;Logstash&#43;yii2-elasticsearch实现分词搜索 - Summer&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Summer" /><meta name="description" content="Elasticsearch &#43; Logstash &#43; yii2-elasticsearch 实现跨境眼分词搜索" /><meta name="keywords" content="Elasticsearch, Logstash, yii2" />
+
+
+<meta name="baidu-site-verification" content="QuqVC3Anf0" />
+
+
+
+<meta name="generator" content="Hugo 0.74.3 with theme even" />
+
+
+<link rel="canonical" href="https://summer90xia.github.io/post/elasticsearch_yii2/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.8c3cbcb0324c2bb4875ceccba4007cbad4b4ac8377f33af9953c3e7684534a50.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/">
+
+
+<meta property="og:title" content="Elasticsearch&#43;Logstash&#43;yii2-elasticsearch实现分词搜索" />
+<meta property="og:description" content="Elasticsearch &#43; Logstash &#43; yii2-elasticsearch 实现跨境眼分词搜索" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://summer90xia.github.io/post/elasticsearch_yii2/" />
+<meta property="article:published_time" content="2020-08-20T09:05:24+08:00" />
+<meta property="article:modified_time" content="2020-08-20T09:05:24+08:00" />
+<meta itemprop="name" content="Elasticsearch&#43;Logstash&#43;yii2-elasticsearch实现分词搜索">
+<meta itemprop="description" content="Elasticsearch &#43; Logstash &#43; yii2-elasticsearch 实现跨境眼分词搜索">
+<meta itemprop="datePublished" content="2020-08-20T09:05:24+08:00" />
+<meta itemprop="dateModified" content="2020-08-20T09:05:24+08:00" />
+<meta itemprop="wordCount" content="3871">
+
+
+
+<meta itemprop="keywords" content="Elasticsearch,Logstash,yii2," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Elasticsearch&#43;Logstash&#43;yii2-elasticsearch实现分词搜索"/>
+<meta name="twitter:description" content="Elasticsearch &#43; Logstash &#43; yii2-elasticsearch 实现跨境眼分词搜索"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Summer&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">栏目</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Summer&#39;s Blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">栏目</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Elasticsearch&#43;Logstash&#43;yii2-elasticsearch实现分词搜索</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-08-20 </span>
+        <div class="post-category">
+            <a href="/categories/%E5%AD%A6%E7%94%B5%E8%84%91/"> 学电脑 </a>
+            </div>
+          <span class="more-meta"> 约 3871 字 </span>
+          <span class="more-meta"> 预计阅读 8 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#一-背景">一 、背景</a>
+      <ul>
+        <li><a href="#1-需求">1 需求</a></li>
+        <li><a href="#2-技术选型">2 技术选型</a></li>
+        <li><a href="#3-解决方案">3 解决方案</a></li>
+      </ul>
+    </li>
+    <li><a href="#二-具体步骤">二 、具体步骤</a>
+      <ul>
+        <li><a href="#1--环境介绍">1  环境介绍</a></li>
+        <li><a href="#2-工作目录">2 工作目录</a></li>
+        <li><a href="#3-启动-elasticsearch">3 启动 Elasticsearch</a></li>
+        <li><a href="#4-配置logstash">4 配置logstash</a></li>
+        <li><a href="#5-使用-yii2-elasticsearch-扩展操作-elasticsearch">5 使用 yii2-elasticsearch 扩展操作 Elasticsearch</a></li>
+      </ul>
+    </li>
+    <li><a href="#结束语">结束语</a>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p>分词搜索实操记录</p>
+</blockquote>
+<h2 id="一-背景">一 、背景</h2>
+<h3 id="1-需求">1 需求</h3>
+<p>跨境眼的主营业务有&ndash;干货/需求/专线/海外仓/活动/百科/直播，网站平台上内容丰富多样。如何能让用户一键搜索到最贴合自己的需求的内容成为了搜索模块首先要考虑的问题。基于此，我们决定对原有的搜索功能进行的升级改造，要求支持分词搜索，对原有的搜索结果展示页面也进行的优化。</p>
+<h3 id="2-技术选型">2 技术选型</h3>
+<p>​	   现有的搜索功能是通过mysql的聚合表来实现的，系统中定时任务每2分钟将与搜索业务相关的数据同步到<code>search</code>表中，搜索主要通过<code>like</code>语句来实现。这样做，一方面性能较差，<code>like &quot;%xxx%&quot;</code>这种形式无法利用索引，随着数据量越来越大，性能也必然会越来越差；另一方面是没有办法实现分词搜索，用户输入的关键词不能被拆分，导致可搜索到的数据范围缩小。</p>
+<h3 id="3-解决方案">3 解决方案</h3>
+<p>​			虽然mysql的MYISAM提供全文索引，但是性能却不敢让人恭维；sphinx存储引擎可以实现中文分词搜索，但是性能方面没有做深入研究。所以相比之前，决定采用业内广泛应用的<code>ElasticSearch</code>。简单来说，ES有以下几点优势</p>
+<ol>
+<li>
+<p>性能好，ES数据存储是基于索引</p>
+</li>
+<li>
+<p>功能多，搜索功能齐全，基本想要的都有</p>
+</li>
+<li>
+<p>应用广泛，可用于企业搜索，日志处理和分析，应用程序性能监测，地理空间数据分析和可视化</p>
+</li>
+<li>
+<p>文档齐全，网上资料也很多，便于排坑</p>
+</li>
+</ol>
+<h4 id="当然最重要的是它能解决我们需要的中文分词搜索">当然，最重要的是，它能解决我们需要的中文分词搜索</h4>
+<h2 id="二-具体步骤">二 、具体步骤</h2>
+<h3 id="1--环境介绍">1  环境介绍</h3>
+<table>
+<thead>
+<tr>
+<th>软件</th>
+<th>版本</th>
+<th>下载地址</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>操作系统</td>
+<td>CentOS release 6.10 (Final)</td>
+<td></td>
+</tr>
+<tr>
+<td>Java</td>
+<td>1.8.0_202</td>
+<td><a href="https://www.oracle.com/cn/java/technologies/javase/javase-jdk8-downloads.html">下载</a></td>
+</tr>
+<tr>
+<td>Elasticsearch</td>
+<td>7.8</td>
+<td><a href="https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.8.0-linux-x86_64.tar.gz">下载</a></td>
+</tr>
+<tr>
+<td>Logstash</td>
+<td>7.8 (与Elasticsearch的版本要对应)</td>
+<td><a href="https://artifacts.elastic.co/downloads/logstash/logstash-7.8.0.tar.gz">下载</a></td>
+</tr>
+<tr>
+<td>mysql-connector-java</td>
+<td>8.0.11</td>
+<td><a href="https://downloads.mysql.com/archives/get/p/3/file/mysql-connector-java-8.0.11.tar.gz">下载</a> <a href="https://blog.csdn.net/OnlyoneFrist/article/details/102828529">安装</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="2-工作目录">2 工作目录</h3>
+<p>在用户家目录下创建<code>search</code>目录作为我们的项目的工作目录，分别将下载好的安装压缩包解压到该目录下，并更名为 <code>elasticsearch</code>和<code>logstash</code>。</p>
+<blockquote>
+<p>注意：Elasticsearch 不用以<code>root</code>用户运行，此处的所有操作均由<code>非root</code>用户进行</p>
+</blockquote>
+<h3 id="3-启动-elasticsearch">3 启动 Elasticsearch</h3>
+<p>切换到  <code>elasticsearch</code>目录中。</p>
+<p>​	① 修改 Elasticsearch 配置文件，允许服务能对外访问 。<code>vim config/elasticsearch.yml</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="k">network.host</span><span class="p">:</span><span class="w"> </span><span class="m">0.0.0.0</span><span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><p>​	② 切换到  <code>elasticsearch</code>中执行 <code>./elasticsearch/bin/elasticsearch -d</code>，后台启动<code>elasticsearch</code></p>
+<p>​	③ 浏览器访问 <code>http://HostIp:9200</code> ,<code>HostIp</code>为<code>elasticsearch</code>运行的服务器<code>ip</code>。如果出现如下页面，说明<code>ES</code>服务启动成功</p>
+<p><img src="C:%5CUsers%5CAdministrator%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200815152015787.png" alt="image-20200815152015787"></p>
+<p>如果一切顺利的话，这3步操作完10秒钟就够了，但是，事实往往没有那么美好，以下是可能会遇到的问题及解决方法：</p>
+<p>[1]: max number of threads [1024] for user [elasticsearch] is too low, increase to at least [4096]</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">elasticsearch服务可拉起的最大线程数不够
+到 /etc/security/limits.d/90-nproc.conf文件中修改最大线程数
+</code></pre></td></tr></table>
+</div>
+</div><p>[2]: max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">vi /etc/sysctl.conf 
+添加下面配置：
+vm.max_map_count=262144
+
+修改系统配置后需要
+sysctl -p
+    -p  从指定的文件加载系统参数，如不指定即从/etc/sysctl.conf中加载
+</code></pre></td></tr></table>
+</div>
+</div><p>[3]: system call filters failed to install; check the logs and fix your configuration or disable system call filters at your own risk</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-yaml" data-lang="yaml">修改<span class="w"> </span>es<span class="w"> </span>配置文件<span class="w"> </span>elasticsearch.yml<span class="w">
+</span><span class="w"></span><span class="c"># ----------------------------------- Memory -----------------------------------</span><span class="w">
+</span><span class="w"></span><span class="c">#</span><span class="w">
+</span><span class="w"></span><span class="c"># Lock the memory on startup:</span><span class="w">
+</span><span class="w"></span><span class="c">#</span><span class="w">
+</span><span class="w"></span><span class="c">#bootstrap.memory_lock: true</span><span class="w">
+</span><span class="w"></span><span class="k">bootstrap.memory_lock</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span><span class="w"></span><span class="k">bootstrap.system_call_filter</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><p>[4]: the default discovery settings are unsuitable for production use; at least one of [discovery.seed_hosts, discovery.seed_providers, cluster.initial_master_nodes] must be configured</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">修改 elasticsearch.yml
+取消注释保留一个节点
+cluster.initial_master_nodes: [&#34;node-1&#34;]
+</code></pre></td></tr></table>
+</div>
+</div><p>再次执行②③，不出意外的话应该可以看到如上的图片。</p>
+<p>④ 安装中文分词插件</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">./elasticsearch-plugin install  https://github.com/medcl/elasticsearch-analysis-ik/releases/download/v7.8.0/elasticsearch-analysis-ik-7.8.0.zip
+</code></pre></td></tr></table>
+</div>
+</div><p>成功后会在 elasticsearch/plugins目录下出现 analysis-ik 目录。</p>
+<blockquote>
+<p>新的ik版本中，分词器的名称变了（不再叫ik），新版本的ik提供了两个分词器，分别是ik_max_word 和ik_smart，用任何一个替换ik，就没问题了</p>
+</blockquote>
+<p>重启 elasticsearch，检验分词插件是否成功</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">post  http://127.0.0.1:9200/_analyze
+ {
+    &#34;analyzer&#34;: &#34;ik_smart&#34;,
+    &#34;text&#34;: &#34;世界如此之大&#34;  
+ }
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="4-配置logstash">4 配置logstash</h3>
+<p>切换到<code>logstash</code>目录中</p>
+<p>①  创建<code>mysql</code>目录，将下载好的<code> mysql-connector-java-8.0.11.jar</code>驱动放入其中，使<code>logstash</code>可以连接<code>mysql</code></p>
+<p>② 执行 <code>cp config/logstash-sample.conf config/mylogstash.conf</code>。从原配置文件中进行修改</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="c"># Sample Logstash configuration for creating a simple</span><span class="w">
+</span><span class="w"></span><span class="c"># Beats -&gt; Logstash -&gt; Elasticsearch pipeline.</span><span class="w">
+</span><span class="w">
+</span><span class="w"></span>input<span class="w"> </span>{<span class="w">
+</span><span class="w">  </span>jdbc{<span class="w">
+</span><span class="w">    </span><span class="c"># mysql 数据库链接</span><span class="w">
+</span><span class="w">    </span>jdbc_connection_string<span class="w"> </span>=&gt;<span class="w"> </span><span class="s2">&#34;jdbc:mysql://127.0.0.1:3306/demo?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false&amp;serverTimezone=GMT%2B8&#34;</span><span class="w">
+</span><span class="w">    </span><span class="c"># 用户名和密码</span><span class="w">
+</span><span class="w">    </span>jdbc_user<span class="w"> </span>=&gt;<span class="w"> </span><span class="s2">&#34;root&#34;</span><span class="w">
+</span><span class="w">    </span>jdbc_password<span class="w"> </span>=&gt;<span class="w"> </span><span class="s2">&#34;123456&#34;</span><span class="w">
+</span><span class="w">    </span><span class="c">#驱动</span><span class="w">
+</span><span class="w">    </span>jdbc_driver_library<span class="w"> </span>=&gt;<span class="w"> </span><span class="s2">&#34;/home/summer/package/logstash/mysql/mysql-connector-java-8.0.11.jar&#34;</span><span class="w">
+</span><span class="w">    </span><span class="c"># 驱动类名</span><span class="w">
+</span><span class="w">    </span>jdbc_driver_class<span class="w"> </span>=&gt;<span class="w"> </span><span class="s2">&#34;com.mysql.jdbc.Driver&#34;</span><span class="w">
+</span><span class="w">    </span>jdbc_paging_enabled<span class="w"> </span>=&gt;<span class="w"> </span><span class="s2">&#34;true&#34;</span><span class="w">
+</span><span class="w">    </span>jdbc_page_size<span class="w"> </span>=&gt;<span class="w"> </span><span class="s2">&#34;50000&#34;</span><span class="w">
+</span><span class="w">    </span>jdbc_default_timezone<span class="w"> </span>=&gt;<span class="s2">&#34;Asia/Shanghai&#34;</span><span class="w">
+</span><span class="w">    </span><span class="c"># mysql文件, 也可以直接写SQL语句在此处，如下：</span><span class="w">
+</span><span class="w">    </span><span class="c">#statement =&gt; &#34;select * from t_order where update_time &gt;= :sql_last_value;&#34; 增量同步</span><span class="w">
+</span><span class="w">    </span>statement<span class="w"> </span>=&gt;<span class="w"> </span><span class="s2">&#34;select * from orders&#34;</span><span class="w">
+</span><span class="w">    </span><span class="c">#statement_filepath =&gt; &#34;./config/jdbc.sql&#34;</span><span class="w">
+</span><span class="w">    </span><span class="c"># 这里类似crontab,可以定制定时操作，比如每分钟执行一次同步(分 时 天 月 年)</span><span class="w">
+</span><span class="w">    </span>schedule<span class="w"> </span>=&gt;<span class="w"> </span><span class="s2">&#34;* * * * *&#34;</span><span class="w">
+</span><span class="w">    </span>type<span class="w"> </span>=&gt;<span class="w"> </span><span class="s2">&#34;jdbc&#34;</span><span class="w">
+</span><span class="w">    </span><span class="c"># 是否记录上次执行结果, 如果为真,将会把上次执行到的 tracking_column 字段的值记录下来,保存到 last_run_metadata_path指定的文件中</span><span class="w">
+</span><span class="w">    </span><span class="c">#record_last_run =&gt; true</span><span class="w">
+</span><span class="w">    </span><span class="c"># 是否需要记录某个column 的值,如果record_last_run为真,可以自定义我们需要 track 的 column 名称，此时该参数就要为 true. 否则默认 track 的是 timestamp 的值.</span><span class="w">
+</span><span class="w">    </span><span class="c"># use_column_value =&gt; true</span><span class="w">
+</span><span class="w">    </span><span class="c"># 如果 use_column_value 为真,需配置此参数. track 的数据库 column 名,该 column 必须是递增的. 一般是mysql主键</span><span class="w">
+</span><span class="w">    </span><span class="c"># tracking_column =&gt; &#34;update_time&#34;</span><span class="w">
+</span><span class="w">    </span><span class="c"># tracking_column_type =&gt; &#34;timestamp&#34;</span><span class="w">
+</span><span class="w">    </span><span class="c"># last_run_metadata_path =&gt; &#34;./logstash_capital_bill_last_id&#34;</span><span class="w">
+</span><span class="w">    </span><span class="c"># 是否清除 last_run_metadata_path 的记录,如果为真那么每次都相当于从头开始查询所有的数据库记录</span><span class="w">
+</span><span class="w">    </span><span class="c"># clean_run =&gt; false</span><span class="w">
+</span><span class="w">    </span><span class="c"># 是否将 字段(column) 名称转小写</span><span class="w">
+</span><span class="w">    </span>lowercase_column_names<span class="w"> </span>=&gt;<span class="w"> </span><span class="kc">false</span><span class="w">
+</span><span class="w">  </span>}<span class="w">
+</span><span class="w"></span>}<span class="w">
+</span><span class="w">
+</span><span class="w"></span>output<span class="w"> </span>{<span class="w">
+</span><span class="w">        </span>elasticsearch<span class="w"> </span>{<span class="w">
+</span><span class="w">                </span>hosts<span class="w"> </span>=&gt;<span class="w"> </span><span class="p">[</span><span class="s2">&#34;127.0.0.1:9200&#34;</span><span class="p">]</span><span class="w">
+</span><span class="w">                </span>index<span class="w"> </span>=&gt;<span class="w"> </span><span class="s2">&#34;demo&#34;</span><span class="w">
+</span><span class="w">                </span>document_type<span class="w"> </span>=&gt;<span class="w"> </span><span class="s2">&#34;orders&#34;</span><span class="w">
+</span><span class="w">	            </span>document_id<span class="w"> </span>=&gt;<span class="w"> </span><span class="s2">&#34;%{order_id}&#34;</span><span class="w">
+</span><span class="w">                </span><span class="c">#index =&gt; &#34;%{[@metadata][beat]}-%{[@metadata][version]}-%{+YYYY.MM.dd}&#34;</span><span class="w">
+</span><span class="w">            </span><span class="c">#user =&gt; &#34;elastic&#34;</span><span class="w">
+</span><span class="w">                </span><span class="c">#password =&gt; &#34;changeme&#34;</span><span class="w">
+</span><span class="w">        </span>}<span class="w">
+</span><span class="w">        </span><span class="c"># 打印信息，生产环境不需要</span><span class="w">
+</span><span class="w">         </span>stdout<span class="w"> </span>{<span class="w">
+</span><span class="w">                </span>codec<span class="w"> </span>=&gt;<span class="w"> </span>json_lines<span class="w">
+</span><span class="w">        </span>}<span class="w">
+</span><span class="w"></span>}<span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><p>③ 启动 logstash   <code>nohup bin/logstash -f config/logstash-mysql-es.conf &gt; logs/logstash.out &amp; </code></p>
+<blockquote>
+<p>如果报错，使用 <code>./bin/logstash -f config/logstash-mysql-es.conf -t </code> 查看<code>logstash</code>启动错误的原因</p>
+</blockquote>
+<p>同步数据时，如果出现</p>
+<h4 id="javasqlsqlexception-zero-date-value-prohibited">JavaSql::SQLException: Zero date value prohibited</h4>
+<p>这种错误是由于数据库的字段为datetime，但是数据的值为<code>0000-00-00 00:00:00</code>，这时<code>zeroDateTimeBehavior</code>默认为exception，会抛出一个SQLException异常</p>
+<h4 id="解决方法">解决方法：</h4>
+<p>在数据库连接的URL后面加上&amp;zeroDateTimeBehavior=convertToNull</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&amp;characterEncoding=utf-8&amp;allowMultiQueries=true&amp;useSSL=false&amp;zeroDateTimeBehavior=convertToNull
+</code></pre></td></tr></table>
+</div>
+</div><p>但是一般 add_time 为<code>0000-00-00 00:00:00</code>可能使脏数据，建议在数据库删除后再同步到ES中</p>
+<h3 id="5-使用-yii2-elasticsearch-扩展操作-elasticsearch">5 使用 yii2-elasticsearch 扩展操作 Elasticsearch</h3>
+<p>① 安装扩展，在php项目根目录中执行 <code>composer require yiisoft/yii2-elasticsearch 2.0.4 </code>。扩展下载完后需要做一点调整，如下:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-php" data-lang="php">/* 1 打开 yii2-advanced/vendor/yiisoft/yii2-elasticsearch/Connection.php
+	将 CURLOPT_HTTPHEADER     =&gt; [&#39;Expect:&#39;],  改成
+*/
+CURLOPT_HTTPHEADER =&gt; [
+    &#39;Accept: application/json&#39;,
+    &#39;Content-Type: application/json&#39;
+],
+
+/*
+2 打开 yii2-advanced/vendor/yiisoft/yii2-elasticsearch/Query.php 第366行。 es7后修改了获取数据总数的方法,需要将原来的
+	   $options = [];
+        $options[&#39;size&#39;] = 0;
+        return $this-&gt;createCommand($db)-&gt;search($options)[&#39;hits&#39;][&#39;total&#39;];
+替换成
+*/
+
+$result = $this-&gt;createCommand($db)-&gt;search([&#39;size&#39; =&gt; 0]);
+if (isset($result[&#39;hits&#39;][&#39;total&#39;])) {
+    return is_array($result[&#39;hits&#39;][&#39;total&#39;]) ? (int)$result[&#39;hits&#39;][&#39;total&#39;][&#39;value&#39;] :		  (int)$result[&#39;hits&#39;][&#39;total&#39;];
+}
+return 0;
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>由于项目所使用的 yii 版本是 2.0.12，所以使用的 yii2-elasticsearch 也是比较低的版本</p>
+</blockquote>
+<p>② 配置yii组件,在main.php中添加</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-php" data-lang="php">&#39;elasticsearch&#39; =&gt; [
+    &#39;class&#39; =&gt; &#39;yii\elasticsearch\Connection&#39;,
+    &#39;nodes&#39; =&gt; [
+        [&#39;http_address&#39; =&gt; &#39;127.0.0.1:9200&#39;],
+    ],
+],
+</code></pre></td></tr></table>
+</div>
+</div><p>③ 创建 model</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+<span class="k">namespace</span> <span class="nx">app\models</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">yii\elasticsearch\ActiveRecord</span><span class="p">;</span>
+<span class="k">class</span> <span class="nc">Search</span> <span class="k">extends</span> <span class="nx">ActiveRecord</span>
+<span class="p">{</span>
+    <span class="c1">// 需要返回的字段
+</span><span class="c1"></span>    <span class="k">public</span> <span class="k">function</span> <span class="nf">attributes</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">,</span><span class="s1">&#39;desc&#39;</span><span class="p">,</span><span class="s1">&#39;content&#39;</span><span class="p">];</span>
+    <span class="p">}</span>
+    <span class="c1">// 索引
+</span><span class="c1"></span>    <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">index</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="s1">&#39;home&#39;</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="c1">// 文档类型
+</span><span class="c1"></span>    <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">type</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="s1">&#39;_doc&#39;</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="c1">// 这个就是第二步配置的组件的名字（key值）
+</span><span class="c1"></span>    <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">getDb</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">\Yii</span><span class="o">::</span><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;elasticsearch&#39;</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>④ 使用模型查询数据</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-php" data-lang="php">$search = new Search();
+$query = $search::find()-&gt;all();
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="结束语">结束语</h2>
+<p>简单总结一下，具体方案的流程就是</p>
+<p>1 yii脚本每2分钟同步一次将，将需要搜索的数据采集到<code>search</code>表中</p>
+<p>2 <code>logstash</code>每5分钟增量同步<code>search</code>表中的数据到<code>Elasticsearch</code>中</p>
+<p>3  采用<code>yii</code>框架的扩展<code>yii2-elasticsearch</code>来对网站用户提供分词搜索服务</p>
+<p>​	  <code>Elasticsearch</code>是一个很优秀开源软件，在很多行业都有广泛的应用。本次实践也只能算是初探，对于分布式、高扩展、高实时这一块基本没有涉及，后续有机会可以深究。</p>
+<hr>
+<h4 id="参考文档">参考文档</h4>
+<ol>
+<li><a href="https://segmentfault.com/a/1190000011784259">logstash同步mysql数据到elasticsearch</a></li>
+<li><a href="https://www.cnblogs.com/cjsblog/p/9459781.html">Logstash介绍</a></li>
+<li><a href="https://juejin.im/post/6844904117668708360">ES&amp;中文分词器IK</a></li>
+<li><a href="https://www.jianshu.com/p/099e27d6cd91">ElasticSearch学习笔记</a></li>
+<li><a href="https://www.cnblogs.com/NaughtyBaby/p/9942896.html">Elasticsearch 多字段搜索</a></li>
+<li><a href="https://www.cnblogs.com/yjf512/p/4897294.html">elasticsearch 查询（match和term）</a></li>
+<li><a href="https://www.yiichina.com/tutorial/1939">Yii 2.0 集成 ElasticSearch 教程</a></li>
+<li><a href="https://www.e-learn.cn/content/java/1078247">es和mysql语法对比</a></li>
+<li><a href="https://blog.csdn.net/qq_27559331/article/details/103215698">es语法大全</a></li>
+<li><a href="https://github.com/NLPchina/elasticsearch-sql">es使用mysql语法的插件</a></li>
+<li><a href="https://www.jianshu.com/p/eaa59e966ec4">看完这篇还不会Elasticsearch就别学了</a></li>
+<li><a href="https://www.cnblogs.com/snake23/p/11310070.html">中文分词并进行词频统计排序</a></li>
+<li><a href="https://www.jianshu.com/p/49260d54beaf">ES 的fieldData</a></li>
+<li><a href="https://www.jianshu.com/p/883325b7bbda">ES优化最佳实践</a></li>
+<li><a href="https://www.cnblogs.com/jpfss/p/10775376.html">ES搜索的评分机制</a></li>
+</ol>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Summer</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-08-20
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/elasticsearch/">Elasticsearch</a>
+          <a href="/tags/logstash/">Logstash</a>
+          <a href="/tags/yii2/">yii2</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/elasticsearch/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Elasticsearch学习笔记</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/es/">
+            <span class="next-text nav-default">Elasticsearch 学习</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+  <a href="https://summer90xia.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2016 - 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Summer</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/raphael@2.2.7/raphael.min.js" integrity="sha256-67By+NpOtm9ka1R6xpUefeGOY8kWWHHRAKlvaTJ7ONI=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/flowchart.js@1.8.0/release/flowchart.min.js" integrity="sha256-zNGWjubXoY6rb5MnmpBNefO0RgoVYfle9p0tvOQM+6k=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.js" integrity="sha256-4O4pS1SH31ZqrSO2A/2QJTVjTPqVe+jnYgOWUVr7EEc=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/snapsvg@0.5.1/dist/snap.svg-min.js" integrity="sha256-oI+elz+sIm+jpn8F/qEspKoKveTc5uKeFHNNVexe6d8=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/underscore@1.8.3/underscore-min.js" integrity="sha256-obZACiHd7gkOk9iIL/pimWMTJ4W/pBsKu+oZnSeBIek=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.js" integrity="sha384-8748Vn52gHJYJI0XEuPB2QlPVNUkJlJn9tHqKec6J3q2r9l8fvRxrgn/E5ZHV0sP" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.css" integrity="sha384-6QbLKJMz5dS3adWSeINZe74uSydBGFbnzaAYmp+tKyq60S7H2p6V7g1TysM5lAaF" crossorigin="anonymous">
+
+
+
+<script type="text/javascript" src="/js/main.min.d7b7ada643c9c1a983026e177f141f7363b4640d619caf01d8831a6718cd44ea.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+<script id="baidu_analytics">
+  var _hmt = _hmt || [];
+  (function() {
+    if (window.location.hostname === 'localhost') return;
+    var hm = document.createElement("script"); hm.async = true;
+    hm.src = "https://hm.baidu.com/hm.js?fc8cf18648f58ac4ad0594547ec6c1e3";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+<script id="baidu_push">
+  (function(){
+    if (window.location.hostname === 'localhost') return;
+    var bp = document.createElement('script'); bp.async = true;
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+      bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+      bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+  })();
+</script>
+
+
+<script src="/js/"></script>
+
+
+</body>
+</html>

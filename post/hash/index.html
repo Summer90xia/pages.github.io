@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>php实现Hash一致性算法 - Summer&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Summer" /><meta name="description" content="php实现Hash一致性算法" /><meta name="keywords" content="算法, hash一致性" />
+
+
+<meta name="baidu-site-verification" content="QuqVC3Anf0" />
+
+
+
+<meta name="generator" content="Hugo 0.74.3 with theme even" />
+
+
+<link rel="canonical" href="https://summer90xia.github.io/post/hash/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.8c3cbcb0324c2bb4875ceccba4007cbad4b4ac8377f33af9953c3e7684534a50.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/">
+
+
+<meta property="og:title" content="php实现Hash一致性算法" />
+<meta property="og:description" content="php实现Hash一致性算法" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://summer90xia.github.io/post/hash/" />
+<meta property="article:published_time" content="2020-01-16T16:44:48+08:00" />
+<meta property="article:modified_time" content="2020-01-16T16:44:48+08:00" />
+<meta itemprop="name" content="php实现Hash一致性算法">
+<meta itemprop="description" content="php实现Hash一致性算法">
+<meta itemprop="datePublished" content="2020-01-16T16:44:48+08:00" />
+<meta itemprop="dateModified" content="2020-01-16T16:44:48+08:00" />
+<meta itemprop="wordCount" content="1405">
+
+
+
+<meta itemprop="keywords" content="算法," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="php实现Hash一致性算法"/>
+<meta name="twitter:description" content="php实现Hash一致性算法"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Summer&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">栏目</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Summer&#39;s Blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">栏目</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">php实现Hash一致性算法</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-01-16 </span>
+        <div class="post-category">
+            <a href="/categories/%E5%AD%A6%E7%94%B5%E8%84%91/"> 学电脑 </a>
+            </div>
+          <span class="more-meta"> 约 1405 字 </span>
+          <span class="more-meta"> 预计阅读 3 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#一--hash一致性算法">一 、 Hash一致性算法</a></li>
+    <li><a href="#二php实现hash一致性算法">二、php实现Hash一致性算法</a></li>
+    <li><a href="#参考资料">参考资料：</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p>Hash一致性算法的原理和php代码实现</p>
+</blockquote>
+<h2 id="一--hash一致性算法">一 、 Hash一致性算法</h2>
+<p><strong>场景</strong></p>
+<p>​		在使用数据库或缓存时由于数据量大经常需要进行分表分库的操作，一般情况下会采用hash算法（取模）将数据插入计算后所对应的库中。例如用户id为1000的数据对16取模后的余数8即为数据要写入的库号。但是，这种算法很不便与数据库伸缩，试想一下redis如果新增或减少一个库的话，所有之前对n取模的数据现在都要对（n+1) 取模，就会造成缓存数据大面积的偏移（<code>内存雪崩</code>）。缓存失效后数据库将直面大量的读操作，严重的会导致数据库宕机。</p>
+<p><strong>原理</strong></p>
+<p>​		为了解决上述问题，hash一致性算法应运而生。当移除 / 添加一个 cache 时，它能够尽可能小的改变已存在 key 映射关系，尽可能的满足单调性的要求。将 0~2^32-1 次方的数值空间想象成一个首（ 0 ）尾（ 2^32-1 ）相接的圆环，再将多个库作为节点分布在圆环上。这样数据的存储空间就准备好了，接下来再使用hash算法将需要存储的数据采用顺时针的方式查找的方式储存在遇到的第一个节点中。</p>
+<img src="https://cdn.learnku.com/uploads/images/201906/24/16909/65Z0OIJwJy.png">
+<p>如图，这样不管是增加还是减少节点都只对局部的数据产生影响。但是这样仍然会造成<code>数据切斜</code>的问题。</p>
+<p><strong>问题</strong></p>
+<p>​		当节点较少时，数据则不能均匀的映设到节点上，如上图中，若仅部署 cache A2 和 cache C1 的情况下，在 4 个对象中， cache A1 仅存储了 object1 ，而 cache C1 则存储了 object2 、 object3 和 object4 。</p>
+<p><strong>方案</strong></p>
+<p>​		为了解决这个问题，引入了“虚拟节点”（ virtual node ）的概念。虚拟节点是实际节点在 hash 空间的复制品（ replica ），一实际个节点对应了若干个 “虚拟节点”，这个对应个数也称为 “复制个数”，“虚拟节点” 在 hash 空间中以 hash 值排列。引入虚拟节点，并设置 “复制个数” 为 2 ，这就意味着一共会存在 4 个 “虚拟节点”， cache A1, cache A2 代表了 cache A； cache C1, cache C2 代表了 cache C。这样一来，对象 object1 和 object2 都被映射到了 cache A 上，而 object3 和 object4 映射到了 cache C 上；平衡性有了很大提高。引入 “虚拟节点” 后，映射关系就从 { 对象 -&gt; 节点 } 转换到了 { 对象 -&gt; 虚拟节点 }</p>
+<img src = "https://cdn.learnku.com/uploads/images/201906/24/16909/XIPWkIaBLI.png!large">
+<h2 id="二php实现hash一致性算法">二、php实现Hash一致性算法</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+
+<span class="c1">// 一致性哈希算法
+</span><span class="c1"></span><span class="k">class</span> <span class="nc">ConsistentHashing</span>
+<span class="p">{</span>
+    <span class="k">protected</span> <span class="nv">$nodes</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>    <span class="c1">//真实节点
+</span><span class="c1"></span>    <span class="k">protected</span> <span class="nv">$position</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>  <span class="c1">//虚拟节点
+</span><span class="c1"></span>    <span class="k">protected</span> <span class="nv">$mul</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>  <span class="c1">// 每个节点对应64个虚拟节点
+</span><span class="c1"></span>
+    <span class="sd">/**
+</span><span class="sd">     * 把字符串转为32位符号整数
+</span><span class="sd">     */</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">hash</span><span class="p">(</span><span class="nv">$str</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">sprintf</span><span class="p">(</span><span class="s1">&#39;%u&#39;</span><span class="p">,</span> <span class="nx">crc32</span><span class="p">(</span><span class="nv">$str</span><span class="p">));</span>
+    <span class="p">}</span>
+
+    <span class="sd">/**
+</span><span class="sd">     * 核心功能
+</span><span class="sd">     */</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">lookup</span><span class="p">(</span><span class="nv">$key</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nv">$point</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">hash</span><span class="p">(</span><span class="nv">$key</span><span class="p">);</span>
+
+        <span class="c1">//先取圆环上最小的一个节点,当成结果
+</span><span class="c1"></span>        <span class="nv">$node</span> <span class="o">=</span> <span class="nx">current</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">position</span><span class="p">);</span>
+
+        <span class="c1">// 循环获取相近的节点
+</span><span class="c1"></span>        <span class="k">foreach</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">position</span> <span class="k">as</span> <span class="nv">$k</span> <span class="o">=&gt;</span> <span class="nv">$v</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nv">$point</span> <span class="o">&lt;=</span> <span class="nv">$k</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nv">$node</span> <span class="o">=</span> <span class="nv">$v</span><span class="p">;</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="nx">reset</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">position</span><span class="p">);</span>    <span class="c1">//把数组的内部指针指向第一个元素，便于下次查询从头查找
+</span><span class="c1"></span>
+        <span class="k">return</span> <span class="nv">$node</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="sd">/**
+</span><span class="sd">     * 添加节点
+</span><span class="sd">     */</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">addNode</span><span class="p">(</span><span class="nv">$node</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="nx">isset</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">nodes</span><span class="p">[</span><span class="nv">$node</span><span class="p">]))</span> <span class="k">return</span><span class="p">;</span>
+
+        <span class="c1">// 添加节点和虚拟节点
+</span><span class="c1"></span>        <span class="k">for</span> <span class="p">(</span><span class="nv">$i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nv">$i</span> <span class="o">&lt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">mul</span><span class="p">;</span> <span class="nv">$i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nv">$pos</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">hash</span><span class="p">(</span><span class="nv">$node</span> <span class="o">.</span> <span class="s1">&#39;-&#39;</span> <span class="o">.</span> <span class="nv">$i</span><span class="p">);</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">position</span><span class="p">[</span><span class="nv">$pos</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$node</span><span class="p">;</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">nodes</span><span class="p">[</span><span class="nv">$node</span><span class="p">][]</span> <span class="o">=</span> <span class="nv">$pos</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="c1">// 重新排序
+</span><span class="c1"></span>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">sortPos</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="sd">/**
+</span><span class="sd">     * 删除节点
+</span><span class="sd">     */</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">delNode</span><span class="p">(</span><span class="nv">$node</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">isset</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">nodes</span><span class="p">[</span><span class="nv">$node</span><span class="p">]))</span> <span class="k">return</span><span class="p">;</span>
+
+        <span class="c1">// 循环删除虚拟节点
+</span><span class="c1"></span>        <span class="k">foreach</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">nodes</span><span class="p">[</span><span class="nv">$node</span><span class="p">]</span> <span class="k">as</span> <span class="nv">$val</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">unset</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">position</span><span class="p">[</span><span class="nv">$val</span><span class="p">]);</span>
+        <span class="p">}</span>
+
+        <span class="c1">// 删除节点
+</span><span class="c1"></span>        <span class="nx">unset</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">nodes</span><span class="p">[</span><span class="nv">$node</span><span class="p">]);</span>
+        
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">sortPos</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="sd">/**
+</span><span class="sd">     * 排序
+</span><span class="sd">     */</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">sortPos</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="nx">ksort</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">position</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// 测试
+</span><span class="c1"></span><span class="nv">$con</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ConsistentHashing</span><span class="p">();</span>
+
+<span class="nv">$con</span><span class="o">-&gt;</span><span class="na">addNode</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">);</span>
+<span class="nv">$con</span><span class="o">-&gt;</span><span class="na">addNode</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">);</span>
+<span class="nv">$con</span><span class="o">-&gt;</span><span class="na">addNode</span><span class="p">(</span><span class="s1">&#39;c&#39;</span><span class="p">);</span>
+<span class="nv">$con</span><span class="o">-&gt;</span><span class="na">addNode</span><span class="p">(</span><span class="s1">&#39;d&#39;</span><span class="p">);</span>
+
+<span class="nv">$key1</span> <span class="o">=</span> <span class="s1">&#39;hello&#39;</span><span class="p">;</span>
+<span class="nv">$key2</span> <span class="o">=</span> <span class="s1">&#39;world&#39;</span><span class="p">;</span>
+<span class="nv">$key3</span> <span class="o">=</span> <span class="s1">&#39;summer&#39;</span><span class="p">;</span>
+<span class="nv">$key4</span> <span class="o">=</span> <span class="s1">&#39;blog&#39;</span><span class="p">;</span>
+
+<span class="k">echo</span> <span class="s1">&#39;key&#39;</span> <span class="o">.</span> <span class="nv">$key1</span> <span class="o">.</span> <span class="s1">&#39;落在&#39;</span> <span class="o">.</span> <span class="nv">$con</span><span class="o">-&gt;</span><span class="na">lookup</span><span class="p">(</span><span class="nv">$key1</span><span class="p">)</span> <span class="o">.</span> <span class="s1">&#39;号节点上！&lt;br&gt;&#39;</span><span class="p">;</span>
+<span class="k">echo</span> <span class="s1">&#39;key&#39;</span> <span class="o">.</span> <span class="nv">$key2</span> <span class="o">.</span> <span class="s1">&#39;落在&#39;</span> <span class="o">.</span> <span class="nv">$con</span><span class="o">-&gt;</span><span class="na">lookup</span><span class="p">(</span><span class="nv">$key2</span><span class="p">)</span> <span class="o">.</span> <span class="s1">&#39;号节点上！&lt;br&gt;&#39;</span><span class="p">;</span>
+<span class="k">echo</span> <span class="s1">&#39;key&#39;</span> <span class="o">.</span> <span class="nv">$key3</span> <span class="o">.</span> <span class="s1">&#39;落在&#39;</span> <span class="o">.</span> <span class="nv">$con</span><span class="o">-&gt;</span><span class="na">lookup</span><span class="p">(</span><span class="nv">$key3</span><span class="p">)</span> <span class="o">.</span> <span class="s1">&#39;号节点上！&lt;br&gt;&#39;</span><span class="p">;</span>
+<span class="k">echo</span> <span class="s1">&#39;key&#39;</span> <span class="o">.</span> <span class="nv">$key4</span> <span class="o">.</span> <span class="s1">&#39;落在&#39;</span> <span class="o">.</span> <span class="nv">$con</span><span class="o">-&gt;</span><span class="na">lookup</span><span class="p">(</span><span class="nv">$key4</span><span class="p">)</span> <span class="o">.</span> <span class="s1">&#39;号节点上！&lt;br&gt;&#39;</span><span class="p">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><hr>
+<h2 id="参考资料">参考资料：</h2>
+<p><a href="https://zhuanlan.zhihu.com/p/34985026">面试必备：什么是一致性Hash算法？</a></p>
+<p><a href="https://learnku.com/articles/30269">PHP 之一致性 hash 算法</a></p>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Summer</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-01-16
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/%E7%AE%97%E6%B3%95/">算法</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/bus/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">公交线路查询算法</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/algorithm/">
+            <span class="next-text nav-default">php实现各种排序算法</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+  <a href="https://summer90xia.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2016 - 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Summer</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/raphael@2.2.7/raphael.min.js" integrity="sha256-67By+NpOtm9ka1R6xpUefeGOY8kWWHHRAKlvaTJ7ONI=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/flowchart.js@1.8.0/release/flowchart.min.js" integrity="sha256-zNGWjubXoY6rb5MnmpBNefO0RgoVYfle9p0tvOQM+6k=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.js" integrity="sha256-4O4pS1SH31ZqrSO2A/2QJTVjTPqVe+jnYgOWUVr7EEc=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/snapsvg@0.5.1/dist/snap.svg-min.js" integrity="sha256-oI+elz+sIm+jpn8F/qEspKoKveTc5uKeFHNNVexe6d8=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/underscore@1.8.3/underscore-min.js" integrity="sha256-obZACiHd7gkOk9iIL/pimWMTJ4W/pBsKu+oZnSeBIek=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.js" integrity="sha384-8748Vn52gHJYJI0XEuPB2QlPVNUkJlJn9tHqKec6J3q2r9l8fvRxrgn/E5ZHV0sP" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.css" integrity="sha384-6QbLKJMz5dS3adWSeINZe74uSydBGFbnzaAYmp+tKyq60S7H2p6V7g1TysM5lAaF" crossorigin="anonymous">
+
+
+
+<script type="text/javascript" src="/js/main.min.d7b7ada643c9c1a983026e177f141f7363b4640d619caf01d8831a6718cd44ea.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+<script id="baidu_analytics">
+  var _hmt = _hmt || [];
+  (function() {
+    if (window.location.hostname === 'localhost') return;
+    var hm = document.createElement("script"); hm.async = true;
+    hm.src = "https://hm.baidu.com/hm.js?fc8cf18648f58ac4ad0594547ec6c1e3";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+<script id="baidu_push">
+  (function(){
+    if (window.location.hostname === 'localhost') return;
+    var bp = document.createElement('script'); bp.async = true;
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+      bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+      bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+  })();
+</script>
+
+
+<script src="/js/"></script>
+
+
+</body>
+</html>

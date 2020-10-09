@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Redis学习笔记 - Summer&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Summer" /><meta name="description" content="redis" /><meta name="keywords" content="redis, sentinel, cluster" />
+
+
+<meta name="baidu-site-verification" content="QuqVC3Anf0" />
+
+
+
+<meta name="generator" content="Hugo 0.74.3 with theme even" />
+
+
+<link rel="canonical" href="https://summer90xia.github.io/post/redis/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.8c3cbcb0324c2bb4875ceccba4007cbad4b4ac8377f33af9953c3e7684534a50.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/">
+
+
+<meta property="og:title" content="Redis学习笔记" />
+<meta property="og:description" content="redis" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://summer90xia.github.io/post/redis/" />
+<meta property="article:published_time" content="2019-10-26T10:24:49+08:00" />
+<meta property="article:modified_time" content="2019-10-26T10:24:49+08:00" />
+<meta itemprop="name" content="Redis学习笔记">
+<meta itemprop="description" content="redis">
+<meta itemprop="datePublished" content="2019-10-26T10:24:49+08:00" />
+<meta itemprop="dateModified" content="2019-10-26T10:24:49+08:00" />
+<meta itemprop="wordCount" content="6002">
+
+
+
+<meta itemprop="keywords" content="redis," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Redis学习笔记"/>
+<meta name="twitter:description" content="redis"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Summer&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">栏目</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Summer&#39;s Blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">栏目</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Redis学习笔记</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2019-10-26 </span>
+        <div class="post-category">
+            <a href="/categories/%E5%AD%A6%E7%94%B5%E8%84%91/"> 学电脑 </a>
+            </div>
+          <span class="more-meta"> 约 6002 字 </span>
+          <span class="more-meta"> 预计阅读 12 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#一为什么使用redis">一、为什么使用redis？</a></li>
+        <li><a href="#二怎么样使用redis">二、怎么样使用redis</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p>将自己平时工作和学习过程中对redis的了解做一个总结</p>
+</blockquote>
+<h3 id="一为什么使用redis">一、为什么使用redis？</h3>
+<h4 id="redis特点">redis特点</h4>
+<p>1 <strong>单线程</strong></p>
+<p>​		执行过程按顺序执行，不会同时执行多个操作，保证操作的原子性，省去了很多上下文切换线程的时间，不必考虑资源竞争和可能出现死锁</p>
+<p>​    <em><strong>为什么使用单线程？</strong></em></p>
+<blockquote>
+<p>官方FAQ表示，因为Redis是基于内存的操作，CPU不是Redis的瓶颈，Redis的瓶颈最有可能是机器内存的大小或者网络带宽。既然单线程容易实现，而且CPU不会成为瓶颈，那就顺理成章地采用单线程的方案了</p>
+</blockquote>
+<p>2 <strong>性能高</strong></p>
+<p>​		官方数据：Redis能读的速度是110000次/s,写的速度是81000次/s。这是以为redis的命令操作都是在内存中进行，可以在纳秒级别就处理完，使用了epoll非阻塞IO。</p>
+<blockquote>
+<p>epoll是目前最好的多路复用技术，减少网络IO的时间消耗</p>
+<p>这里“多路”指的是多个网络连接，“复用”指的是复用同一个线程</p>
+</blockquote>
+<p>3 <strong>丰富的数据类型</strong></p>
+<p>​		redis支持的数据类型：string（字符串），hash（哈希），list（列表），set（集合），zset(有序集合)</p>
+<p><code>扩展类型</code>  HyperLogLog**，**geo**，**bitmap</p>
+<blockquote>
+<p>HyperLogLog（string）：实现独立用户的统计，会用 0.81%误差</p>
+<p>geo（zset）：记录地理位置信息，可以计算两个地点的距离或是某个点的周边范围</p>
+<p>bitmap（string）：可以实现用户签到等功能，大幅度减少内存消耗</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">模式：使用 bitmap 实现用户上线次数统计
+Bitmap 对于一些特定类型的计算非常有效。
+
+假设现在我们希望记录自己网站上的用户的上线频率，比如说，计算用户 A 上线了多少天，用户 B 上线了多少天，诸如此类，以此作为数据，从而决定让哪些用户参加 beta 测试等活动 —— 这个模式可以使用 SETBIT key offset value 和 BITCOUNT key [start] [end] 来实现。
+
+比如说，每当用户在某一天上线的时候，我们就使用 SETBIT key offset value ，以用户名作为 key ，将那天所代表的网站的上线日作为 offset 参数，并将这个 offset 上的为设置为 1 。
+
+举个例子，如果今天是网站上线的第 100 天，而用户 peter 在今天阅览过网站，那么执行命令 SETBIT peter 100 1 ；如果明天 peter 也继续阅览网站，那么执行命令 SETBIT peter 101 1 ，以此类推。
+
+当要计算 peter 总共以来的上线次数时，就使用 BITCOUNT key [start] [end] 命令：执行 BITCOUNT peter ，得出的结果就是 peter 上线的总天数。
+
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="redis使用场景">redis使用场景</h4>
+<p>​	热点数据缓存，秒杀，计数器，并发锁，消息队列，分布式session，限时/限数（验证码过期，错误次数等），防爬虫(请求次数在单位时间内超过制定数组则可认为被爬虫采集)。除此之外，redis 支持事务 、持久化、LUA脚本、LRU驱动事件、多种集群方案。</p>
+<p>​	<strong>事务</strong></p>
+<p>Redis 事务的执行并不是原子性的。事务可以理解为一个打包的批量执行脚本，但批量指令并非原子化的操作，<code>中间某条指令的失败不会导致前面已做指令的回滚，也不会造成后续的指令不做</code>。</p>
+<p>Redis 事务可以一次执行多个命令， 并且带有以下三个重要的保证：</p>
+<ul>
+<li>批量操作在发送 EXEC 命令前被放入队列缓存。</li>
+<li>收到 EXEC 命令后进入事务执行，事务中任意命令执行失败，其余的命令依然被执行。但出现错误时 ，整个事务会被取消</li>
+<li>在事务执行过程，其他客户端提交的命令请求不会插入到事务执行命令序列中。</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">multi
+incr num
+incr num
+<span class="nb">exec</span>
+get num <span class="c1">#2</span>
+
+<span class="c1"># 使用 watch 可以监控某个key值发生变化时，事务会被打断</span>
+watch num <span class="c1"># A 机器</span>
+multi num <span class="c1"># A 机器</span>
+inrc num <span class="c1"># A 机器</span>
+inrc num <span class="c1"># B 机器</span>
+<span class="nb">exec</span> <span class="c1"># A 机器 ，返回 nil，即操作被打断</span>
+
+discard <span class="c1"># 取消事务</span>
+unwatch <span class="c1"># 取消监视</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>管道 pipeline</strong></p>
+<p>Redis是一种基于客户端-服务端模型以及请求/响应协议的TCP服务。这意味着通常情况下一个请求会遵循以下步骤：
+客户端向服务端发送一个查询请求，并监听scoket返回，通常是以阻塞模式，等待服务端响应。
+服务端处理命令，并将结果返回给客户端。
+Redis管道技术可以在服务端末响应时，客户端可以继续想服务端发送请求，并最终一次性读取所有服务端的相应。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-php" data-lang="php">$pipe = $redis-&gt;multi(Redis::PIPELINE);   //开启管道
+for($i= 0 ; $i<span class="p">&lt;</span>  <span class="nt">10000</span> <span class="err">;</span> <span class="err">$</span><span class="na">i</span><span class="err">++)</span> <span class="err">{</span>
+       <span class="err">$</span><span class="na">pipe-</span><span class="p">&gt;</span>set(&#34;key::$i&#34;,str_pad($i, 4,&#39;0&#39;, 0));
+       $pipe-&gt;get(&#34;key::$i&#34;);
+}
+$pipe-&gt;exec();   //提交管道里操作命令
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>管道和事务的区别</strong></p>
+<ul>
+<li>
+<p>pipeline选择客户端缓冲，multi选择服务端缓冲；</p>
+</li>
+<li>
+<p>请求次数的不一致，multi需要每个命令都发送一次给服务端，pipeline最后一次性发送给服务端，请求次数相对于multi减少</p>
+</li>
+<li>
+<p>multi/exec可以保证原子性，而pipeline不保证原子性</p>
+</li>
+</ul>
+<p><strong>发布/订阅</strong></p>
+<p>redis 提供的发布/订阅功能只是一个低配版的，无法对消息持久化存储，一旦消息被发送，如果没有订阅者接收，那么消息就会丢失，Redis并没有提供消息传输保障。所以，如果系统中已经有了Redis，并且只需要基本的发布订阅功能，对消息的安全性没有高要求，那就可以使用redis的<code>发布/订阅</code>功能</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">subscribe news
+publish news hello
+
+<span class="c1"># unsubscribe 取消订阅</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>​	<strong>阻塞队列</strong></p>
+<p>使用系统提供的阻塞原语，在新元素到达时立即进行处理，而新元素还没到达时，就一直阻塞住，避免轮询占用资源。也可以实现类似于抢票的功能。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">brpop ticket <span class="m">30</span> <span class="c1"># 0表示一直等待</span>
+lpush ticket home
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="二怎么样使用redis">二、怎么样使用redis</h3>
+<h4 id="1redis持久化的两种方式">1.redis持久化的两种方式</h4>
+<h4 id="rdb"><strong>RDB</strong></h4>
+<p>RDB持久化是把当前进程数据生成快照保存到硬盘的过程，触发RDB持
+久化过程分为手动触发(save)和自动触发(bgsave)。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">save <span class="m">900</span> <span class="m">1</span>  <span class="c1"># 900秒之内，如果超过1个key被修改，则发起快照保存；</span>
+save <span class="m">300</span> <span class="m">10</span> <span class="c1"># 300秒内，如果超过10个key被修改，则发起快照保存；</span>
+save <span class="m">60</span> <span class="m">10000</span>  <span class="c1"># 1分钟之内，如果1万个key被修改，则发起快照保存；</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>优点：</strong></p>
+<ol>
+<li>RDB是一个紧凑压缩的二进制文件，代表Redis在某个时间点上的数据快照。非常适用于备份，全量复制等场景。比如每6小时执行bgsave备份，并把RDB文件拷贝到远程机器或者文件系统中（如hdfs），用于灾难恢复。</li>
+<li>Redis加载RDB恢复数据远远快于AOF的方式。</li>
+</ol>
+<p><strong>缺点：</strong></p>
+<ol>
+<li>RDB方式数据没办法做到实时持久化/秒级持久化。因为bgsave每次运
+行都要执行fork操作创建子进程，属于重量级操作，频繁执行成本过高。</li>
+<li>RDB文件使用特定二进制格式保存，Redis版本演进过程中有多个格式的RDB版本，存在老版本Redis服务无法兼容新版RDB格式的问题。
+针对RDB不适合实时持久化的问题，Redis提供了AOF持久化方式来解决。</li>
+</ol>
+<h4 id="aof持久化">AOF持久化</h4>
+<p>AOF（append only file）持久化：以独立日志的方式记录每次写命令，重启时再重新执行AOF文件中的命令达到恢复数据的目的。
+AOF的主要作用是解决了数据持久化的实时性，目前已经是Redis持久化的主流方式。</p>
+<p><strong>aof工作流程</strong></p>
+<ol>
+<li>将命令转换成协议文本</li>
+</ol>
+<p>2）所有的写入命令会追加到aof_buf（缓冲区）中。
+3）AOF缓冲区根据对应的策略向硬盘做同步操作。<code>everysec</code>
+4）随着AOF文件越来越大，需要定期对AOF文件进行重写，达到压缩的目的。</p>
+<blockquote>
+<ol>
+<li>REWRITE: 在主线程中重写AOF，会阻塞工作线程，在生产环境中很少使用，处于废弃状态；</li>
+<li>BGREWRITE: 在后台（子进程）重写AOF, 不会阻塞工作线程，能正常服务，此方法最常用。bgrewriteaof</li>
+</ol>
+</blockquote>
+<p>4）当Redis服务器重启时，可以加载AOF文件进行数据恢复。</p>
+<p>开启AOF，通过修改redis.conf配置文件</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">appendonly yes    ##默认不开启。
+# appendfsync always
+appendfsync everysec ## 默认每秒同步一次
+# appendfsync no
+</code></pre></td></tr></table>
+</div>
+</div><p>AOF文件名通过appendfilename配置设置，默认文件名appendonly.aof。保存路径同RDB持久化方式一致，通过dir配置指定。</p>
+<p><strong>AOF后台Rewrite解决方案</strong></p>
+<ul>
+<li>官方解决方案</li>
+</ul>
+<p>主要思路是AOF重写期间，主进程跟子进程通过管道通信，主进程实时将新写入的数据发送给子进程，子进程从管道读出数据交缓存在buffer中，子进程等待存量数据全部写入AOF文件后，将缓存数据追加到AOF文件中，此方案只是解决阻塞工作线程问题，但占用内存过多问题并没有解决。</p>
+<ul>
+<li>新解决方案</li>
+</ul>
+<p>主要思路是AOF重写期间，主进程创建一个新的aof_buf，新的AOF文件用于接收新写入的命令，sync策略保持不变，在AOF重写期间，系统需要向两个aof_buf，两个AOF文件同时追加新写入的命令。当主进程收到子进程重写AOF文件完成后，停止向老的aof_buf，AOF文件追加命令，然后删除旧的AOF文件(流程跟原来保持一致)；将将子进程新生成的AOF文件重命名为appendonly.aof.last，具体流程如下：</p>
+<ol>
+<li>停止向旧的aof_buf，AOF文件追加命令；</li>
+<li>删除旧的的appendonly.aof.last文件；</li>
+<li>交换两个aof_buf，AOF文件指针；</li>
+<li>回收旧的aof_buf,AOF文件；</li>
+<li>重命令子进程生成的AOF文件为appendonly.aof.last；</li>
+</ol>
+<p>系统运行期间同时存在两个AOF文件，一个是当前正在写的AOF，另一个是存量的AOF数据文件。因此需要修改数据库恢复相关逻辑，加载AOF时先要加载存量数据appendonly.aof.last,再加载appendonly.aof。</p>
+<blockquote>
+<p>最多丢失1秒还是2秒的数据？</p>
+</blockquote>
+<h4 id="主从复制">主从复制</h4>
+<p><img src="/home/summer/.config/Typora/typora-user-images/image-20191120205403927.png" alt="image-20191120205403927"></p>
+<p>在主从复制的概念中，数据库分为两类，一类是主数据库（master），另一类是从数据库[1] （slave）。主数据库可以进行读写操作，当写操作导致数据变化时会自动将数据同步给从数据库。而从数据库一般是只读的，并接受主数据库同步过来的数据。一个主数据库可以拥有多个从数据库，而一个从数据库只能拥有一个主数据库。</p>
+<p>优点：</p>
+<ol>
+<li>实现了对master数据的备份，一旦master出现故障，slave节点可以提升为新的master，顶替旧的master继续提供服务（需要手动切换）</li>
+<li>实现读扩展。使用主从复制架构， 一般都是为了实现读扩展。Master主要实现写功能，  Slave实现读的功能</li>
+</ol>
+<p><strong>缺点</strong>：</p>
+<ol>
+<li>
+<p>当maser宕机后，需要人工参与</p>
+<p>1)在Slave1上执<code>slaveof no one</code>命令提升Slave1为新的Master节点。</p>
+<p>2)在Slave1上配置为可写，这是因为大多数情况下，都将slave配置只读。</p>
+<p>3)告诉Client端(也就是连接Redis的程序)新的Master节点的连接地址(改代码)。</p>
+<p>4)配置Slave2从新的Master进行数据复制。 ==&gt; (sentinel )</p>
+</li>
+<li>
+<p>虽然实现了读写分离，但是主节点的性能会成为主要瓶颈 ==&gt;（集群 cluster）</p>
+</li>
+</ol>
+<h4 id="sentinel-哨兵机制">sentinel 哨兵机制</h4>
+<p><img src="/home/summer/.config/Typora/typora-user-images/image-20191120210204438.png" alt="image-20191120210204438"></p>
+<p>Redis Sentinel为Redis提供了高可用方案。从实践方面来说，使用Redis Sentinel可以创建一个无需人为干预就可以预防某些故障的Redis环境。实现自动切换。在部署sentinel的时候，建议使用奇数个sentinel节点，最少三个sentinel节点。</p>
+<p><strong>功能</strong></p>
+<ul>
+<li>监控
+Sentinel会不断的检查master和slave是否像预期那样正常运行</li>
+<li>通知
+通过API，Sentinel能够通知系统管理员、程序监控的Redis实例出现了故障</li>
+<li>自动故障转移
+如果master不像预想中那样正常运行，Sentinel可以启动故障转移过程，其中的一个slave会提成为master，其它slave会重新配置来使用新的master，使用Redis服务的应用程序，当连接时，也会被通知使用新的地址。</li>
+<li>配置提供者
+Sentinel可以做为客户端服务发现的认证源：客户端连接Sentinel来获取目前负责给定服务的Redis master地址。如果发生故障转移，Sentinel会报告新的地址。</li>
+</ul>
+<p><strong>3个定时任务</strong></p>
+<ul>
+<li>每10秒每个sentinel对master和slave执行<code>info replication</code>，以发现新的slave节点并确认主从关系</li>
+<li>每2秒每个sentinel通过master节点的channel（<code>__sentinel__:hello</code>）交换信息，以交换对节点的”看法“和自身信息</li>
+<li>每1秒每个sentinel对其他sentinel和主、从节点发送<code>ping</code>命令来做心跳检测</li>
+</ul>
+<p><strong>故障切换实现原理</strong></p>
+<ul>
+<li>
+<p>1）Sentinel之间进行选举，选举出一个leader，由选举出的leader进行failover</p>
+</li>
+<li>
+<p>2）Sentinel leader选取slave节点中的一个slave作为新的Master节点。对slave选举需要对slave进行选举的方法如下：</p>
+<p>a) <strong>与master断开时间</strong>
+如果与master断开的时间超过down-after-milliseconds(sentinel配置） * 10秒加上从sentinel判定master不可用到sentinel开始执行故障转移之间的时间，就认为该slave不适合提升为master。</p>
+<p>b) <strong>slave优先级</strong>
+每个slave都有优先级，保存在redis.conf配置文件里。如果优先级相同，则继续进行。</p>
+<p><strong>c) 复制偏移位置</strong>
+复制偏移纪录着从master复制数据复制到哪里，复制偏移越大表明从master接受的数据越多，如果复制偏移量也一样，继续进行选举</p>
+<p>d) <strong>Run ID</strong>
+选举具有最小Run ID的Slave作为新的Master</p>
+</li>
+<li>
+<ol start="3">
+<li>Sentinel leader会在上一步选举的新master上执行slaveof no one操作，将其提升为master节点</li>
+</ol>
+</li>
+<li>
+<p>4）Sentinel leader向其它slave发送命令，让剩余的slave成为新的master节点的slave</p>
+</li>
+<li>
+<p>5）Sentinel leader会让原来的master降级为slave，当恢复正常工作，Sentinel leader会发送命令让其从新的master进行复制</p>
+</li>
+</ul>
+<p><strong>配置文件说明</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">daemonize yes <span class="c1">#以后台进程模式运行</span>
+ 
+port <span class="m">27000</span> <span class="c1"># 哨兵的端口号，该端口号默认为26379。</span>
+
+<span class="c1">#redis-master</span>
+
+sentinel monitor redis-master 192.168.1.51 <span class="m">7000</span> <span class="m">2</span>
+
+<span class="c1"># redis-master是主数据的别名，考虑到故障恢复后主数据库的地址和端口号会发生变化，哨兵提供了命令可以通过别名获取主数据库的地址和端口号。</span>
+<span class="c1"># 192.168.1.51 7000为初次配置时主数据库的地址和端口号，当主数据库发生变化时，哨兵会自动更新这个配置，不需要我们去关心。</span>
+<span class="c1"># 2，该参数用来表示执行故障恢复操作前至少需要几个哨兵节点同意，一般设置为N/2+1(N为哨兵总数)。</span>
+
+sentinel down-after-milliseconds redis-master <span class="m">5000</span>
+<span class="c1">#如果master在多少秒内无反应哨兵会开始进行master-slave间的切换，使用“选举”机制</span>
+
+sentinel failover-timeout redis-master <span class="m">900000</span>
+<span class="c1"># 如果master 在 900000 秒后恢复，则把它加入到 slave 中</span>
+
+logfile <span class="s2">&#34;/data/bd/redis/sentinel/sentinel.log&#34;</span> <span class="c1">#log文件所在地</span>
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="dockerredis实例">docker+redis实例</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="c1"># redis-master.conf</span>
+port <span class="m">7000</span>
+daemonize yes
+pidfile /var/run/redis.pid
+logfile <span class="s2">&#34;7000.log&#34;</span>
+
+sed <span class="s1">&#39;s/7000/7001/g&#39;</span> redis-master.conf &gt; redis-slave1.conf
+sed <span class="s1">&#39;s/7000/7002/g&#39;</span> redis-master.conf &gt; redis-slave2.conf
+
+<span class="nb">echo</span> <span class="s2">&#34;slaveof redis-master 7000&#34;</span> &gt;&gt; redis-slave1.conf
+<span class="nb">echo</span> <span class="s2">&#34;slaveof redis-master 7000&#34;</span> &gt;&gt; redis-slave2.conf
+
+<span class="c1"># 启动redis-master容器</span>
+sudo docker run -d -p 7000:7000 -v /home/summer/homework/redis/config/redis-master.conf:/etc/redis/redis.conf --name redis-master redis redis-server /etc/redis/redis.conf
+
+<span class="c1"># 启动redis-slave1容器</span>
+sudo docker run -d -p 7001:7001 -v /home/summer/homework/redis/config/redis-slave1.conf:/etc/redis/redis.conf --name redis-slave1 --link redis-master:master redis  redis-server /etc/redis/redis.conf
+
+<span class="c1"># 启动redis-slave2容器</span>
+sudo docker run -d -p 7002:7002 -v /home/summer/homework/redis/config/redis-slave2.conf:/etc/redis/redis.conf --name redis-slave2 --link redis-master:master redis redis-server /etc/redis/redis.conf
+
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="注意问题">注意问题：</h4>
+<ol>
+<li>
+<p>禁止线上执行 keys *,mset,mget, hmget,hmset 等操作，会造成阻塞</p>
+</li>
+<li>
+<p>避免同一时间缓存大面积失效，造成缓存雪崩</p>
+</li>
+<li>
+<p>内存数据库，键名长度影响有限内存空间，所以命名应该控制长度，简短易懂；</p>
+</li>
+<li>
+<p>大小写规范</p>
+</li>
+<li>
+<p>根据业务命名，相同业务统一的Key前缀</p>
+</li>
+</ol>
+<h4 id="常用命令">常用命令</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">debug sleep <span class="m">10</span>
+
+config <span class="nb">set</span> xx yy
+
+config  get  xx*
+
+info replication  <span class="c1"># 查看主从信息</span>
+
+info server
+
+info sentinel
+</code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><strong>参考资料</strong></p>
+<p><a href="http://www.dczou.com/viemall/837.html">redis哨兵机制</a></p>
+<p><a href="https://lw900925.github.io/docker/docker-redis-cluster.html">redis主从复制</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/34985026">redis高可用面试</a></p>
+<p><a href="https://www.jianshu.com/p/1ff269e8869d">redis使用场景及应用</a></p>
+<p><a href="http://redisdoc.com/index.html">redis文档</a></p>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Summer</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2019-10-26
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/redis/">redis</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/wushu/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">中国武术的起源与发展</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/laradock&#43;xdebug/">
+            <span class="next-text nav-default">Laradock&#43;xDebug</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+  <a href="https://summer90xia.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2016 - 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Summer</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/raphael@2.2.7/raphael.min.js" integrity="sha256-67By+NpOtm9ka1R6xpUefeGOY8kWWHHRAKlvaTJ7ONI=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/flowchart.js@1.8.0/release/flowchart.min.js" integrity="sha256-zNGWjubXoY6rb5MnmpBNefO0RgoVYfle9p0tvOQM+6k=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.js" integrity="sha256-4O4pS1SH31ZqrSO2A/2QJTVjTPqVe+jnYgOWUVr7EEc=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/snapsvg@0.5.1/dist/snap.svg-min.js" integrity="sha256-oI+elz+sIm+jpn8F/qEspKoKveTc5uKeFHNNVexe6d8=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/underscore@1.8.3/underscore-min.js" integrity="sha256-obZACiHd7gkOk9iIL/pimWMTJ4W/pBsKu+oZnSeBIek=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.js" integrity="sha384-8748Vn52gHJYJI0XEuPB2QlPVNUkJlJn9tHqKec6J3q2r9l8fvRxrgn/E5ZHV0sP" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.css" integrity="sha384-6QbLKJMz5dS3adWSeINZe74uSydBGFbnzaAYmp+tKyq60S7H2p6V7g1TysM5lAaF" crossorigin="anonymous">
+
+
+
+<script type="text/javascript" src="/js/main.min.d7b7ada643c9c1a983026e177f141f7363b4640d619caf01d8831a6718cd44ea.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+<script id="baidu_analytics">
+  var _hmt = _hmt || [];
+  (function() {
+    if (window.location.hostname === 'localhost') return;
+    var hm = document.createElement("script"); hm.async = true;
+    hm.src = "https://hm.baidu.com/hm.js?fc8cf18648f58ac4ad0594547ec6c1e3";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+<script id="baidu_push">
+  (function(){
+    if (window.location.hostname === 'localhost') return;
+    var bp = document.createElement('script'); bp.async = true;
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+      bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+      bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+  })();
+</script>
+
+
+<script src="/js/"></script>
+
+
+</body>
+</html>

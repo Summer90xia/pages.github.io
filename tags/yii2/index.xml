@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>yii2 on Summer&#39;s Blog</title>
+    <link>https://summer90xia.github.io/tags/yii2/</link>
+    <description>Recent content in yii2 on Summer&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Thu, 20 Aug 2020 09:05:24 +0800</lastBuildDate>
+    
+	<atom:link href="https://summer90xia.github.io/tags/yii2/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Elasticsearch&#43;Logstash&#43;yii2-elasticsearch实现分词搜索</title>
+      <link>https://summer90xia.github.io/post/elasticsearch_yii2/</link>
+      <pubDate>Thu, 20 Aug 2020 09:05:24 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/elasticsearch_yii2/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;分词搜索实操记录&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

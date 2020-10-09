@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on Summer&#39;s Blog</title>
+    <link>https://summer90xia.github.io/post/</link>
+    <description>Recent content in Posts on Summer&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Fri, 28 Aug 2020 09:30:08 +0800</lastBuildDate>
+    
+	<atom:link href="https://summer90xia.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Elasticsearch学习笔记</title>
+      <link>https://summer90xia.github.io/post/elasticsearch/</link>
+      <pubDate>Fri, 28 Aug 2020 09:30:08 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/elasticsearch/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;ES 知识全面总结，尤其是查询&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>Elasticsearch&#43;Logstash&#43;yii2-elasticsearch实现分词搜索</title>
+      <link>https://summer90xia.github.io/post/elasticsearch_yii2/</link>
+      <pubDate>Thu, 20 Aug 2020 09:05:24 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/elasticsearch_yii2/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;分词搜索实操记录&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>Elasticsearch 学习</title>
+      <link>https://summer90xia.github.io/post/es/</link>
+      <pubDate>Sat, 11 Apr 2020 17:10:10 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/es/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;大致梳理一下Elasticsearch+kibana联合使用的方法&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>《月亮与六便士》读后感</title>
+      <link>https://summer90xia.github.io/post/moon/</link>
+      <pubDate>Sun, 19 Jan 2020 16:51:39 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/moon/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;《月亮与六便士》算是今年读的第一本书了，对书中的一些句子很有感触&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>公交线路查询算法</title>
+      <link>https://summer90xia.github.io/post/bus/</link>
+      <pubDate>Fri, 17 Jan 2020 18:07:43 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/bus/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;一直很好奇百度地图中公交路线查询的算法是怎么样实现的，我们只要输入起点和终点就能很快的计算出最短、最快、最少换乘等几种乘车方案。今天通过查询资料和自己的理解对这个问题有了一个基本的了解&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>php实现Hash一致性算法</title>
+      <link>https://summer90xia.github.io/post/hash/</link>
+      <pubDate>Thu, 16 Jan 2020 16:44:48 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/hash/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;Hash一致性算法的原理和php代码实现&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>php实现各种排序算法</title>
+      <link>https://summer90xia.github.io/post/algorithm/</link>
+      <pubDate>Tue, 14 Jan 2020 11:12:09 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/algorithm/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;使用php实现一些排序算法&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>使用beego实现用户管理</title>
+      <link>https://summer90xia.github.io/post/beego/</link>
+      <pubDate>Fri, 10 Jan 2020 14:50:52 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/beego/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;beego初探，使用beego实现简单的用户管理功能&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>本地搭建k8s集群</title>
+      <link>https://summer90xia.github.io/post/minikube/</link>
+      <pubDate>Mon, 06 Jan 2020 16:45:37 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/minikube/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;初探kubernetes&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>docker&#43;mysql主从复制</title>
+      <link>https://summer90xia.github.io/post/mysql-replication/</link>
+      <pubDate>Tue, 31 Dec 2019 14:56:20 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/mysql-replication/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;使用docker搭建mysql主从复制架构&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>Mysql-从优化到高可用</title>
+      <link>https://summer90xia.github.io/post/mysql/</link>
+      <pubDate>Fri, 20 Dec 2019 16:28:12 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/mysql/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;将工作中使用mysql的经验做一个梳理&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>使用docker实现nginx负载均衡</title>
+      <link>https://summer90xia.github.io/post/nginx2/</link>
+      <pubDate>Wed, 18 Dec 2019 16:05:57 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/nginx2/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;使用docker实现nginx负载均衡&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>nginx学习笔记</title>
+      <link>https://summer90xia.github.io/post/nginx1/</link>
+      <pubDate>Mon, 16 Dec 2019 09:19:34 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/nginx1/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;《深入理解Nginx》读书笔记&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>laravel中使用protobuf</title>
+      <link>https://summer90xia.github.io/post/laravel&#43;protobuf/</link>
+      <pubDate>Fri, 06 Dec 2019 17:24:06 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/laravel&#43;protobuf/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;简单介绍下如何在laravel中使用protobuf。&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>陈氏太极56式拳谱</title>
+      <link>https://summer90xia.github.io/post/taiji/</link>
+      <pubDate>Thu, 28 Nov 2019 11:19:43 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/taiji/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;大学期间练习了2年，收益颇多&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>中国武术的起源与发展</title>
+      <link>https://summer90xia.github.io/post/wushu/</link>
+      <pubDate>Tue, 26 Nov 2019 10:59:31 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/wushu/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;武术爱好者对武术的一点见解&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>Redis学习笔记</title>
+      <link>https://summer90xia.github.io/post/redis/</link>
+      <pubDate>Sat, 26 Oct 2019 10:24:49 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/redis/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;将自己平时工作和学习过程中对redis的了解做一个总结&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>Laradock&#43;xDebug</title>
+      <link>https://summer90xia.github.io/post/laradock&#43;xdebug/</link>
+      <pubDate>Fri, 11 Oct 2019 09:53:52 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/laradock&#43;xdebug/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;使用&lt;code&gt;Laradock&lt;/code&gt; 和 &lt;code&gt;xDebug&lt;/code&gt; 生成单元测试覆盖率&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>laradock 使用文档</title>
+      <link>https://summer90xia.github.io/post/laradock/</link>
+      <pubDate>Mon, 09 Sep 2019 15:07:36 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/laradock/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;工作之余，对laradock的使用方法做了一个说明&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>三阶魔方快速还原方法</title>
+      <link>https://summer90xia.github.io/post/mofang/</link>
+      <pubDate>Mon, 17 Jun 2019 15:28:12 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/mofang/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;写代码思路遇到阻塞时，喜欢转一下魔方。短暂的思维高度集中，能让大脑得到很好的休息，之后重新整理头绪，换个思路，往往问题便会迎刃而解&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>计算机操作系统基本原理笔记</title>
+      <link>https://summer90xia.github.io/post/os/</link>
+      <pubDate>Sun, 26 May 2019 14:35:32 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/os/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;学习计算机操作系统基本原理期间做的一些笔记&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>《linux命令行大全与shell脚本编程大全》读书笔记</title>
+      <link>https://summer90xia.github.io/post/linux_note/</link>
+      <pubDate>Sat, 11 May 2019 11:57:27 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/linux_note/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;本博客是在学习《linux命令行大全与shell脚本编程大全》时做的一些笔记，其中文字部分是从书上摘抄的，代码部分是自己的实践操作。&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>微信授权登录</title>
+      <link>https://summer90xia.github.io/post/wechat_auth/</link>
+      <pubDate>Sun, 21 Apr 2019 12:16:06 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/wechat_auth/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;关于微信授权登录自己整理了一下关键流程，供以后参考&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>crontab 排坑风波</title>
+      <link>https://summer90xia.github.io/post/crontab/</link>
+      <pubDate>Tue, 09 Apr 2019 12:21:16 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/crontab/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;今天在设置计划任务的时候，犯了一个小错误，但是也借此机会，对crontab的机制有了更深刻的了解。&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>Typora快捷键整理</title>
+      <link>https://summer90xia.github.io/post/typora_shortkey/</link>
+      <pubDate>Tue, 09 Apr 2019 12:09:06 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/typora_shortkey/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;整理了一些自己常用的Typora快捷键，方便查阅&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>Go学习笔记</title>
+      <link>https://summer90xia.github.io/post/go/</link>
+      <pubDate>Tue, 19 Mar 2019 16:02:54 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/go/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;对于go的注意点做个整理&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>《绿皮书》观后感</title>
+      <link>https://summer90xia.github.io/post/greenbook/</link>
+      <pubDate>Sun, 10 Mar 2019 12:17:38 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/greenbook/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;观看2019年奥斯卡获奖影片《绿皮书》后的一些感想和启发&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>docker &#43; laravel &#43; swagger</title>
+      <link>https://summer90xia.github.io/post/docker_laravel_swagger/</link>
+      <pubDate>Sat, 09 Mar 2019 10:26:20 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/docker_laravel_swagger/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;在docker中安装swagger，并在laravel中进行使用&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>Laravel redis使用教程</title>
+      <link>https://summer90xia.github.io/post/laravel_predis/</link>
+      <pubDate>Sat, 23 Feb 2019 15:03:42 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/laravel_predis/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;laravel + predis 的安装与使用&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>shell基础</title>
+      <link>https://summer90xia.github.io/post/linux/</link>
+      <pubDate>Wed, 13 Feb 2019 14:44:40 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/linux/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;对 shell 知识点做一个规整&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>Echarts表格使用</title>
+      <link>https://summer90xia.github.io/post/echarts/</link>
+      <pubDate>Wed, 16 Jan 2019 11:26:40 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/echarts/</guid>
+      <description>&lt;script src=&#34;https://cdn.jsdelivr.net/npm/echarts@4.0.4/dist/echarts.common.min.js&#34; integrity=&#34;sha256-CRtw4pUXzFosdt4rnjf2ZPyVHH48Rsd5ddXe6jZ6iPM=&#34; crossorigin=&#34;anonymous&#34;&gt;&lt;/script&gt;
+&lt;div id=&#34;benchmark-chart&#34; style=&#34;width: 100%;height: 400px;margin: auto;&#34;&gt;&lt;/div&gt;
+&lt;script&gt;
+var benchmarkChart = echarts.init(document.getElementById(&#39;benchmark-chart&#39;));
+var serial = {
+  type: &#39;bar&#39;
+};
+var option = {
+  legend: {selected: {}},
+  tooltip: {},
+  dataset: {
+    dimensions: [&#39;ops&#39;, &#39;identity&#39;, &#39;identity+batch&#39;, &#39;sequence&#39;, &#39;sequence+optimizer&#39;, &#39;sequence+batch&#39;, &#39;sequence+optimizer+batch&#39;, &#39;table&#39;, &#39;table+optimizer&#39;, &#39;table+batch&#39;, &#39;table+optimizer+batch&#39;],
+    source: [
+      {ops: &#39;1 thread&#39;, &#39;identity&#39;: 280, &#39;identity+batch&#39;: 105, &#39;sequence&#39;: 354, &#39;sequence+optimizer&#39;: 294, &#39;sequence+batch&#39;: 104, &#39;sequence+optimizer+batch&#39;: 44, &#39;table&#39;: 650, &#39;table+optimizer&#39;: 295, &#39;table+batch&#39;: 361, &#39;table+optimizer+batch&#39;: 49},
+      {ops: &#39;2 threads&#39;, &#39;identity&#39;: 369, &#39;identity+batch&#39;: 143, &#39;sequence&#39;: 476, &#39;sequence+optimizer&#39;: 403, &#39;sequence+batch&#39;: 164, &#39;sequence+optimizer+batch&#39;: 71, &#39;table&#39;: 833, &#39;table+optimizer&#39;: 408, &#39;table+batch&#39;: 576, &#39;table+optimizer+batch&#39;: 85},
+      {ops: &#39;4 threads&#39;, &#39;identity&#39;: 548, &#39;identity+batch&#39;: 218, &#39;sequence&#39;: 670, &#39;sequence+optimizer&#39;: 537, &#39;sequence+batch&#39;: 204, &#39;sequence+optimizer+batch&#39;: 95, &#39;table&#39;: 1454, &#39;table+optimizer&#39;: 547, &#39;table+batch&#39;: 1101, &#39;table+optimizer+batch&#39;: 101},
+      {ops: &#39;8 threads&#39;, &#39;identity&#39;: 607, &#39;identity+batch&#39;: 274, &#39;sequence&#39;: 767, &#39;sequence+optimizer&#39;: 633, &#39;sequence+batch&#39;: 252, &#39;sequence+optimizer+batch&#39;: 123, &#39;table&#39;: 4260, &#39;table+optimizer&#39;: 643, &#39;table+batch&#39;: 2409, &#39;table+optimizer+batch&#39;: 138},
+      {ops: &#39;16 threads&#39;, &#39;identity&#39;: 805, &#39;identity+batch&#39;: 404, &#39;sequence&#39;: 1084, &#39;sequence+optimizer&#39;: 858, &#39;sequence+batch&#39;: 417, &#39;sequence+optimizer+batch&#39;: 193, &#39;table&#39;: 6573, &#39;table+optimizer&#39;: 936, &#39;table+batch&#39;: 5097, &#39;table+optimizer+batch&#39;: 257}
+    ]
+  },
+  xAxis: {type: &#39;category&#39;},
+  yAxis: {},
+  series: [
+    serial,
+    serial,
+    serial,
+    serial,
+    serial,
+    serial,
+    serial,
+    serial,
+    serial,
+    serial
+  ]
+};
+option.dataset.dimensions.filter(function(value) {
+  return value !== &#39;ops&#39; &amp;&amp; value !== &#39;identity&#39; &amp;&amp; value !== &#39;sequence&#39; &amp;&amp; value !== &#39;table&#39;;
+}).forEach(function(item) {
+  option.legend.selected[item] = false;
+});
+benchmarkChart.setOption(option);
+&lt;/script&gt;</description>
+    </item>
+    
+    <item>
+      <title>Hugo enev主题使用手册</title>
+      <link>https://summer90xia.github.io/post/manual/</link>
+      <pubDate>Tue, 08 Jan 2019 11:32:29 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/manual/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;Copy from &lt;a href=&#34;https://laozhu.me/post/hugo-nuo-post-preview/&#34;&gt;《Hugo 主题 Nuo 文章样式预览》&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;这篇文章集中说明主题所支持的 Markdown 语法和 Hugo Shortcodes 插件，你也可以在这里预览到他们的样子。如果你不喜欢某些样式，可以去修改 css/ 文件夹下的 .scss 文件。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

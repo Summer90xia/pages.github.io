@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>linux on Summer&#39;s Blog</title>
+    <link>https://summer90xia.github.io/tags/linux/</link>
+    <description>Recent content in linux on Summer&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sat, 11 May 2019 11:57:27 +0800</lastBuildDate>
+    
+	<atom:link href="https://summer90xia.github.io/tags/linux/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>《linux命令行大全与shell脚本编程大全》读书笔记</title>
+      <link>https://summer90xia.github.io/post/linux_note/</link>
+      <pubDate>Sat, 11 May 2019 11:57:27 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/linux_note/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;本博客是在学习《linux命令行大全与shell脚本编程大全》时做的一些笔记，其中文字部分是从书上摘抄的，代码部分是自己的实践操作。&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>crontab 排坑风波</title>
+      <link>https://summer90xia.github.io/post/crontab/</link>
+      <pubDate>Tue, 09 Apr 2019 12:21:16 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/crontab/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;今天在设置计划任务的时候，犯了一个小错误，但是也借此机会，对crontab的机制有了更深刻的了解。&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>shell基础</title>
+      <link>https://summer90xia.github.io/post/linux/</link>
+      <pubDate>Wed, 13 Feb 2019 14:44:40 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/linux/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;对 shell 知识点做一个规整&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

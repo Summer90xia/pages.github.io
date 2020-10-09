@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>docker &#43; laravel &#43; swagger - Summer&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Summer" /><meta name="description" content=" 在docker中安装swagger，并在laravel中进行使用
+" /><meta name="keywords" content="Summer&#39;s Blog, mysql, redis" />
+
+
+<meta name="baidu-site-verification" content="QuqVC3Anf0" />
+
+
+
+<meta name="generator" content="Hugo 0.74.3 with theme even" />
+
+
+<link rel="canonical" href="https://summer90xia.github.io/post/docker_laravel_swagger/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.8c3cbcb0324c2bb4875ceccba4007cbad4b4ac8377f33af9953c3e7684534a50.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/">
+
+
+<meta property="og:title" content="docker &#43; laravel &#43; swagger" />
+<meta property="og:description" content="
+在docker中安装swagger，并在laravel中进行使用
+" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://summer90xia.github.io/post/docker_laravel_swagger/" />
+<meta property="article:published_time" content="2019-03-09T10:26:20+08:00" />
+<meta property="article:modified_time" content="2019-03-09T10:26:20+08:00" />
+<meta itemprop="name" content="docker &#43; laravel &#43; swagger">
+<meta itemprop="description" content="
+在docker中安装swagger，并在laravel中进行使用
+">
+<meta itemprop="datePublished" content="2019-03-09T10:26:20+08:00" />
+<meta itemprop="dateModified" content="2019-03-09T10:26:20+08:00" />
+<meta itemprop="wordCount" content="479">
+
+
+
+<meta itemprop="keywords" content="laravel," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="docker &#43; laravel &#43; swagger"/>
+<meta name="twitter:description" content="
+在docker中安装swagger，并在laravel中进行使用
+"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Summer&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">栏目</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Summer&#39;s Blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">栏目</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">docker &#43; laravel &#43; swagger</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2019-03-09 </span>
+        <div class="post-category">
+            <a href="/categories/%E5%AD%A6%E7%94%B5%E8%84%91/"> 学电脑 </a>
+            </div>
+          <span class="more-meta"> 约 479 字 </span>
+          <span class="more-meta"> 预计阅读 1 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents"></nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p>在docker中安装swagger，并在laravel中进行使用</p>
+</blockquote>
+<ol>
+<li>本地安装docker</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo apt install -y docker
+</code></pre></td></tr></table>
+</div>
+</div><ol start="2">
+<li>拉取 swagger 镜像</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">docker pull swaggerapi/swagger-ui
+</code></pre></td></tr></table>
+</div>
+</div><ol start="3">
+<li>启动 swagger 镜像</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">docker run -d -p 8081:8080 -e SWAGGER_JSON=/foo/api-docs.json -v /home/summer/workplace/union-account-system/storage/api-docs/:/foo swaggerapi/swagger-ui
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>说明 ：</p>
+<p>-d  后台运行</p>
+<p>-p 用主机的 8081端口接收 容器的 8080 端口【将容器中的 8080 端口映射到主机的 8081 端口</p>
+<p>】</p>
+<p>-e 设置环境变量 SWAGGER_JSON</p>
+<p>-v 将 主机的 文档 目录映设到容器的中。环境变量设置的文件路径需要映射到文档在主机真实路径上</p>
+</blockquote>
+<ol start="4">
+<li>
+<p><a href="https://github.com/swagger-api/swagger-ui/blob/master/docs/usage/installation.md#docker">参考文档</a></p>
+</li>
+<li>
+<p>在laravel中使用命令行生成 storage/api-docs.json</p>
+<blockquote>
+<p>在 app/Console/Commands/ 中新建 OpenApiGenerator.php ,内容如下 。此文件主要将 resources/api-docs 中的yml 文件转换成 api-docs.json，以生成 swagger 文档</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-php" data-lang="php"></code></pre></td></tr></table>
+</div>
+</div></li>
+</ol>
+<?php
+
+   namespace App\Console\Commands;
+   
+   use Illuminate\Console\Command;
+   use Symfony\Component\Yaml\Yaml;
+   
+   class OpenapiGenerator extends Command
+   {
+       /**
+        * The name and signature of the console command.
+        *
+        * @var string
+        */
+       protected $signature = 'openapi:generate';
+   
+       /**
+        * The console command description.
+        *
+        * @var string
+        */
+       protected $description = 'Generate doc file';
+   
+       protected $jsonFile;
+       protected $ymlFile;
+       protected $rootPath;
+   
+       /**
+        * Create a new command instance.
+        *
+        * @return void
+        */
+       public function __construct()
+       {
+           parent::__construct();
+   
+           $this->rootPath = resource_path('api-docs/');
+           $this->ymlFile = storage_path('api-docs/api-docs.yml');
+           $this->jsonFile = storage_path('api-docs/api-docs.json');
+   
+           $this->clear();
+       }
+   
+       private function clear()
+       {
+           if (file_exists($this->ymlFile)) {
+               unlink($this->ymlFile);
+           }
+   
+           if (file_exists($this->jsonFile)) {
+               unlink($this->jsonFile);
+           }
+   
+           if (!file_exists(storage_path('api-docs/'))) {
+               mkdir(storage_path('api-docs/'), 0755, true);
+           }
+       }
+   
+       /**
+        * Execute the console command.
+        *
+        */
+       public function handle()
+       {
+           $f = fopen($this->ymlFile, 'w');
+   
+           fwrite($f, file_get_contents($this->rootPath.'basic.yml'). PHP_EOL);
+           $paths = $this->scandir($this->rootPath);
+           $this->writeFile($f, $paths, $this->rootPath, 0);
+   
+           fclose($f);
+   
+           $this->toJson();
+       }
+   
+       private function scanDir($rp)
+       {
+           $paths = scandir($rp);
+   
+           $results = [];
+   
+           foreach ($paths as $p) {
+               if ($p == '.' || $p == '..') {
+                   continue;
+               }
+   
+               if (is_dir($rp.$p)) {
+                   $path = $rp.$p.'/';
+                   $results[$p] = $this->scanDir($path);
+               } else {
+                   $results[] = $p;
+               }
+           }
+   
+           return $results;
+       }
+   
+       public function writeFile($handle, $paths, $rp, $l)
+       {
+           $space = '';
+   
+           for ($i = 0; $i < $l; $i++) {
+               $space .= "  ";
+           }
+   
+           foreach ($paths as $k => $path) {
+               if (is_array($path)) {
+                   fputs($handle, $space.$k.": ".PHP_EOL);
+                   $d = $l + 1;
+                   $this->writeFile($handle, $path, $rp.$k.'/', $d);
+               } else {
+                   if ($l == 0) {
+                       continue;
+                   }
+   
+                   if ($path == 'basic.yml') {
+                       continue;
+                   }
+   
+                   $f = fopen($rp.$path, 'r');
+   
+                   while (!feof($f)) {
+                       fputs($handle, $space.fgets($f));
+                   }
+   
+                   fputs($handle, PHP_EOL);
+                   fclose($f);
+               }
+           }
+       }
+   
+       public function toJson()
+       {
+           $value = Yaml::parseFile($this->ymlFile);
+           $json = json_encode($value, JSON_PRETTY_PRINT);
+           file_put_contents($this->jsonFile, $json);
+       }
+   }
+   
+```
+
+6.  生成文档 。在laravel项目根目录中执行 ` php artisan openapi:generate  ` 
+7.  查看文档。浏览器中访问 localhost:8081 即可 查看新生成的文档
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Summer</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2019-03-09
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/laravel/">laravel</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/greenbook/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">《绿皮书》观后感</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/laravel_predis/">
+            <span class="next-text nav-default">Laravel redis使用教程</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+  <a href="https://summer90xia.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2016 - 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Summer</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/raphael@2.2.7/raphael.min.js" integrity="sha256-67By+NpOtm9ka1R6xpUefeGOY8kWWHHRAKlvaTJ7ONI=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/flowchart.js@1.8.0/release/flowchart.min.js" integrity="sha256-zNGWjubXoY6rb5MnmpBNefO0RgoVYfle9p0tvOQM+6k=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.js" integrity="sha256-4O4pS1SH31ZqrSO2A/2QJTVjTPqVe+jnYgOWUVr7EEc=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/snapsvg@0.5.1/dist/snap.svg-min.js" integrity="sha256-oI+elz+sIm+jpn8F/qEspKoKveTc5uKeFHNNVexe6d8=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/underscore@1.8.3/underscore-min.js" integrity="sha256-obZACiHd7gkOk9iIL/pimWMTJ4W/pBsKu+oZnSeBIek=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.js" integrity="sha384-8748Vn52gHJYJI0XEuPB2QlPVNUkJlJn9tHqKec6J3q2r9l8fvRxrgn/E5ZHV0sP" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.css" integrity="sha384-6QbLKJMz5dS3adWSeINZe74uSydBGFbnzaAYmp+tKyq60S7H2p6V7g1TysM5lAaF" crossorigin="anonymous">
+
+
+
+<script type="text/javascript" src="/js/main.min.d7b7ada643c9c1a983026e177f141f7363b4640d619caf01d8831a6718cd44ea.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+<script id="baidu_analytics">
+  var _hmt = _hmt || [];
+  (function() {
+    if (window.location.hostname === 'localhost') return;
+    var hm = document.createElement("script"); hm.async = true;
+    hm.src = "https://hm.baidu.com/hm.js?fc8cf18648f58ac4ad0594547ec6c1e3";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+<script id="baidu_push">
+  (function(){
+    if (window.location.hostname === 'localhost') return;
+    var bp = document.createElement('script'); bp.async = true;
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+      bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+      bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+  })();
+</script>
+
+
+<script src="/js/"></script>
+
+
+</body>
+</html>
