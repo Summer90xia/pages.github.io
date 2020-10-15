@@ -6,10 +6,21 @@
     <description>Recent content in 学电脑 on Summer&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 28 Aug 2020 09:30:08 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 15 Oct 2020 09:59:54 +0800</lastBuildDate>
     
 	<atom:link href="https://summer90xia.github.io/categories/%E5%AD%A6%E7%94%B5%E8%84%91/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>WSL&#43;docker</title>
+      <link>https://summer90xia.github.io/post/wsl/</link>
+      <pubDate>Thu, 15 Oct 2020 09:59:54 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/wsl/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;WSL+docker ，沟通开发两不误&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
     
     <item>
       <title>Elasticsearch学习笔记</title>

@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>WSL&#43;docker - Summer&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Summer" /><meta name="description" content="在win10子系统中使用docker" /><meta name="keywords" content="os, linux" />
+
+
+<meta name="baidu-site-verification" content="QuqVC3Anf0" />
+
+
+
+<meta name="generator" content="Hugo 0.74.3 with theme even" />
+
+
+<link rel="canonical" href="https://summer90xia.github.io/post/wsl/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.8c3cbcb0324c2bb4875ceccba4007cbad4b4ac8377f33af9953c3e7684534a50.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/">
+
+
+<meta property="og:title" content="WSL&#43;docker" />
+<meta property="og:description" content="在win10子系统中使用docker" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://summer90xia.github.io/post/wsl/" />
+<meta property="article:published_time" content="2020-10-15T09:59:54+08:00" />
+<meta property="article:modified_time" content="2020-10-15T09:59:54+08:00" />
+<meta itemprop="name" content="WSL&#43;docker">
+<meta itemprop="description" content="在win10子系统中使用docker">
+<meta itemprop="datePublished" content="2020-10-15T09:59:54+08:00" />
+<meta itemprop="dateModified" content="2020-10-15T09:59:54+08:00" />
+<meta itemprop="wordCount" content="667">
+
+
+
+<meta itemprop="keywords" content="linux,docker," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="WSL&#43;docker"/>
+<meta name="twitter:description" content="在win10子系统中使用docker"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Summer&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">栏目</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Summer&#39;s Blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">栏目</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">WSL&#43;docker</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-10-15 </span>
+        <div class="post-category">
+            <a href="/categories/%E5%AD%A6%E7%94%B5%E8%84%91/"> 学电脑 </a>
+            </div>
+          <span class="more-meta"> 约 667 字 </span>
+          <span class="more-meta"> 预计阅读 2 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1-开启windows的虚拟化和wsl">1 开启Windows的虚拟化和WSL</a></li>
+        <li><a href="#2-在microsoft-store-中搜索并安装-ubuntu-2004-lts">2 在Microsoft Store 中搜索并安装 Ubuntu 20.04 LTS</a></li>
+        <li><a href="#3-在microsoft-store-中搜索并安装-windows-terminal">3 在Microsoft Store 中搜索并安装 Windows Terminal</a></li>
+        <li><a href="#4-启动-windows-terminal-并使用如下配置">4 启动 Windows Terminal 并使用如下配置</a></li>
+        <li><a href="#5-wsl-中使用-oh-my-zsh本地安装方法">5 WSL 中使用 oh-my-zsh（本地安装方法）</a></li>
+        <li><a href="#6-wsl-中安装-docker-客户端">6 WSL 中安装 docker 客户端</a></li>
+        <li><a href="#7-window系统中安装-docker下载地址httpsdocsdockercomdocker-for-windowsinstalldownload-docker-for-windows">7 window系统中安装 docker，<a href="https://docs.docker.com/docker-for-windows/install/#download-docker-for-windows">下载地址</a></a></li>
+        <li><a href="#8-将window系统中的docker服务端口对外开放">8 将window系统中的docker服务端口对外开放</a></li>
+        <li><a href="#9-在-wsl中-执行">9 在 WSL中 执行</a></li>
+        <li><a href="#10-检验docker是否连接成功">10 检验docker是否连接成功</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p>WSL+docker ，沟通开发两不误</p>
+</blockquote>
+<h3 id="1-开启windows的虚拟化和wsl">1 开启Windows的虚拟化和WSL</h3>
+<p><img src="https://blog.summer90.top/images/wsl/image-20201015090549494.png" alt="image-20201015090549494.png"></p>
+<h3 id="2-在microsoft-store-中搜索并安装-ubuntu-2004-lts">2 在Microsoft Store 中搜索并安装 Ubuntu 20.04 LTS</h3>
+<p><img src="https://blog.summer90.top/images/wsl/image-20201015090627117.png" alt="image-20201015090627117"></p>
+<h3 id="3-在microsoft-store-中搜索并安装-windows-terminal">3 在Microsoft Store 中搜索并安装 Windows Terminal</h3>
+<p><img src="https://blog.summer90.top/images/wsl/image-20201015090734261.png" alt="image-20201015090734261"></p>
+<h3 id="4-启动-windows-terminal-并使用如下配置">4 启动 Windows Terminal 并使用如下配置</h3>
+<p><img src="https://blog.summer90.top/images/wsl/image-20201015090855585.png" alt="image-20201015090855585"></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span><span class="lnt">75
+</span><span class="lnt">76
+</span><span class="lnt">77
+</span><span class="lnt">78
+</span><span class="lnt">79
+</span><span class="lnt">80
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-json" data-lang="json"><span class="err">//</span> <span class="err">To</span> <span class="err">view</span> <span class="err">the</span> <span class="err">default</span> <span class="err">settings,</span> <span class="err">hold</span> <span class="s2">&#34;alt&#34;</span> <span class="err">while</span> <span class="err">clicking</span> <span class="err">on</span> <span class="err">the</span> <span class="s2">&#34;Settings&#34;</span> <span class="err">button.</span>
+<span class="err">//</span> <span class="err">For</span> <span class="err">documentation</span> <span class="err">on</span> <span class="err">these</span> <span class="err">settings,</span> <span class="err">see:</span> <span class="err">https://aka.ms/terminal-documentation</span>
+
+<span class="p">{</span>
+    <span class="nt">&#34;$schema&#34;</span><span class="p">:</span> <span class="s2">&#34;https://aka.ms/terminal-profiles-schema&#34;</span><span class="p">,</span>
+    <span class="nt">&#34;defaultProfile&#34;</span><span class="p">:</span> <span class="s2">&#34;{c6eaf9f4-32a7-5fdc-b5cf-066e8a4b1e40}&#34;</span><span class="p">,</span>
+    <span class="nt">&#34;profiles&#34;</span><span class="p">:</span>
+    <span class="p">{</span>
+        <span class="nt">&#34;defaults&#34;</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="err">//</span> <span class="err">Put</span> <span class="err">settings</span> <span class="err">here</span> <span class="err">that</span> <span class="err">you</span> <span class="err">want</span> <span class="err">to</span> <span class="err">apply</span> <span class="err">to</span> <span class="err">all</span> <span class="err">profiles</span>
+            <span class="nt">&#34;fontFace&#34;</span><span class="p">:</span> <span class="s2">&#34;Cascadia Code&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;fontSize&#34;</span><span class="p">:</span> <span class="mi">13</span><span class="p">,</span>
+            <span class="nt">&#34;useAcrylic&#34;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+            <span class="nt">&#34;acrylicOpacity&#34;</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">,</span>
+            <span class="nt">&#34;backgroundImage&#34;</span><span class="p">:</span><span class="s2">&#34;C:\\Users\\Administrator\\Desktop\\公司资料\\bg.jpg&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;backgroundImageOpacity&#34;</span> <span class="p">:</span> <span class="mf">0.1</span>
+        <span class="p">},</span>
+        <span class="nt">&#34;list&#34;</span><span class="p">:</span>
+        <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="err">//</span> <span class="err">Make</span> <span class="err">changes</span> <span class="err">here</span> <span class="err">to</span> <span class="err">the</span> <span class="err">powershell.exe</span> <span class="err">profile</span>
+                <span class="nt">&#34;guid&#34;</span><span class="p">:</span> <span class="s2">&#34;{61c54bbd-c2c6-5271-96e7-009a87ff44bf}&#34;</span><span class="p">,</span>
+                <span class="nt">&#34;name&#34;</span><span class="p">:</span> <span class="s2">&#34;Windows PowerShell&#34;</span><span class="p">,</span>
+                <span class="nt">&#34;commandline&#34;</span><span class="p">:</span> <span class="s2">&#34;powershell.exe&#34;</span><span class="p">,</span>
+                <span class="nt">&#34;hidden&#34;</span><span class="p">:</span> <span class="kc">false</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+                <span class="err">//</span> <span class="err">Make</span> <span class="err">changes</span> <span class="err">here</span> <span class="err">to</span> <span class="err">the</span> <span class="err">cmd.exe</span> <span class="err">profile</span>
+                <span class="nt">&#34;guid&#34;</span><span class="p">:</span> <span class="s2">&#34;{0caa0dad-35be-5f56-a8ff-afceeeaa6101}&#34;</span><span class="p">,</span>
+                <span class="nt">&#34;name&#34;</span><span class="p">:</span> <span class="s2">&#34;cmd&#34;</span><span class="p">,</span>
+                <span class="nt">&#34;commandline&#34;</span><span class="p">:</span> <span class="s2">&#34;cmd.exe&#34;</span><span class="p">,</span>
+                <span class="nt">&#34;hidden&#34;</span><span class="p">:</span> <span class="kc">false</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+                <span class="nt">&#34;guid&#34;</span><span class="p">:</span> <span class="s2">&#34;{c6eaf9f4-32a7-5fdc-b5cf-066e8a4b1e40}&#34;</span><span class="p">,</span>
+                <span class="nt">&#34;hidden&#34;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+                <span class="nt">&#34;name&#34;</span><span class="p">:</span> <span class="s2">&#34;Ubuntu-18.04&#34;</span><span class="p">,</span>
+                <span class="nt">&#34;source&#34;</span><span class="p">:</span> <span class="s2">&#34;Windows.Terminal.Wsl&#34;</span><span class="p">,</span>
+                <span class="nt">&#34;colorScheme&#34;</span><span class="p">:</span> <span class="s2">&#34;Tango Dark&#34;</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+                <span class="nt">&#34;guid&#34;</span><span class="p">:</span> <span class="s2">&#34;{b453ae62-4e3d-5e58-b989-0a998ec441b8}&#34;</span><span class="p">,</span>
+                <span class="nt">&#34;hidden&#34;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+                <span class="nt">&#34;name&#34;</span><span class="p">:</span> <span class="s2">&#34;Azure Cloud Shell&#34;</span><span class="p">,</span>
+                <span class="nt">&#34;source&#34;</span><span class="p">:</span> <span class="s2">&#34;Windows.Terminal.Azure&#34;</span>
+            <span class="p">}</span>
+        <span class="p">]</span>
+    <span class="p">},</span>
+
+    <span class="err">//</span> <span class="err">Add</span> <span class="err">custom</span> <span class="err">color</span> <span class="err">schemes</span> <span class="err">to</span> <span class="err">this</span> <span class="err">array</span>
+    <span class="nt">&#34;schemes&#34;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="nt">&#34;name&#34;</span><span class="p">:</span> <span class="s2">&#34;Tango Dark&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;black&#34;</span><span class="p">:</span> <span class="s2">&#34;#000000&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;red&#34;</span><span class="p">:</span> <span class="s2">&#34;#cc0000&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;green&#34;</span><span class="p">:</span> <span class="s2">&#34;#4e9a06&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;yellow&#34;</span><span class="p">:</span> <span class="s2">&#34;#c4a000&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;blue&#34;</span><span class="p">:</span> <span class="s2">&#34;#3465a4&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;purple&#34;</span><span class="p">:</span> <span class="s2">&#34;#75507b&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;cyan&#34;</span><span class="p">:</span> <span class="s2">&#34;#06989a&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;white&#34;</span><span class="p">:</span> <span class="s2">&#34;#d3d7cf&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;brightBlack&#34;</span><span class="p">:</span> <span class="s2">&#34;#555753&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;brightRed&#34;</span><span class="p">:</span> <span class="s2">&#34;#ef2929&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;brightGreen&#34;</span><span class="p">:</span> <span class="s2">&#34;#8ae234&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;brightYellow&#34;</span><span class="p">:</span> <span class="s2">&#34;#fce94f&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;brightBlue&#34;</span><span class="p">:</span> <span class="s2">&#34;#729fcf&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;brightPurple&#34;</span><span class="p">:</span> <span class="s2">&#34;#ad7fa8&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;brightCyan&#34;</span><span class="p">:</span> <span class="s2">&#34;#34e2e2&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;brightWhite&#34;</span><span class="p">:</span> <span class="s2">&#34;#eeeeec&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;background&#34;</span><span class="p">:</span> <span class="s2">&#34;#000000&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;foreground&#34;</span><span class="p">:</span> <span class="s2">&#34;#D3D7CF&#34;</span>
+        <span class="p">}</span>
+    <span class="p">],</span>
+
+    <span class="err">//</span> <span class="err">Add</span> <span class="err">any</span> <span class="err">keybinding</span> <span class="err">overrides</span> <span class="err">to</span> <span class="err">this</span> <span class="err">array.</span>
+    <span class="err">//</span> <span class="err">To</span> <span class="err">unbind</span> <span class="err">a</span> <span class="err">default</span> <span class="err">keybinding,</span> <span class="err">set</span> <span class="err">the</span> <span class="err">command</span> <span class="err">to</span> <span class="nt">&#34;unbound&#34;</span>
+    <span class="s2">&#34;keybindings&#34;</span><span class="p">:</span> <span class="p">[]</span> <span class="err">//</span> <span class="err">快捷键可以参考</span> <span class="err">default.json</span>
+<span class="p">}</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="5-wsl-中使用-oh-my-zsh本地安装方法">5 WSL 中使用 oh-my-zsh（本地安装方法）</h3>
+<p><img src="https://blog.summer90.top/images/wsl/image-20201015095328869.png" alt="image-20201015095328869"></p>
+<p><a href="https://pan.baidu.com/s/15_l8xOxME6JiGgmJnW3S_g">网盘下载地址</a></p>
+<p>将下载的文件发在用户家目录下，然后执行 install.sh 即可，须先安装 zsh</p>
+<h3 id="6-wsl-中安装-docker-客户端">6 WSL 中安装 docker 客户端</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">sudo apt install -y docker
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="7-window系统中安装-docker下载地址httpsdocsdockercomdocker-for-windowsinstalldownload-docker-for-windows">7 window系统中安装 docker，<a href="https://docs.docker.com/docker-for-windows/install/#download-docker-for-windows">下载地址</a></h3>
+<h3 id="8-将window系统中的docker服务端口对外开放">8 将window系统中的docker服务端口对外开放</h3>
+<p><img src="https://blog.summer90.top/images/wsl/image-20201015092519242.png" alt="image-20201015092519242"></p>
+<h3 id="9-在-wsl中-执行">9 在 WSL中 执行</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="nb">export</span> <span class="nv">DOCKER_HOST</span><span class="o">=</span>tcp://localhost:2375 <span class="c1"># docker客服端链接主机的docker服务</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="10-检验docker是否连接成功">10 检验docker是否连接成功</h3>
+<p><img src="https://blog.summer90.top/images/wsl/image-20201015092938263.png" alt="image-20201015092938263"></p>
+<blockquote>
+<p>注意：这里的 docker 不要用 sudo docker 启动</p>
+</blockquote>
+<p>至此，就可以在Windows系统中像使用ubuntu那样愉快的开发啦！</p>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Summer</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-10-15
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/linux/">linux</a>
+          <a href="/tags/docker/">docker</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/elasticsearch/">
+            <span class="next-text nav-default">Elasticsearch学习笔记</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+  <a href="https://summer90xia.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2016 - 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Summer</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/raphael@2.2.7/raphael.min.js" integrity="sha256-67By+NpOtm9ka1R6xpUefeGOY8kWWHHRAKlvaTJ7ONI=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/flowchart.js@1.8.0/release/flowchart.min.js" integrity="sha256-zNGWjubXoY6rb5MnmpBNefO0RgoVYfle9p0tvOQM+6k=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.js" integrity="sha256-4O4pS1SH31ZqrSO2A/2QJTVjTPqVe+jnYgOWUVr7EEc=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/snapsvg@0.5.1/dist/snap.svg-min.js" integrity="sha256-oI+elz+sIm+jpn8F/qEspKoKveTc5uKeFHNNVexe6d8=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/underscore@1.8.3/underscore-min.js" integrity="sha256-obZACiHd7gkOk9iIL/pimWMTJ4W/pBsKu+oZnSeBIek=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.js" integrity="sha384-8748Vn52gHJYJI0XEuPB2QlPVNUkJlJn9tHqKec6J3q2r9l8fvRxrgn/E5ZHV0sP" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.css" integrity="sha384-6QbLKJMz5dS3adWSeINZe74uSydBGFbnzaAYmp+tKyq60S7H2p6V7g1TysM5lAaF" crossorigin="anonymous">
+
+
+
+<script type="text/javascript" src="/js/main.min.d7b7ada643c9c1a983026e177f141f7363b4640d619caf01d8831a6718cd44ea.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+<script id="baidu_analytics">
+  var _hmt = _hmt || [];
+  (function() {
+    if (window.location.hostname === 'localhost') return;
+    var hm = document.createElement("script"); hm.async = true;
+    hm.src = "https://hm.baidu.com/hm.js?fc8cf18648f58ac4ad0594547ec6c1e3";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+<script id="baidu_push">
+  (function(){
+    if (window.location.hostname === 'localhost') return;
+    var bp = document.createElement('script'); bp.async = true;
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+      bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+      bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+  })();
+</script>
+
+
+<script src="/js/"></script>
+
+
+</body>
+</html>
