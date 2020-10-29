@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>代码规范 on Summer&#39;s Blog</title>
+    <link>https://summer90xia.github.io/tags/%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83/</link>
+    <description>Recent content in 代码规范 on Summer&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Mon, 29 Oct 2018 11:30:11 +0800</lastBuildDate>
+    
+	<atom:link href="https://summer90xia.github.io/tags/%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>代码规范</title>
+      <link>https://summer90xia.github.io/post/standard/</link>
+      <pubDate>Mon, 29 Oct 2018 11:30:11 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/standard/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;代码风格规范化是一个程序员必备的素质&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

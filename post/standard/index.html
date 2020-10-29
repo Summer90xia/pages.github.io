@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>代码规范 - Summer&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Summer" /><meta name="description" content="代码规范" /><meta name="keywords" content="代码规范" />
+
+
+<meta name="baidu-site-verification" content="QuqVC3Anf0" />
+
+
+
+<meta name="generator" content="Hugo 0.74.3 with theme even" />
+
+
+<link rel="canonical" href="https://summer90xia.github.io/post/standard/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.8c3cbcb0324c2bb4875ceccba4007cbad4b4ac8377f33af9953c3e7684534a50.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/">
+
+
+<meta property="og:title" content="代码规范" />
+<meta property="og:description" content="代码规范" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://summer90xia.github.io/post/standard/" />
+<meta property="article:published_time" content="2018-10-29T11:30:11+08:00" />
+<meta property="article:modified_time" content="2018-10-29T11:30:11+08:00" />
+<meta itemprop="name" content="代码规范">
+<meta itemprop="description" content="代码规范">
+<meta itemprop="datePublished" content="2018-10-29T11:30:11+08:00" />
+<meta itemprop="dateModified" content="2018-10-29T11:30:11+08:00" />
+<meta itemprop="wordCount" content="2590">
+
+
+
+<meta itemprop="keywords" content="代码规范," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="代码规范"/>
+<meta name="twitter:description" content="代码规范"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Summer&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">栏目</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Summer&#39;s Blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">栏目</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">代码规范</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2018-10-29 </span>
+        <div class="post-category">
+            <a href="/categories/%E5%AD%A6%E7%94%B5%E8%84%91/"> 学电脑 </a>
+            </div>
+          <span class="more-meta"> 约 2590 字 </span>
+          <span class="more-meta"> 预计阅读 6 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#代码规范的意义">代码规范的意义：</a></li>
+        <li><a href="#psr-原来有五个规范分别是">PSR 原来有五个规范，分别是：</a></li>
+        <li><a href="#一--代码格式规范">一  代码格式规范</a></li>
+        <li><a href="#二-代码命名规范">二 代码命名规范</a></li>
+        <li><a href="#三--代码层级规范">三  代码层级规范</a></li>
+        <li><a href="#四-代码提交流程规范">四 代码提交流程规范</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p>代码风格规范化是一个程序员必备的素质</p>
+</blockquote>
+<h3 id="代码规范的意义">代码规范的意义：</h3>
+<blockquote>
+<p>以最低程度的限制，来统一各个项目的编码规范，避免各家自行发展的风格阻碍了程序设计师开发的困扰。<code>PSR</code> 是 <code>Proposing a Standards Recommendation</code> (提出标准建议) 的缩写。也正是基于此，才会出现后面composer，使php的生态圈开始形成。</p>
+</blockquote>
+<h3 id="psr-原来有五个规范分别是">PSR 原来有五个规范，分别是：</h3>
+<ul>
+<li><code>PSR-0 (Autoloading Standard)</code> 自动加载标准。2014-10-21该标准已经被废弃，使用PSR-4替代，不再细讲</li>
+<li><code>PSR-1 (Basic Coding Standard)</code> 基础编码标准。</li>
+<li><code>PSR-2 (Coding Style Guide)</code> 编码风格向导。</li>
+<li><code>PSR-3 (Logger Interface)</code> 日志接口。</li>
+<li><code>PSR-4 (Improved Autoloading)</code> 自动加载的增强版，可以替换掉 <code>PSR-0</code> 了。</li>
+</ul>
+<h4 id="今天我们的代码规范是基于以上规范进行了整理">今天我们的代码规范是基于以上规范进行了整理。</h4>
+<hr>
+<h3 id="一--代码格式规范">一  代码格式规范</h3>
+<p>1、<code>PHP</code> 源文件只能使用 &lt;?php 和 &lt;?= 这两种标签</p>
+<blockquote>
+<p><code>&lt;?php</code> 标签通常用于纯 PHP 的脚本当中，而 <code>&lt;?=</code> 通常用于模板当中。</p>
+</blockquote>
+<p>2、<code>PHP</code> 源文件必须是不带 <code>BOM</code> 的 <code>UTF-8</code> 编码的文件</p>
+<blockquote>
+<p><code>BOM（Byte Order Mark)</code>，字节顺序标记，出现在文本文件头部，<code>Unicode</code> 编码标准中用于标识文件是采用哪种格式的编码。</p>
+</blockquote>
+<p>3、<code>PHP</code> 源文件缩进采用 4 个空格</p>
+<blockquote>
+<p>很多编辑器使用 <code>Tab</code> 作为缩进。会造成空格性问题。</p>
+</blockquote>
+<p>4、纯 <code>PHP</code> 代码的源文件关闭标签 <code>?&gt;</code> 必须省略</p>
+<blockquote>
+<p><code>PHP</code> 解析器在对文件进行解释的时候，会有性能提升。并且，这能一定程序避免在 <code>?&gt;</code> 之后有多余的空格导致程序报错。</p>
+</blockquote>
+<p>5、请严格控制每行 120 个字符</p>
+<blockquote>
+<p>过长的代码会导致多种分辨率的显示器造成兼容问题。并且，过长的代码也会造成难以阅读理解。如果实在太长，请把代码换行。</p>
+</blockquote>
+<p>6、所有的类必须设定一个命令空间，且命名空间(<code>namespace</code>)的声明后面必须有一行空行</p>
+<blockquote>
+<p>命令空间给代码结构有较强的说明性，以及杜绝同名类的冲突问题。同时，也能用到 Composer 的自动加载优势特性。</p>
+</blockquote>
+<p>7、所有的导入(use)声明必须放在命名空间(<code>namespace</code>)声明的下面，一句声明中，必须只有一个导入(use)关键字，且use代码块后必须空一行</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+    
+<span class="k">namespace</span> <span class="nx">core</span><span class="p">;</span>
+
+<span class="k">use</span> <span class="nx">common</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">library</span><span class="p">;</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><p>8、继承(extends) 和实现(implement) 必须和 class name 写在一行，切花括号要换行写。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+<span class="k">namespace</span> <span class="nx">Lib\Databaes</span><span class="p">;</span>
+ 
+<span class="k">class</span> <span class="nc">Mysql</span> <span class="k">extends</span> <span class="nx">ParentClass</span> <span class="k">implements</span> <span class="nx">\PDO</span><span class="p">,</span> <span class="nx">\DB</span>
+<span class="p">{</span>
+     
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>9、成员属性访问修饰符必须显示声明不能省略</p>
+<blockquote>
+<p>成员属性有三种访问修饰符：<code>public</code>、<code>protected</code>、<code>private</code>。不能使用老式的 <code>var</code> 来声音成员属性。</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+<span class="k">namespace</span> <span class="nx">Lib\Databaes</span><span class="p">;</span>
+ 
+<span class="k">class</span> <span class="nc">Mysql</span> <span class="k">extends</span> <span class="nx">ParentClass</span> <span class="k">implements</span> <span class="nx">\PDO</span><span class="p">,</span> <span class="nx">\DB</span>
+<span class="p">{</span>
+    <span class="k">public</span>    <span class="nv">$foo</span>  <span class="o">=</span> <span class="k">null</span><span class="p">;</span>
+    <span class="k">private</span>   <span class="nv">$name</span> <span class="o">=</span> <span class="s1">&#39;sam&#39;</span><span class="p">;</span>
+    <span class="k">protected</span> <span class="nv">$age</span>  <span class="o">=</span> <span class="s1">&#39;17&#39;</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>10、方法的参数有多个的时候，每个参数的逗号后面必须加个空格</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-php" data-lang="php">namespace Lib\Databaes;
+ 
+class Mysql extends ParentClass implements \PDO, \DB
+{
+    public getInfo ($name, $age, $gender = 1)
+    {
+    }
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>11、当用到抽象(abstract)和终结(final)来做类声明时，它们必须放在可见性声明(public 还是protected还是private)的前面。而当用到静态(static)来做类声明时，则必须放在可见性声明的后面。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+<span class="k">namespace</span> <span class="nx">Vendor\Package</span><span class="p">;</span>
+ 
+<span class="k">abstract</span> <span class="k">class</span> <span class="nc">ClassName</span>
+<span class="p">{</span>
+    <span class="k">protected</span> <span class="k">static</span> <span class="nv">$foo</span><span class="p">;</span> <span class="c1">// static 放后面
+</span><span class="c1"></span> 
+    <span class="k">abstract</span> <span class="k">protected</span> <span class="k">function</span> <span class="nf">zim</span><span class="p">();</span> <span class="c1">// abstract 放前面
+</span><span class="c1"></span> 
+    <span class="k">final</span> <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">bar</span><span class="p">()</span> <span class="c1">// final 放前面，static 放最后。
+</span><span class="c1"></span>    <span class="p">{</span>
+        <span class="c1">// 方法主体部分
+</span><span class="c1"></span>    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>12、控制结构花括号、换行、空格等规范</p>
+<blockquote>
+<p>if、else、elseif、switch、for、foreach、case、while、go、try、catch 等关键词后面必须加空格。可以说，没有特殊说明的情况下，基本上所有的 PHP 关键词后面都必须加空格。</p>
+<p>流程控制语句起始的花括号是不需要另起一行。</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-php" data-lang="php">if ($expr1) { // 左右空格
+    // if body
+} elseif ($expr2) { // elesif 连着写
+    // elseif body
+} else {
+    // else body;
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>13、方法中写数组参数时格式如下</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-php" data-lang="php">$object-&gt;callFunc([
+    &#39;userId&#39;   =&gt; 1,
+    &#39;username&#39; =&gt; &#39;sam&#39;,
+    &#39;age&#39;      =&gt; 20,
+    &#39;sex&#39;      =&gt; &#39;male&#39;
+]);
+</code></pre></td></tr></table>
+</div>
+</div><p>此种格式的编辑器配置方法如下：</p>
+<p><img src="https://blog.summer90.top/images/standard/1.png" /></p>
+<h4 id="以上这些格式规范要求使用-phpstrom-快捷键可以一键生成默认为-ctrl--alt-l">以上这些格式规范要求使用 phpstrom 快捷键可以一键生成，默认为 <code>Ctrl + Alt+ L</code></h4>
+<h3 id="二-代码命名规范">二 代码命名规范</h3>
+<p>1、PHP 关键字<strong>必须</strong>小写</p>
+<blockquote>
+<p>boolean 值：true，false，null 也必须小写。下面的关键字，也必须小写：
+&lsquo;__halt_compiler&rsquo;, &lsquo;abstract&rsquo;, &lsquo;and&rsquo;, &lsquo;array&rsquo;, &lsquo;as&rsquo;, &lsquo;break&rsquo;, &lsquo;callable&rsquo;, &lsquo;case&rsquo;, &lsquo;catch&rsquo;, &lsquo;class&rsquo;, &lsquo;clone&rsquo;, &lsquo;const&rsquo;, &lsquo;continue&rsquo;, &lsquo;declare&rsquo;, &lsquo;default&rsquo;, &lsquo;die&rsquo;, &lsquo;do&rsquo;, &lsquo;echo&rsquo;, &lsquo;else&rsquo;, &lsquo;elseif&rsquo;, &lsquo;empty&rsquo;, &lsquo;enddeclare&rsquo;, &lsquo;endfor&rsquo;, &lsquo;endforeach&rsquo;, &lsquo;endif&rsquo;, &lsquo;endswitch&rsquo;, &lsquo;endwhile&rsquo;, &lsquo;eval&rsquo;, &lsquo;exit&rsquo;, &lsquo;extends&rsquo;, &lsquo;final&rsquo;, &lsquo;for&rsquo;, &lsquo;foreach&rsquo;, &lsquo;function&rsquo;, &lsquo;global&rsquo;, &lsquo;goto&rsquo;, &lsquo;if&rsquo;, &lsquo;implements&rsquo;, &lsquo;include&rsquo;, &lsquo;include_once&rsquo;, &lsquo;instanceof&rsquo;, &lsquo;insteadof&rsquo;, &lsquo;interface&rsquo;, &lsquo;isset&rsquo;, &lsquo;list&rsquo;, &lsquo;namespace&rsquo;, &lsquo;new&rsquo;, &lsquo;or&rsquo;, &lsquo;print&rsquo;, &lsquo;private&rsquo;, &lsquo;protected&rsquo;, &lsquo;public&rsquo;, &lsquo;require&rsquo;, &lsquo;require_once&rsquo;, &lsquo;return&rsquo;, &lsquo;static&rsquo;, &lsquo;switch&rsquo;, &lsquo;throw&rsquo;, &lsquo;trait&rsquo;, &lsquo;try&rsquo;, &lsquo;unset&rsquo;, &lsquo;use&rsquo;, &lsquo;var&rsquo;, &lsquo;while&rsquo;, &lsquo;xor&rsquo;</p>
+</blockquote>
+<p>2、类名<strong>必须</strong>与文件名一样</p>
+<p>3、类的命名<strong>必须</strong>遵循 <code>StudlyCaps</code> 大写开头的驼峰命名规范</p>
+<p>4、方法名称<strong>必须</strong>符合 <code>camelCase</code> 式的小写开头驼峰命名规范</p>
+<p>5、类中的常量所有字母都<strong>必须</strong>大写，单词间用下划线分隔</p>
+<p>6、变量<strong>必须</strong>使用小驼峰命名风格</p>
+<p>7、<strong>杜绝</strong>无意义的参数名和数值</p>
+<p>8、方法参数注释，<strong>申明</strong>参数类型和返回值类型</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-php" data-lang="php">/**
+ * 管理后台获取优惠券发送记录。
+ *
+ * @author 7031 2018-02-23
+ * @modify 7031 2019-02-25 修复了 SQL 性能问题。
+ *
+ * @param int    $couponId      优惠券ID。
+ * @param string $username      用户名。
+ * @param string $mobilephone   用户手机号。
+ * @param int    $page          当前分页页码。
+ * @param int    $count         每页显示条数。
+ * @param array  $data          请求参数。
+ *
+ * @return string     			返回类型
+ * ------------------- eg:start ---------------------
+ * $data = [
+ *     &#39;username&#39; =&gt; &#39;用户账号,没有时传空字符串&#39;,
+ *     &#39;age&#39;      =&gt; &#39;用户年龄,没有时传0&#39;,
+ * ];
+ * ------------------- eg:end -----------------------
+ *
+ * @return array
+ */
+public static function getBackendSendHistory(
+	int $couponId, 
+	string $username, 
+	string $mobilephone, 
+	int $page, 
+	int $count, 
+	array $data
+) :array{
+	// 方法体
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>9、方法的代码行数尽量控制在40行之内</p>
+<blockquote>
+<p>如果发现自己的代码超过了 40 行，那么就需要考虑自己的代码是不是有拆分不合理的地方。特殊情况允许超过 40 行。但是，整个方法里面的代码必须是简单的判断逻辑。不包含复杂的业务判断逻辑。因为，不同的业务判断最佳实践是单独封装一个方法。</p>
+</blockquote>
+<h3 id="三--代码层级规范">三  代码层级规范</h3>
+<p>采用 <code>msvc</code> 开发模式，与传统的 <code>mvc</code> 模式多了一个 <code>service</code>层</p>
+<p>Model：</p>
+<ul>
+<li>关联关系(relation)</li>
+<li>表属性(property)</li>
+<li>模型事件(model event)</li>
+<li>访问器、修改器</li>
+<li>序列化</li>
+</ul>
+<p>Service：</p>
+<ul>
+<li>业务逻辑处理</li>
+<li>事务</li>
+<li>缓存</li>
+<li>抛出异常</li>
+</ul>
+<p>View：</p>
+<ul>
+<li>数据渲染</li>
+</ul>
+<p>Controller：</p>
+<ul>
+<li>
+<p>参数数据验证（大型项目中在请求中间件中处理或网关中处理）</p>
+</li>
+<li>
+<p>对 Service 的各种情况进行处理，理想情况下，Service 中出现的所有非理想结果都应该抛出异常，由 Controller 进行捕获后处理给用户。</p>
+</li>
+<li>
+<p>返回想要的数据格式（json或html）</p>
+</li>
+</ul>
+<h3 id="四-代码提交流程规范">四 代码提交流程规范</h3>
+<p>1、commit message 规范</p>
+<ul>
+<li>feat : 新功能</li>
+<li>fix：修复bug</li>
+<li>refactory：方法重构</li>
+<li>docs:修改文档</li>
+</ul>
+<blockquote>
+<p>eg：<code> git commit -m 'feat:新功能'</code></p>
+</blockquote>
+<p>2、没有完善及后期需要优化的代码打上 <code>todo</code>标签，后期利用编辑器可以统一查看，以免遗忘</p>
+<p>3、代码提交到 自己的远程 分支后，需要在 <code>gitlab</code> 上提交 <code>merge request</code> ，由代码审核人通过后，方能合并到 <code>develop</code></p>
+<p>4、代码提交时加入了代码检测工具，主要检测代码格式是否符合国际规范(PSR-1,PSR-2)</p>
+<p><img src="https://blog.summer90.top/images/standard/2.png" /></p>
+<blockquote>
+<p>在项目根目录下执行   ./vendor/bin/phpcbf &ndash;standard=PSR2,PSR1 frontend/controllers/ArticleController.php，即可修复代码格式。注意超出 120 字符的错误需要自己手动修复</p>
+</blockquote>
+<p>5、代码拉取采用 <code>git pull --rebase origin develop</code></p>
+<blockquote>
+<p><code>git rebase </code> 的好处可以自行百度</p>
+</blockquote>
+<hr>
+<p>[代码规范]</p>
+<ol>
+<li><a href="https://www.jianshu.com/p/fa7830236de3">https://www.jianshu.com/p/fa7830236de3</a></li>
+<li><a href="https://www.cnblogs.com/zx-admin/p/10880150.html">https://www.cnblogs.com/zx-admin/p/10880150.html</a></li>
+<li><a href="https://www.cnblogs.com/grimm/p/5398170.html">https://www.cnblogs.com/grimm/p/5398170.html</a></li>
+</ol>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Summer</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2018-10-29
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83/">代码规范</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/manual/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Hugo enev主题使用手册</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+  <a href="https://summer90xia.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2016 - 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Summer</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/raphael@2.2.7/raphael.min.js" integrity="sha256-67By+NpOtm9ka1R6xpUefeGOY8kWWHHRAKlvaTJ7ONI=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/flowchart.js@1.8.0/release/flowchart.min.js" integrity="sha256-zNGWjubXoY6rb5MnmpBNefO0RgoVYfle9p0tvOQM+6k=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.js" integrity="sha256-4O4pS1SH31ZqrSO2A/2QJTVjTPqVe+jnYgOWUVr7EEc=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/snapsvg@0.5.1/dist/snap.svg-min.js" integrity="sha256-oI+elz+sIm+jpn8F/qEspKoKveTc5uKeFHNNVexe6d8=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/underscore@1.8.3/underscore-min.js" integrity="sha256-obZACiHd7gkOk9iIL/pimWMTJ4W/pBsKu+oZnSeBIek=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.js" integrity="sha384-8748Vn52gHJYJI0XEuPB2QlPVNUkJlJn9tHqKec6J3q2r9l8fvRxrgn/E5ZHV0sP" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.css" integrity="sha384-6QbLKJMz5dS3adWSeINZe74uSydBGFbnzaAYmp+tKyq60S7H2p6V7g1TysM5lAaF" crossorigin="anonymous">
+
+
+
+<script type="text/javascript" src="/js/main.min.d7b7ada643c9c1a983026e177f141f7363b4640d619caf01d8831a6718cd44ea.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+<script id="baidu_analytics">
+  var _hmt = _hmt || [];
+  (function() {
+    if (window.location.hostname === 'localhost') return;
+    var hm = document.createElement("script"); hm.async = true;
+    hm.src = "https://hm.baidu.com/hm.js?fc8cf18648f58ac4ad0594547ec6c1e3";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+<script id="baidu_push">
+  (function(){
+    if (window.location.hostname === 'localhost') return;
+    var bp = document.createElement('script'); bp.async = true;
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+      bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+      bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+  })();
+</script>
+
+
+<script src="/js/"></script>
+
+
+</body>
+</html>

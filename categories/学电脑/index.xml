@@ -6,10 +6,21 @@
     <description>Recent content in 学电脑 on Summer&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 15 Oct 2020 09:59:54 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 29 Oct 2020 09:40:19 +0800</lastBuildDate>
     
 	<atom:link href="https://summer90xia.github.io/categories/%E5%AD%A6%E7%94%B5%E8%84%91/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>xunsearch实战手册</title>
+      <link>https://summer90xia.github.io/post/xunsearch/</link>
+      <pubDate>Thu, 29 Oct 2020 09:40:19 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/xunsearch/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;xunsearch结合yii的使用案例&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
     
     <item>
       <title>WSL&#43;docker</title>
@@ -52,6 +63,17 @@
       <guid>https://summer90xia.github.io/post/es/</guid>
       <description>&lt;blockquote&gt;
 &lt;p&gt;大致梳理一下Elasticsearch+kibana联合使用的方法&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>经典面试题</title>
+      <link>https://summer90xia.github.io/post/questions/</link>
+      <pubDate>Sun, 29 Mar 2020 10:14:57 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/questions/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;将面试中遇到的经典问题做个收藏&lt;/p&gt;
 &lt;/blockquote&gt;</description>
     </item>
     
@@ -357,6 +379,17 @@ benchmarkChart.setOption(option);
 &lt;p&gt;Copy from &lt;a href=&#34;https://laozhu.me/post/hugo-nuo-post-preview/&#34;&gt;《Hugo 主题 Nuo 文章样式预览》&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;这篇文章集中说明主题所支持的 Markdown 语法和 Hugo Shortcodes 插件，你也可以在这里预览到他们的样子。如果你不喜欢某些样式，可以去修改 css/ 文件夹下的 .scss 文件。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>代码规范</title>
+      <link>https://summer90xia.github.io/post/standard/</link>
+      <pubDate>Mon, 29 Oct 2018 11:30:11 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/standard/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;代码风格规范化是一个程序员必备的素质&lt;/p&gt;
+&lt;/blockquote&gt;</description>
     </item>
     
   </channel>

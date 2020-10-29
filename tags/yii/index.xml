@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>yii on Summer&#39;s Blog</title>
+    <link>https://summer90xia.github.io/tags/yii/</link>
+    <description>Recent content in yii on Summer&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Thu, 29 Oct 2020 09:40:19 +0800</lastBuildDate>
+    
+	<atom:link href="https://summer90xia.github.io/tags/yii/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>xunsearch实战手册</title>
+      <link>https://summer90xia.github.io/post/xunsearch/</link>
+      <pubDate>Thu, 29 Oct 2020 09:40:19 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/xunsearch/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;xunsearch结合yii的使用案例&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+  </channel>
+</rss>
