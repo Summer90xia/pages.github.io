@@ -6,11 +6,7 @@
     <description>Recent content in 算法 on Summer&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 17 Jan 2020 18:07:43 +0800</lastBuildDate>
-    
-	<atom:link href="https://summer90xia.github.io/tags/%E7%AE%97%E6%B3%95/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Fri, 17 Jan 2020 18:07:43 +0800</lastBuildDate><atom:link href="https://summer90xia.github.io/tags/%E7%AE%97%E6%B3%95/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>公交线路查询算法</title>
       <link>https://summer90xia.github.io/post/bus/</link>

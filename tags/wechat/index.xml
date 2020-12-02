@@ -6,11 +6,7 @@
     <description>Recent content in wechat on Summer&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 21 Apr 2019 12:16:06 +0800</lastBuildDate>
-    
-	<atom:link href="https://summer90xia.github.io/tags/wechat/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Sun, 21 Apr 2019 12:16:06 +0800</lastBuildDate><atom:link href="https://summer90xia.github.io/tags/wechat/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>微信授权登录</title>
       <link>https://summer90xia.github.io/post/wechat_auth/</link>

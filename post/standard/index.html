@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.74.3 with theme even" />
+<meta name="generator" content="Hugo 0.79.0 with theme even" />
 
 
 <link rel="canonical" href="https://summer90xia.github.io/post/standard/" />
@@ -35,7 +35,7 @@
 
 <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
-<link href="/sass/main.min.8c3cbcb0324c2bb4875ceccba4007cbad4b4ac8377f33af9953c3e7684534a50.css" rel="stylesheet">
+<link href="/sass/main.min.b5a744db6de49a86cadafb3b70f555ab443f83c307a483402259e94726b045ff.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 <link rel="stylesheet" href="/css/">
 
@@ -211,7 +211,7 @@
 </span><span class="lnt">7
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+<pre class="chroma"><code class="language-php" data-lang="php"><span class="o">&lt;?</span><span class="nx">php</span>
     
 <span class="k">namespace</span> <span class="nx">core</span><span class="p">;</span>
 
@@ -232,7 +232,7 @@
 </span><span class="lnt">7
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+<pre class="chroma"><code class="language-php" data-lang="php"><span class="o">&lt;?</span><span class="nx">php</span>
 <span class="k">namespace</span> <span class="nx">Lib\Databaes</span><span class="p">;</span>
  
 <span class="k">class</span> <span class="nc">Mysql</span> <span class="k">extends</span> <span class="nx">ParentClass</span> <span class="k">implements</span> <span class="nx">\PDO</span><span class="p">,</span> <span class="nx">\DB</span>
@@ -258,7 +258,7 @@
 </span><span class="lnt">9
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+<pre class="chroma"><code class="language-php" data-lang="php"><span class="o">&lt;?</span><span class="nx">php</span>
 <span class="k">namespace</span> <span class="nx">Lib\Databaes</span><span class="p">;</span>
  
 <span class="k">class</span> <span class="nc">Mysql</span> <span class="k">extends</span> <span class="nx">ParentClass</span> <span class="k">implements</span> <span class="nx">\PDO</span><span class="p">,</span> <span class="nx">\DB</span>
@@ -282,14 +282,14 @@
 </span><span class="lnt">8
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-php" data-lang="php">namespace Lib\Databaes;
+<pre class="chroma"><code class="language-php" data-lang="php"><span class="k">namespace</span> <span class="nx">Lib\Databaes</span><span class="p">;</span>
  
-class Mysql extends ParentClass implements \PDO, \DB
-{
-    public getInfo ($name, $age, $gender = 1)
-    {
-    }
-}
+<span class="k">class</span> <span class="nc">Mysql</span> <span class="k">extends</span> <span class="nx">ParentClass</span> <span class="k">implements</span> <span class="nx">\PDO</span><span class="p">,</span> <span class="nx">\DB</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="nx">getInfo</span> <span class="p">(</span><span class="nv">$name</span><span class="p">,</span> <span class="nv">$age</span><span class="p">,</span> <span class="nv">$gender</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="p">{</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 </code></pre></td></tr></table>
 </div>
 </div><p>11、当用到抽象(abstract)和终结(final)来做类声明时，它们必须放在可见性声明(public 还是protected还是private)的前面。而当用到静态(static)来做类声明时，则必须放在可见性声明的后面。</p>
@@ -311,7 +311,7 @@ class Mysql extends ParentClass implements \PDO, \DB
 </span><span class="lnt">14
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+<pre class="chroma"><code class="language-php" data-lang="php"><span class="o">&lt;?</span><span class="nx">php</span>
 <span class="k">namespace</span> <span class="nx">Vendor\Package</span><span class="p">;</span>
  
 <span class="k">abstract</span> <span class="k">class</span> <span class="nc">ClassName</span>
@@ -343,13 +343,13 @@ class Mysql extends ParentClass implements \PDO, \DB
 </span><span class="lnt">7
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-php" data-lang="php">if ($expr1) { // 左右空格
-    // if body
-} elseif ($expr2) { // elesif 连着写
-    // elseif body
-} else {
-    // else body;
-}
+<pre class="chroma"><code class="language-php" data-lang="php"><span class="k">if</span> <span class="p">(</span><span class="nv">$expr1</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// 左右空格
+</span><span class="c1"></span>    <span class="c1">// if body
+</span><span class="c1"></span><span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nv">$expr2</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// elesif 连着写
+</span><span class="c1"></span>    <span class="c1">// elseif body
+</span><span class="c1"></span><span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="c1">// else body;
+</span><span class="c1"></span><span class="p">}</span>
 </code></pre></td></tr></table>
 </div>
 </div><p>13、方法中写数组参数时格式如下</p>
@@ -363,12 +363,12 @@ class Mysql extends ParentClass implements \PDO, \DB
 </span><span class="lnt">6
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-php" data-lang="php">$object-&gt;callFunc([
-    &#39;userId&#39;   =&gt; 1,
-    &#39;username&#39; =&gt; &#39;sam&#39;,
-    &#39;age&#39;      =&gt; 20,
-    &#39;sex&#39;      =&gt; &#39;male&#39;
-]);
+<pre class="chroma"><code class="language-php" data-lang="php"><span class="nv">$object</span><span class="o">-&gt;</span><span class="na">callFunc</span><span class="p">([</span>
+    <span class="s1">&#39;userId&#39;</span>   <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s1">&#39;username&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;sam&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;age&#39;</span>      <span class="o">=&gt;</span> <span class="mi">20</span><span class="p">,</span>
+    <span class="s1">&#39;sex&#39;</span>      <span class="o">=&gt;</span> <span class="s1">&#39;male&#39;</span>
+<span class="p">]);</span>
 </code></pre></td></tr></table>
 </div>
 </div><p>此种格式的编辑器配置方法如下：</p>
@@ -424,39 +424,39 @@ class Mysql extends ParentClass implements \PDO, \DB
 </span><span class="lnt">33
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-php" data-lang="php">/**
- * 管理后台获取优惠券发送记录。
- *
- * @author 7031 2018-02-23
- * @modify 7031 2019-02-25 修复了 SQL 性能问题。
- *
- * @param int    $couponId      优惠券ID。
- * @param string $username      用户名。
- * @param string $mobilephone   用户手机号。
- * @param int    $page          当前分页页码。
- * @param int    $count         每页显示条数。
- * @param array  $data          请求参数。
- *
- * @return string     			返回类型
- * ------------------- eg:start ---------------------
- * $data = [
- *     &#39;username&#39; =&gt; &#39;用户账号,没有时传空字符串&#39;,
- *     &#39;age&#39;      =&gt; &#39;用户年龄,没有时传0&#39;,
- * ];
- * ------------------- eg:end -----------------------
- *
- * @return array
- */
-public static function getBackendSendHistory(
-	int $couponId, 
-	string $username, 
-	string $mobilephone, 
-	int $page, 
-	int $count, 
-	array $data
-) :array{
-	// 方法体
-}
+<pre class="chroma"><code class="language-php" data-lang="php"><span class="sd">/**
+</span><span class="sd"> * 管理后台获取优惠券发送记录。
+</span><span class="sd"> *
+</span><span class="sd"> * @author 7031 2018-02-23
+</span><span class="sd"> * @modify 7031 2019-02-25 修复了 SQL 性能问题。
+</span><span class="sd"> *
+</span><span class="sd"> * @param int    $couponId      优惠券ID。
+</span><span class="sd"> * @param string $username      用户名。
+</span><span class="sd"> * @param string $mobilephone   用户手机号。
+</span><span class="sd"> * @param int    $page          当前分页页码。
+</span><span class="sd"> * @param int    $count         每页显示条数。
+</span><span class="sd"> * @param array  $data          请求参数。
+</span><span class="sd"> *
+</span><span class="sd"> * @return string     			返回类型
+</span><span class="sd"> * ------------------- eg:start ---------------------
+</span><span class="sd"> * $data = [
+</span><span class="sd"> *     &#39;username&#39; =&gt; &#39;用户账号,没有时传空字符串&#39;,
+</span><span class="sd"> *     &#39;age&#39;      =&gt; &#39;用户年龄,没有时传0&#39;,
+</span><span class="sd"> * ];
+</span><span class="sd"> * ------------------- eg:end -----------------------
+</span><span class="sd"> *
+</span><span class="sd"> * @return array
+</span><span class="sd"> */</span>
+<span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">getBackendSendHistory</span><span class="p">(</span>
+	<span class="nx">int</span> <span class="nv">$couponId</span><span class="p">,</span> 
+	<span class="nx">string</span> <span class="nv">$username</span><span class="p">,</span> 
+	<span class="nx">string</span> <span class="nv">$mobilephone</span><span class="p">,</span> 
+	<span class="nx">int</span> <span class="nv">$page</span><span class="p">,</span> 
+	<span class="nx">int</span> <span class="nv">$count</span><span class="p">,</span> 
+	<span class="k">array</span> <span class="nv">$data</span>
+<span class="p">)</span> <span class="o">:</span><span class="k">array</span><span class="p">{</span>
+	<span class="c1">// 方法体
+</span><span class="c1"></span><span class="p">}</span>
 </code></pre></td></tr></table>
 </div>
 </div><p>9、方法的代码行数尽量控制在40行之内</p>
@@ -590,13 +590,10 @@ public static function getBackendSendHistory(
   <span class="copyright-year">
     &copy; 
     2016 - 
-    2020
-    <span class="heart">
-      <i class="iconfont icon-heart"></i>
-    </span>
-    <span class="author">Summer</span>
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>Summer</span>
   </span>
 </div>
+
     </footer>
 
     <div class="back-to-top" id="back-to-top">
@@ -611,14 +608,14 @@ public static function getBackendSendHistory(
 
 
 
-<script type="text/javascript" src="/js/main.min.d7b7ada643c9c1a983026e177f141f7363b4640d619caf01d8831a6718cd44ea.js"></script>
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
   <script type="text/javascript">
     window.MathJax = {
-      showProcessingMessages: false,
-      messageStyle: 'none'
+      tex: {
+        }
     };
   </script>
-  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
 
 <script id="baidu_analytics">
   var _hmt = _hmt || [];

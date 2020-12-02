@@ -10,28 +10,49 @@
   
   <url>
     <loc>https://summer90xia.github.io/categories/</loc>
-    <lastmod>2020-10-29T09:40:19+08:00</lastmod>
+    <lastmod>2020-12-02T09:53:13+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://summer90xia.github.io/tags/mysql/</loc>
+    <lastmod>2020-12-02T09:53:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://summer90xia.github.io/post/</loc>
-    <lastmod>2020-10-29T09:40:19+08:00</lastmod>
+    <lastmod>2020-12-02T09:53:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://summer90xia.github.io/</loc>
-    <lastmod>2020-10-29T09:40:19+08:00</lastmod>
+    <lastmod>2020-12-02T09:53:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://summer90xia.github.io/tags/</loc>
-    <lastmod>2020-10-29T09:40:19+08:00</lastmod>
+    <lastmod>2020-12-02T09:53:13+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://summer90xia.github.io/post/mysql-select/</loc>
+    <lastmod>2020-12-02T09:53:13+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://summer90xia.github.io/categories/%E5%AD%A6%E7%94%B5%E8%84%91/</loc>
+    <lastmod>2020-12-02T09:53:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -52,13 +73,6 @@
   
   <url>
     <loc>https://summer90xia.github.io/tags/yii/</loc>
-    <lastmod>2020-10-29T09:40:19+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://summer90xia.github.io/categories/%E5%AD%A6%E7%94%B5%E8%84%91/</loc>
     <lastmod>2020-10-29T09:40:19+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -234,13 +248,6 @@
   
   <url>
     <loc>https://summer90xia.github.io/post/mysql-replication/</loc>
-    <lastmod>2019-12-31T14:56:20+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://summer90xia.github.io/tags/mysql/</loc>
     <lastmod>2019-12-31T14:56:20+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>

@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.74.3 with theme even" />
+<meta name="generator" content="Hugo 0.79.0 with theme even" />
 
 
 <link rel="canonical" href="https://summer90xia.github.io/post/mysql-replication/" />
@@ -35,7 +35,7 @@
 
 <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
-<link href="/sass/main.min.8c3cbcb0324c2bb4875ceccba4007cbad4b4ac8377f33af9953c3e7684534a50.css" rel="stylesheet">
+<link href="/sass/main.min.b5a744db6de49a86cadafb3b70f555ab443f83c307a483402259e94726b045ff.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 <link rel="stylesheet" href="/css/">
 
@@ -182,36 +182,36 @@
 </span><span class="lnt">30
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="k">version</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;2&#39;</span><span class="w">
-</span><span class="w"></span><span class="k">services</span><span class="p">:</span><span class="w">
-</span><span class="w">  </span><span class="k">mysql-master</span><span class="p">:</span><span class="w">
-</span><span class="w">    </span><span class="k">build</span><span class="p">:</span><span class="w">
-</span><span class="w">      </span><span class="k">context</span><span class="p">:</span><span class="w"> </span>./<span class="w">
-</span><span class="w">      </span><span class="k">dockerfile</span><span class="p">:</span><span class="w"> </span>master/Dockerfile<span class="w">
-</span><span class="w">    </span><span class="k">environment</span><span class="p">:</span><span class="w">
+<pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;2&#39;</span><span class="w">
+</span><span class="w"></span><span class="nt">services</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="nt">mysql-master</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span><span class="nt">build</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span><span class="nt">context</span><span class="p">:</span><span class="w"> </span><span class="l">./</span><span class="w">
+</span><span class="w">      </span><span class="nt">dockerfile</span><span class="p">:</span><span class="w"> </span><span class="l">master/Dockerfile</span><span class="w">
+</span><span class="w">    </span><span class="nt">environment</span><span class="p">:</span><span class="w">
 </span><span class="w">      </span>- <span class="s2">&#34;MYSQL_ROOT_PASSWORD=root&#34;</span><span class="w">
 </span><span class="w">      </span>- <span class="s2">&#34;MYSQL_DATABASE=replicas_db&#34;</span><span class="w">
-</span><span class="w">    </span><span class="k">links</span><span class="p">:</span><span class="w">
-</span><span class="w">      </span>- mysql-slave<span class="w">
-</span><span class="w">    </span><span class="k">ports</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span><span class="nt">links</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span>- <span class="l">mysql-slave</span><span class="w">
+</span><span class="w">    </span><span class="nt">ports</span><span class="p">:</span><span class="w">
 </span><span class="w">      </span>- <span class="s2">&#34;33065:3306&#34;</span><span class="w">
-</span><span class="w">    </span><span class="k">restart</span><span class="p">:</span><span class="w"> </span>always<span class="w">
-</span><span class="w">    </span><span class="k">hostname</span><span class="p">:</span><span class="w"> </span>mysql-master<span class="w">
-</span><span class="w">    </span><span class="k">volumes</span><span class="p">:</span><span class="w">
-</span><span class="w">    </span>- /home/summer/homework/mysql/mysql-files<span class="p">:</span>/var/lib/mysql-files/<span class="w">
-</span><span class="w">  </span><span class="k">mysql-slave</span><span class="p">:</span><span class="w">
-</span><span class="w">    </span><span class="k">build</span><span class="p">:</span><span class="w">
-</span><span class="w">      </span><span class="k">context</span><span class="p">:</span><span class="w"> </span>./<span class="w">
-</span><span class="w">      </span><span class="k">dockerfile</span><span class="p">:</span><span class="w"> </span>slave/Dockerfile<span class="w">
-</span><span class="w">    </span><span class="k">environment</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l">always</span><span class="w">
+</span><span class="w">    </span><span class="nt">hostname</span><span class="p">:</span><span class="w"> </span><span class="l">mysql-master</span><span class="w">
+</span><span class="w">    </span><span class="nt">volumes</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span>- <span class="l">/home/summer/homework/mysql/mysql-files:/var/lib/mysql-files/</span><span class="w">
+</span><span class="w">  </span><span class="nt">mysql-slave</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span><span class="nt">build</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span><span class="nt">context</span><span class="p">:</span><span class="w"> </span><span class="l">./</span><span class="w">
+</span><span class="w">      </span><span class="nt">dockerfile</span><span class="p">:</span><span class="w"> </span><span class="l">slave/Dockerfile</span><span class="w">
+</span><span class="w">    </span><span class="nt">environment</span><span class="p">:</span><span class="w">
 </span><span class="w">      </span>- <span class="s2">&#34;MYSQL_ROOT_PASSWORD=root&#34;</span><span class="w">
 </span><span class="w">      </span>- <span class="s2">&#34;MYSQL_DATABASE=replicas_db&#34;</span><span class="w">
-</span><span class="w">    </span><span class="k">ports</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span><span class="nt">ports</span><span class="p">:</span><span class="w">
 </span><span class="w">      </span>- <span class="s2">&#34;33066:3306&#34;</span><span class="w">
-</span><span class="w">    </span><span class="k">restart</span><span class="p">:</span><span class="w"> </span>always<span class="w">
-</span><span class="w">    </span><span class="k">hostname</span><span class="p">:</span><span class="w"> </span>mysql-slave<span class="w">
-</span><span class="w">    </span><span class="k">volumes</span><span class="p">:</span><span class="w">
-</span><span class="w">    </span>- /home/summer/homework/mysql/mysql-files<span class="p">:</span>/var/lib/mysql-files/<span class="w">
+</span><span class="w">    </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l">always</span><span class="w">
+</span><span class="w">    </span><span class="nt">hostname</span><span class="p">:</span><span class="w"> </span><span class="l">mysql-slave</span><span class="w">
+</span><span class="w">    </span><span class="nt">volumes</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span>- <span class="l">/home/summer/homework/mysql/mysql-files:/var/lib/mysql-files/</span><span class="w">
 </span></code></pre></td></tr></table>
 </div>
 </div><p>2、在工作目录下创建master/Dockerfile、slave/Dockerfile 文件，内容如下</p>
@@ -400,13 +400,10 @@
   <span class="copyright-year">
     &copy; 
     2016 - 
-    2020
-    <span class="heart">
-      <i class="iconfont icon-heart"></i>
-    </span>
-    <span class="author">Summer</span>
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>Summer</span>
   </span>
 </div>
+
     </footer>
 
     <div class="back-to-top" id="back-to-top">
@@ -421,14 +418,14 @@
 
 
 
-<script type="text/javascript" src="/js/main.min.d7b7ada643c9c1a983026e177f141f7363b4640d619caf01d8831a6718cd44ea.js"></script>
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
   <script type="text/javascript">
     window.MathJax = {
-      showProcessingMessages: false,
-      messageStyle: 'none'
+      tex: {
+        }
     };
   </script>
-  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
 
 <script id="baidu_analytics">
   var _hmt = _hmt || [];

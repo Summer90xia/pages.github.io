@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.74.3 with theme even" />
+<meta name="generator" content="Hugo 0.79.0 with theme even" />
 
 
 <link rel="canonical" href="https://summer90xia.github.io/post/mysql/" />
@@ -35,7 +35,7 @@
 
 <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
-<link href="/sass/main.min.8c3cbcb0324c2bb4875ceccba4007cbad4b4ac8377f33af9953c3e7684534a50.css" rel="stylesheet">
+<link href="/sass/main.min.b5a744db6de49a86cadafb3b70f555ab443f83c307a483402259e94726b045ff.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 <link rel="stylesheet" href="/css/">
 
@@ -448,15 +448,15 @@
 </span><span class="lnt">10
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="nv">slow_query_log</span><span class="o">=</span><span class="m">1</span>       <span class="c1">#是否启用慢查询日志，1为启用，0为禁用</span>  
-<span class="nv">slow_query_log_file</span><span class="o">=</span>slow.log       <span class="c1">#指定慢查询日志文件的路径和名字，可使用绝对路径指定；默认值是&#39;主机名_slow.log&#39;，位于datadir目录</span>  
-<span class="nv">long_query_time</span><span class="o">=</span><span class="m">2</span>     <span class="c1">#SQL语句运行时间阈值，执行时间大于参数值的语句才会被记录下来</span>  
-<span class="nv">min_examined_row_limit</span><span class="o">=</span><span class="m">100</span>     <span class="c1">#SQL语句检测的记录数少于设定值的语句不会被记录到慢查询日志，即使这个语句执行时间超过了long_query_time的阈值</span>  
-<span class="nv">log_queries_not_using_indexes</span><span class="o">=</span><span class="m">1</span>   <span class="c1">#将没有使用索引的语句记录到慢查询日志</span>  
-<span class="nv">log_throttle_queries_not_using_indexes</span><span class="o">=</span><span class="m">10</span>     <span class="c1">#设定每分钟记录到日志的未使用索引的语句数目，超过这个数目后只记录语句数量和花费的总时间</span>  
-log-slow-admin-statements<span class="o">=</span><span class="m">1</span>    <span class="c1">#记录执行缓慢的管理SQL，如alter table,analyze table, check table, create index, drop index, optimize table, repair table等。</span>  
-<span class="nv">log_slow_slave_statements</span><span class="o">=</span><span class="m">0</span>    <span class="c1">#记录从库上执行的慢查询语句</span>  
-<span class="nv">log_timestamps</span><span class="o">=</span>system     <span class="c1">#5.7版本新增时间戳所属时区参数，默认记录UTC时区的时间戳到慢查询日志，应修改为记录系统时区</span>  
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="nv">slow_query_log</span><span class="o">=</span><span class="m">1</span>       <span class="c1">#是否启用慢查询日志，1为启用，0为禁用  </span>
+<span class="nv">slow_query_log_file</span><span class="o">=</span>slow.log       <span class="c1">#指定慢查询日志文件的路径和名字，可使用绝对路径指定；默认值是&#39;主机名_slow.log&#39;，位于datadir目录  </span>
+<span class="nv">long_query_time</span><span class="o">=</span><span class="m">2</span>     <span class="c1">#SQL语句运行时间阈值，执行时间大于参数值的语句才会被记录下来  </span>
+<span class="nv">min_examined_row_limit</span><span class="o">=</span><span class="m">100</span>     <span class="c1">#SQL语句检测的记录数少于设定值的语句不会被记录到慢查询日志，即使这个语句执行时间超过了long_query_time的阈值  </span>
+<span class="nv">log_queries_not_using_indexes</span><span class="o">=</span><span class="m">1</span>   <span class="c1">#将没有使用索引的语句记录到慢查询日志  </span>
+<span class="nv">log_throttle_queries_not_using_indexes</span><span class="o">=</span><span class="m">10</span>     <span class="c1">#设定每分钟记录到日志的未使用索引的语句数目，超过这个数目后只记录语句数量和花费的总时间  </span>
+log-slow-admin-statements<span class="o">=</span><span class="m">1</span>    <span class="c1">#记录执行缓慢的管理SQL，如alter table,analyze table, check table, create index, drop index, optimize table, repair table等。  </span>
+<span class="nv">log_slow_slave_statements</span><span class="o">=</span><span class="m">0</span>    <span class="c1">#记录从库上执行的慢查询语句  </span>
+<span class="nv">log_timestamps</span><span class="o">=</span>system     <span class="c1">#5.7版本新增时间戳所属时区参数，默认记录UTC时区的时间戳到慢查询日志，应修改为记录系统时区  </span>
 <span class="nv">log_output</span><span class="o">=</span>FILE,TABLE     <span class="c1">#指定慢查询日志的输出方式，从5.5版本开始可以记录到日志文件(FILE，慢查询日志)和数据库表(TABLE，mysql.slow_log)中</span>
 </code></pre></td></tr></table>
 </div>
@@ -663,13 +663,10 @@ Extra：执行情况的说明和描述
   <span class="copyright-year">
     &copy; 
     2016 - 
-    2020
-    <span class="heart">
-      <i class="iconfont icon-heart"></i>
-    </span>
-    <span class="author">Summer</span>
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>Summer</span>
   </span>
 </div>
+
     </footer>
 
     <div class="back-to-top" id="back-to-top">
@@ -684,14 +681,14 @@ Extra：执行情况的说明和描述
 
 
 
-<script type="text/javascript" src="/js/main.min.d7b7ada643c9c1a983026e177f141f7363b4640d619caf01d8831a6718cd44ea.js"></script>
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
   <script type="text/javascript">
     window.MathJax = {
-      showProcessingMessages: false,
-      messageStyle: 'none'
+      tex: {
+        }
     };
   </script>
-  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
 
 <script id="baidu_analytics">
   var _hmt = _hmt || [];

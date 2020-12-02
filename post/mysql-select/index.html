@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>Summer&#39;s Blog</title>
+  <title>为什么SELECT * 会导致查询效率低 - Summer&#39;s Blog</title>
   <meta name="renderer" content="webkit" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
@@ -16,7 +16,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="Summer" /><meta name="description" content="不会武术的厨师不是一个好程序员" /><meta name="keywords" content="Summer&#39;s Blog, mysql, redis" />
+<meta name="author" content="Summer" /><meta name="description" content="为什么SELECT * 会导致查询效率低" /><meta name="keywords" content="mysql, 优化, select" />
 
 
 <meta name="baidu-site-verification" content="QuqVC3Anf0" />
@@ -26,9 +26,7 @@
 <meta name="generator" content="Hugo 0.79.0 with theme even" />
 
 
-<link rel="canonical" href="https://summer90xia.github.io/" />
-  <link href="https://summer90xia.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Summer&#39;s Blog" />
-  <link href="https://summer90xia.github.io/index.xml" rel="feed" type="application/rss+xml" title="Summer&#39;s Blog" />
+<link rel="canonical" href="https://summer90xia.github.io/post/mysql-select/" />
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -42,16 +40,24 @@
 <link rel="stylesheet" href="/css/">
 
 
-<meta property="og:title" content="Summer&#39;s Blog" />
-<meta property="og:description" content="不会武术的厨师不是一个好程序员" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://summer90xia.github.io/" />
-<meta property="og:updated_time" content="2020-12-02T09:53:13+08:00" />
-<meta itemprop="name" content="Summer&#39;s Blog">
-<meta itemprop="description" content="不会武术的厨师不是一个好程序员">
+<meta property="og:title" content="为什么SELECT * 会导致查询效率低" />
+<meta property="og:description" content="为什么SELECT * 会导致查询效率低" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://summer90xia.github.io/post/mysql-select/" />
+<meta property="article:published_time" content="2020-12-02T09:53:13+08:00" />
+<meta property="article:modified_time" content="2020-12-02T09:53:13+08:00" />
+<meta itemprop="name" content="为什么SELECT * 会导致查询效率低">
+<meta itemprop="description" content="为什么SELECT * 会导致查询效率低">
+<meta itemprop="datePublished" content="2020-12-02T09:53:13+08:00" />
+<meta itemprop="dateModified" content="2020-12-02T09:53:13+08:00" />
+<meta itemprop="wordCount" content="981">
+
+
+
+<meta itemprop="keywords" content="mysql," />
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Summer&#39;s Blog"/>
-<meta name="twitter:description" content="不会武术的厨师不是一个好程序员"/>
+<meta name="twitter:title" content="为什么SELECT * 会导致查询效率低"/>
+<meta name="twitter:description" content="为什么SELECT * 会导致查询效率低"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -115,221 +121,108 @@
     <main id="main" class="main">
       <div class="content-wrapper">
         <div id="content" class="content">
-          <section id="posts" class="posts">
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/nginx2/">使用docker实现nginx负载均衡</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2019-12-18 </span>
-      <div class="post-category">
-          <a href="/categories/%E5%AD%A6%E7%94%B5%E8%84%91/"> 学电脑 </a>
-          </div>
-        <span class="more-meta"> 约 528 字 </span>
-        <span class="more-meta"> 预计阅读 2 分钟 </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      <blockquote>
-<p>使用docker实现nginx负载均衡</p>
-</blockquote>
-    </div>
-    <div class="read-more">
-      <a href="/post/nginx2/" class="read-more-link">阅读更多</a>
-    </div>
-  </div>
-</article>
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">为什么SELECT * 会导致查询效率低</h1>
 
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/nginx1/">nginx学习笔记</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2019-12-16 </span>
-      <div class="post-category">
-          <a href="/categories/%E5%AD%A6%E7%94%B5%E8%84%91/"> 学电脑 </a>
-          </div>
-        <span class="more-meta"> 约 5951 字 </span>
-        <span class="more-meta"> 预计阅读 12 分钟 </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      <blockquote>
-<p>《深入理解Nginx》读书笔记</p>
-</blockquote>
-    </div>
-    <div class="read-more">
-      <a href="/post/nginx1/" class="read-more-link">阅读更多</a>
-    </div>
-  </div>
-</article>
+      <div class="post-meta">
+        <span class="post-time"> 2020-12-02 </span>
+        <div class="post-category">
+            <a href="/categories/%E5%AD%A6%E7%94%B5%E8%84%91/"> 学电脑 </a>
+            </div>
+          <span class="more-meta"> 约 981 字 </span>
+          <span class="more-meta"> 预计阅读 2 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
 
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/laravel&#43;protobuf/">laravel中使用protobuf</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2019-12-06 </span>
-      <div class="post-category">
-          <a href="/categories/%E5%AD%A6%E7%94%B5%E8%84%91/"> 学电脑 </a>
-          </div>
-        <span class="more-meta"> 约 537 字 </span>
-        <span class="more-meta"> 预计阅读 2 分钟 </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      <blockquote>
-<p>简单介绍下如何在laravel中使用protobuf。</p>
-</blockquote>
-    </div>
-    <div class="read-more">
-      <a href="/post/laravel&#43;protobuf/" class="read-more-link">阅读更多</a>
-    </div>
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1-不需要的列会增加数据传输时间和网络开销">1. 不需要的列会增加数据传输时间和网络开销</a></li>
+        <li><a href="#2-对于无用的大字段如-varcharblobtext会增加-io-操作">2. 对于无用的大字段，如 varchar、blob、text，会增加 io 操作</a></li>
+        <li><a href="#3-失去mysql优化器覆盖索引策略优化的可能性">3. 失去MySQL优化器“覆盖索引”策略优化的可能性</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
   </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/taiji/">陈氏太极56式拳谱</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2019-11-28 </span>
-      <div class="post-category">
-          <a href="/categories/%E4%B8%89%E8%84%9A%E7%8C%AB/"> 三脚猫 </a>
-          </div>
-        <span class="more-meta"> 约 414 字 </span>
-        <span class="more-meta"> 预计阅读 1 分钟 </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
+</div>
+    <div class="post-content">
       <blockquote>
-<p>大学期间练习了2年，收益颇多</p>
+<p>探究<code>select *</code>查询效率低的原因</p>
 </blockquote>
+<p>当被问到mysql有哪些常用的优化方法时，很多人都会提到在表查询中，一律不要使用 * 作为查询的字段列表，需要哪些字段必须明确写明。究其原因，开发手册中比较概括的提到了以下几点：</p>
+<ul>
+<li>增加查询分析器解析成本。</li>
+<li>增减字段容易与 resultMap 配置不一致。</li>
+<li>无用字段增加网络消耗，尤其是 text 类型的字段。</li>
+</ul>
+<h3 id="1-不需要的列会增加数据传输时间和网络开销">1. 不需要的列会增加数据传输时间和网络开销</h3>
+<ol>
+<li>用“SELECT * ”数据库需要解析更多的对象、字段、权限、属性等相关内容，在 SQL 语句复杂，硬解析较多的情况下，会对数据库造成沉重的负担。</li>
+<li>增大网络开销；* 有时会误带上如log、IconMD5之类的无用且大文本字段，数据传输size会几何增涨。如果DB和应用程序不在同一台机器，这种开销非常明显</li>
+<li>即使 mysql 服务器和客户端是在同一台机器上，使用的协议还是 tcp，通信也是需要额外的时间。</li>
+</ol>
+<h3 id="2-对于无用的大字段如-varcharblobtext会增加-io-操作">2. 对于无用的大字段，如 varchar、blob、text，会增加 io 操作</h3>
+<p>准确来说，长度超过 728 字节的时候，会先把超出的数据序列化到另外一个地方，因此读取这条记录会增加一次 io 操作。（MySQL InnoDB）</p>
+<h3 id="3-失去mysql优化器覆盖索引策略优化的可能性">3. 失去MySQL优化器“覆盖索引”策略优化的可能性</h3>
+<p>SELECT * 杜绝了覆盖索引的可能性，而基于MySQL优化器的“覆盖索引”策略又是速度极快，效率极高，业界极为推荐的查询优化方式。</p>
+<p>例如，有一个表为t(a,b,c,d,e,f)，其中，a为主键，b列有索引。</p>
+<p>那么，在磁盘上有两棵 B+ 树，即聚集索引和辅助索引（包括单列索引、联合索引），分别保存(a,b,c,d,e,f)和(a,b)，如果查询条件中where条件可以通过b列的索引过滤掉一部分记录，查询就会先走辅助索引，如果用户只需要a列和b列的数据，直接通过辅助索引就可以知道用户查询的数据。</p>
+<p>如果用户使用<code>select *</code>，获取了不需要的数据，则首先通过辅助索引过滤数据，然后再通过聚集索引获取所有的列，这就多了一次b+树查询，速度必然会慢很多。</p>
+<hr>
+<h4 id="建立索引的原则">建立索引的原则</h4>
+<ul>
+<li>数据量小的表不需要建立索引，建立会增加额外的索引开销</li>
+<li>不经常引用的列不要建立索引，因为不常用，即使建立了索引也没有多大意义</li>
+<li>经常频繁更新的列不要建立索引，因为肯定会影响插入或更新的效率</li>
+<li>数据重复且分布平均的字段，因此他建立索引就没有太大的效果（例如性别字段，只有男女，不适合建立索引）</li>
+<li>数据变更需要维护索引，意味着索引越多维护成本越高。</li>
+<li>更多的索引也需要更多的存储空间</li>
+</ul>
     </div>
-    <div class="read-more">
-      <a href="/post/taiji/" class="read-more-link">阅读更多</a>
-    </div>
-  </div>
-</article>
 
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/wushu/">中国武术的起源与发展</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2019-11-26 </span>
-      <div class="post-category">
-          <a href="/categories/%E4%B8%89%E8%84%9A%E7%8C%AB/"> 三脚猫 </a>
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Summer</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-12-02
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/mysql/">mysql</a>
           </div>
-        <span class="more-meta"> 约 4447 字 </span>
-        <span class="more-meta"> 预计阅读 9 分钟 </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      <blockquote>
-<p>武术爱好者对武术的一点见解</p>
-</blockquote>
-    </div>
-    <div class="read-more">
-      <a href="/post/wushu/" class="read-more-link">阅读更多</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/redis/">Redis学习笔记</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2019-10-26 </span>
-      <div class="post-category">
-          <a href="/categories/%E5%AD%A6%E7%94%B5%E8%84%91/"> 学电脑 </a>
-          </div>
-        <span class="more-meta"> 约 6002 字 </span>
-        <span class="more-meta"> 预计阅读 12 分钟 </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      <blockquote>
-<p>将自己平时工作和学习过程中对redis的了解做一个总结</p>
-</blockquote>
-    </div>
-    <div class="read-more">
-      <a href="/post/redis/" class="read-more-link">阅读更多</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/laradock&#43;xdebug/">Laradock&#43;xDebug</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2019-10-11 </span>
-      <div class="post-category">
-          <a href="/categories/%E5%AD%A6%E7%94%B5%E8%84%91/"> 学电脑 </a>
-          </div>
-        <span class="more-meta"> 约 236 字 </span>
-        <span class="more-meta"> 预计阅读 1 分钟 </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      <blockquote>
-<p>使用<code>Laradock</code> 和 <code>xDebug</code> 生成单元测试覆盖率</p>
-</blockquote>
-    </div>
-    <div class="read-more">
-      <a href="/post/laradock&#43;xdebug/" class="read-more-link">阅读更多</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/laradock/">laradock 使用文档</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2019-09-09 </span>
-      <div class="post-category">
-          <a href="/categories/%E5%AD%A6%E7%94%B5%E8%84%91/"> 学电脑 </a>
-          </div>
-        <span class="more-meta"> 约 731 字 </span>
-        <span class="more-meta"> 预计阅读 2 分钟 </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      <blockquote>
-<p>工作之余，对laradock的使用方法做了一个说明</p>
-</blockquote>
-    </div>
-    <div class="read-more">
-      <a href="/post/laradock/" class="read-more-link">阅读更多</a>
-    </div>
-  </div>
-</article>
-
-    </section>
-  
-  <nav class="pagination">
-    <a class="prev" href="/page/2/">
-        <i class="iconfont icon-left"></i>
-        <span class="prev-text">上一页</span>
-      </a>
-    <a class="next" href="/page/4/">
-        <span class="next-text">下一页</span>
-        <i class="iconfont icon-right"></i>
-      </a>
-  </nav>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/xunsearch/">
+            <span class="next-text nav-default">xunsearch实战手册</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
         </div>
         
+
+  
+
+  
 
       </div>
     </main>

@@ -6,10 +6,15 @@
     <description>Recent content in Tags on Summer&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 29 Oct 2020 09:40:19 +0800</lastBuildDate>
-    
-	<atom:link href="https://summer90xia.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
-    
+    <lastBuildDate>Wed, 02 Dec 2020 09:53:13 +0800</lastBuildDate><atom:link href="https://summer90xia.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>mysql</title>
+      <link>https://summer90xia.github.io/tags/mysql/</link>
+      <pubDate>Wed, 02 Dec 2020 09:53:13 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/tags/mysql/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>xunsearch</title>
@@ -125,15 +130,6 @@
       <pubDate>Mon, 06 Jan 2020 16:45:37 +0800</pubDate>
       
       <guid>https://summer90xia.github.io/tags/k8s/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>mysql</title>
-      <link>https://summer90xia.github.io/tags/mysql/</link>
-      <pubDate>Tue, 31 Dec 2019 14:56:20 +0800</pubDate>
-      
-      <guid>https://summer90xia.github.io/tags/mysql/</guid>
       <description></description>
     </item>
     

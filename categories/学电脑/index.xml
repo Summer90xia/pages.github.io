@@ -6,10 +6,17 @@
     <description>Recent content in 学电脑 on Summer&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 29 Oct 2020 09:40:19 +0800</lastBuildDate>
-    
-	<atom:link href="https://summer90xia.github.io/categories/%E5%AD%A6%E7%94%B5%E8%84%91/index.xml" rel="self" type="application/rss+xml" />
-    
+    <lastBuildDate>Wed, 02 Dec 2020 09:53:13 +0800</lastBuildDate><atom:link href="https://summer90xia.github.io/categories/%E5%AD%A6%E7%94%B5%E8%84%91/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>为什么SELECT * 会导致查询效率低</title>
+      <link>https://summer90xia.github.io/post/mysql-select/</link>
+      <pubDate>Wed, 02 Dec 2020 09:53:13 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/mysql-select/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;探究&lt;code&gt;select *&lt;/code&gt;查询效率低的原因&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
     
     <item>
       <title>xunsearch实战手册</title>
