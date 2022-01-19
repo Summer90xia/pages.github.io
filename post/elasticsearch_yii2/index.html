@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.79.0 with theme even" />
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
 
 
 <link rel="canonical" href="https://summer90xia.github.io/post/elasticsearch_yii2/" />
@@ -35,7 +35,7 @@
 
 <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
-<link href="/sass/main.min.b5a744db6de49a86cadafb3b70f555ab443f83c307a483402259e94726b045ff.css" rel="stylesheet">
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 <link rel="stylesheet" href="/css/">
 
@@ -48,14 +48,13 @@
 <meta property="article:modified_time" content="2020-08-20T09:05:24+08:00" />
 <meta itemprop="name" content="Elasticsearch&#43;Logstash&#43;yii2-elasticsearch实现分词搜索">
 <meta itemprop="description" content="Elasticsearch &#43; Logstash &#43; yii2-elasticsearch 实现跨境眼分词搜索">
-<meta itemprop="datePublished" content="2020-08-20T09:05:24+08:00" />
-<meta itemprop="dateModified" content="2020-08-20T09:05:24+08:00" />
-<meta itemprop="wordCount" content="3255">
+<meta itemprop="datePublished" content="2020-08-20T09:05:24&#43;08:00" />
+<meta itemprop="dateModified" content="2020-08-20T09:05:24&#43;08:00" />
+<meta itemprop="wordCount" content="3871">
 
 
 
-<meta itemprop="keywords" content="Elasticsearch,Logstash,yii2," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="Elasticsearch,Logstash,yii2," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Elasticsearch&#43;Logstash&#43;yii2-elasticsearch实现分词搜索"/>
 <meta name="twitter:description" content="Elasticsearch &#43; Logstash &#43; yii2-elasticsearch 实现跨境眼分词搜索"/>
 
@@ -131,8 +130,8 @@
         <div class="post-category">
             <a href="/categories/%E5%AD%A6%E7%94%B5%E8%84%91/"> 学电脑 </a>
             </div>
-          <span class="more-meta"> 约 3255 字 </span>
-          <span class="more-meta"> 预计阅读 7 分钟 </span>
+          <span class="more-meta"> 约 3871 字 </span>
+          <span class="more-meta"> 预计阅读 8 分钟 </span>
         <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
       </div>
     </header>
@@ -244,7 +243,7 @@
 <pre class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="nt">network.host</span><span class="p">:</span><span class="w"> </span><span class="m">0.0.0.0</span><span class="w">
+<pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="k">network.host</span><span class="p">:</span><span class="w"> </span><span class="m">0.0.0.0</span><span class="w">
 </span></code></pre></td></tr></table>
 </div>
 </div><p>​	② 切换到  <code>elasticsearch</code>中执行 <code>./elasticsearch/bin/elasticsearch -d</code>，后台启动<code>elasticsearch</code></p>
@@ -296,14 +295,14 @@ sysctl -p
 </span><span class="lnt">8
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="l">修改 es 配置文件 elasticsearch.yml</span><span class="w">
+<pre class="chroma"><code class="language-yaml" data-lang="yaml">修改<span class="w"> </span>es<span class="w"> </span>配置文件<span class="w"> </span>elasticsearch.yml<span class="w">
 </span><span class="w"></span><span class="c"># ----------------------------------- Memory -----------------------------------</span><span class="w">
 </span><span class="w"></span><span class="c">#</span><span class="w">
 </span><span class="w"></span><span class="c"># Lock the memory on startup:</span><span class="w">
 </span><span class="w"></span><span class="c">#</span><span class="w">
 </span><span class="w"></span><span class="c">#bootstrap.memory_lock: true</span><span class="w">
-</span><span class="w"></span><span class="nt">bootstrap.memory_lock</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
-</span><span class="w"></span><span class="nt">bootstrap.system_call_filter</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span><span class="w"></span><span class="k">bootstrap.memory_lock</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span><span class="w"></span><span class="k">bootstrap.system_call_filter</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
 </span></code></pre></td></tr></table>
 </div>
 </div><p>[4]: the default discovery settings are unsuitable for production use; at least one of [discovery.seed_hosts, discovery.seed_providers, cluster.initial_master_nodes] must be configured</p>
@@ -415,27 +414,27 @@ cluster.initial_master_nodes: [&#34;node-1&#34;]
 <pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="c"># Sample Logstash configuration for creating a simple</span><span class="w">
 </span><span class="w"></span><span class="c"># Beats -&gt; Logstash -&gt; Elasticsearch pipeline.</span><span class="w">
 </span><span class="w">
-</span><span class="w"></span><span class="l">input {</span><span class="w">
-</span><span class="w">  </span><span class="l">jdbc{</span><span class="w">
+</span><span class="w"></span>input<span class="w"> </span>{<span class="w">
+</span><span class="w">  </span>jdbc{<span class="w">
 </span><span class="w">    </span><span class="c"># mysql 数据库链接</span><span class="w">
-</span><span class="w">    </span><span class="l">jdbc_connection_string =&gt; &#34;jdbc:mysql://127.0.0.1:3306/demo?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false&amp;serverTimezone=GMT%2B8&#34;</span><span class="w">
+</span><span class="w">    </span>jdbc_connection_string<span class="w"> </span>=&gt;<span class="w"> </span><span class="s2">&#34;jdbc:mysql://127.0.0.1:3306/demo?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false&amp;serverTimezone=GMT%2B8&#34;</span><span class="w">
 </span><span class="w">    </span><span class="c"># 用户名和密码</span><span class="w">
-</span><span class="w">    </span><span class="l">jdbc_user =&gt; &#34;root&#34;</span><span class="w">
-</span><span class="w">    </span><span class="l">jdbc_password =&gt; &#34;123456&#34;</span><span class="w">
+</span><span class="w">    </span>jdbc_user<span class="w"> </span>=&gt;<span class="w"> </span><span class="s2">&#34;root&#34;</span><span class="w">
+</span><span class="w">    </span>jdbc_password<span class="w"> </span>=&gt;<span class="w"> </span><span class="s2">&#34;123456&#34;</span><span class="w">
 </span><span class="w">    </span><span class="c">#驱动</span><span class="w">
-</span><span class="w">    </span><span class="l">jdbc_driver_library =&gt; &#34;/home/summer/package/logstash/mysql/mysql-connector-java-8.0.11.jar&#34;</span><span class="w">
+</span><span class="w">    </span>jdbc_driver_library<span class="w"> </span>=&gt;<span class="w"> </span><span class="s2">&#34;/home/summer/package/logstash/mysql/mysql-connector-java-8.0.11.jar&#34;</span><span class="w">
 </span><span class="w">    </span><span class="c"># 驱动类名</span><span class="w">
-</span><span class="w">    </span><span class="l">jdbc_driver_class =&gt; &#34;com.mysql.jdbc.Driver&#34;</span><span class="w">
-</span><span class="w">    </span><span class="l">jdbc_paging_enabled =&gt; &#34;true&#34;</span><span class="w">
-</span><span class="w">    </span><span class="l">jdbc_page_size =&gt; &#34;50000&#34;</span><span class="w">
-</span><span class="w">    </span><span class="l">jdbc_default_timezone =&gt;&#34;Asia/Shanghai&#34;</span><span class="w">
+</span><span class="w">    </span>jdbc_driver_class<span class="w"> </span>=&gt;<span class="w"> </span><span class="s2">&#34;com.mysql.jdbc.Driver&#34;</span><span class="w">
+</span><span class="w">    </span>jdbc_paging_enabled<span class="w"> </span>=&gt;<span class="w"> </span><span class="s2">&#34;true&#34;</span><span class="w">
+</span><span class="w">    </span>jdbc_page_size<span class="w"> </span>=&gt;<span class="w"> </span><span class="s2">&#34;50000&#34;</span><span class="w">
+</span><span class="w">    </span>jdbc_default_timezone<span class="w"> </span>=&gt;<span class="s2">&#34;Asia/Shanghai&#34;</span><span class="w">
 </span><span class="w">    </span><span class="c"># mysql文件, 也可以直接写SQL语句在此处，如下：</span><span class="w">
 </span><span class="w">    </span><span class="c">#statement =&gt; &#34;select * from t_order where update_time &gt;= :sql_last_value;&#34; 增量同步</span><span class="w">
-</span><span class="w">    </span><span class="l">statement =&gt; &#34;select * from orders&#34;</span><span class="w">
+</span><span class="w">    </span>statement<span class="w"> </span>=&gt;<span class="w"> </span><span class="s2">&#34;select * from orders&#34;</span><span class="w">
 </span><span class="w">    </span><span class="c">#statement_filepath =&gt; &#34;./config/jdbc.sql&#34;</span><span class="w">
 </span><span class="w">    </span><span class="c"># 这里类似crontab,可以定制定时操作，比如每分钟执行一次同步(分 时 天 月 年)</span><span class="w">
-</span><span class="w">    </span><span class="l">schedule =&gt; &#34;* * * * *&#34;</span><span class="w">
-</span><span class="w">    </span><span class="l">type =&gt; &#34;jdbc&#34;</span><span class="w">
+</span><span class="w">    </span>schedule<span class="w"> </span>=&gt;<span class="w"> </span><span class="s2">&#34;* * * * *&#34;</span><span class="w">
+</span><span class="w">    </span>type<span class="w"> </span>=&gt;<span class="w"> </span><span class="s2">&#34;jdbc&#34;</span><span class="w">
 </span><span class="w">    </span><span class="c"># 是否记录上次执行结果, 如果为真,将会把上次执行到的 tracking_column 字段的值记录下来,保存到 last_run_metadata_path指定的文件中</span><span class="w">
 </span><span class="w">    </span><span class="c">#record_last_run =&gt; true</span><span class="w">
 </span><span class="w">    </span><span class="c"># 是否需要记录某个column 的值,如果record_last_run为真,可以自定义我们需要 track 的 column 名称，此时该参数就要为 true. 否则默认 track 的是 timestamp 的值.</span><span class="w">
@@ -447,23 +446,23 @@ cluster.initial_master_nodes: [&#34;node-1&#34;]
 </span><span class="w">    </span><span class="c"># 是否清除 last_run_metadata_path 的记录,如果为真那么每次都相当于从头开始查询所有的数据库记录</span><span class="w">
 </span><span class="w">    </span><span class="c"># clean_run =&gt; false</span><span class="w">
 </span><span class="w">    </span><span class="c"># 是否将 字段(column) 名称转小写</span><span class="w">
-</span><span class="w">    </span><span class="l">lowercase_column_names =&gt; false</span><span class="w">
+</span><span class="w">    </span>lowercase_column_names<span class="w"> </span>=&gt;<span class="w"> </span><span class="kc">false</span><span class="w">
 </span><span class="w">  </span>}<span class="w">
 </span><span class="w"></span>}<span class="w">
 </span><span class="w">
-</span><span class="w"></span><span class="l">output {</span><span class="w">
-</span><span class="w">        </span><span class="l">elasticsearch {</span><span class="w">
-</span><span class="w">                </span><span class="l">hosts =&gt; [&#34;127.0.0.1:9200&#34;]</span><span class="w">
-</span><span class="w">                </span><span class="l">index =&gt; &#34;demo&#34;</span><span class="w">
-</span><span class="w">                </span><span class="l">document_type =&gt; &#34;orders&#34;</span><span class="w">
-</span><span class="w">	            </span><span class="l">document_id =&gt; &#34;%{order_id}&#34;</span><span class="w">
+</span><span class="w"></span>output<span class="w"> </span>{<span class="w">
+</span><span class="w">        </span>elasticsearch<span class="w"> </span>{<span class="w">
+</span><span class="w">                </span>hosts<span class="w"> </span>=&gt;<span class="w"> </span><span class="p">[</span><span class="s2">&#34;127.0.0.1:9200&#34;</span><span class="p">]</span><span class="w">
+</span><span class="w">                </span>index<span class="w"> </span>=&gt;<span class="w"> </span><span class="s2">&#34;demo&#34;</span><span class="w">
+</span><span class="w">                </span>document_type<span class="w"> </span>=&gt;<span class="w"> </span><span class="s2">&#34;orders&#34;</span><span class="w">
+</span><span class="w">	            </span>document_id<span class="w"> </span>=&gt;<span class="w"> </span><span class="s2">&#34;%{order_id}&#34;</span><span class="w">
 </span><span class="w">                </span><span class="c">#index =&gt; &#34;%{[@metadata][beat]}-%{[@metadata][version]}-%{+YYYY.MM.dd}&#34;</span><span class="w">
 </span><span class="w">            </span><span class="c">#user =&gt; &#34;elastic&#34;</span><span class="w">
 </span><span class="w">                </span><span class="c">#password =&gt; &#34;changeme&#34;</span><span class="w">
 </span><span class="w">        </span>}<span class="w">
 </span><span class="w">        </span><span class="c"># 打印信息，生产环境不需要</span><span class="w">
-</span><span class="w">         </span><span class="l">stdout {</span><span class="w">
-</span><span class="w">                </span><span class="l">codec =&gt; json_lines</span><span class="w">
+</span><span class="w">         </span>stdout<span class="w"> </span>{<span class="w">
+</span><span class="w">                </span>codec<span class="w"> </span>=&gt;<span class="w"> </span>json_lines<span class="w">
 </span><span class="w">        </span>}<span class="w">
 </span><span class="w"></span>}<span class="w">
 </span></code></pre></td></tr></table>
@@ -513,27 +512,27 @@ cluster.initial_master_nodes: [&#34;node-1&#34;]
 </span><span class="lnt">21
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-php" data-lang="php"><span class="cm">/* 1 打开 yii2-advanced/vendor/yiisoft/yii2-elasticsearch/Connection.php
-</span><span class="cm">	将 CURLOPT_HTTPHEADER     =&gt; [&#39;Expect:&#39;],  改成
-</span><span class="cm">*/</span>
-<span class="nx">CURLOPT_HTTPHEADER</span> <span class="o">=&gt;</span> <span class="p">[</span>
-    <span class="s1">&#39;Accept: application/json&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;Content-Type: application/json&#39;</span>
-<span class="p">],</span>
+<pre class="chroma"><code class="language-php" data-lang="php">/* 1 打开 yii2-advanced/vendor/yiisoft/yii2-elasticsearch/Connection.php
+	将 CURLOPT_HTTPHEADER     =&gt; [&#39;Expect:&#39;],  改成
+*/
+CURLOPT_HTTPHEADER =&gt; [
+    &#39;Accept: application/json&#39;,
+    &#39;Content-Type: application/json&#39;
+],
 
-<span class="cm">/*
-</span><span class="cm">2 打开 yii2-advanced/vendor/yiisoft/yii2-elasticsearch/Query.php 第366行。 es7后修改了获取数据总数的方法,需要将原来的
-</span><span class="cm">	   $options = [];
-</span><span class="cm">        $options[&#39;size&#39;] = 0;
-</span><span class="cm">        return $this-&gt;createCommand($db)-&gt;search($options)[&#39;hits&#39;][&#39;total&#39;];
-</span><span class="cm">替换成
-</span><span class="cm">*/</span>
+/*
+2 打开 yii2-advanced/vendor/yiisoft/yii2-elasticsearch/Query.php 第366行。 es7后修改了获取数据总数的方法,需要将原来的
+	   $options = [];
+        $options[&#39;size&#39;] = 0;
+        return $this-&gt;createCommand($db)-&gt;search($options)[&#39;hits&#39;][&#39;total&#39;];
+替换成
+*/
 
-<span class="nv">$result</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">createCommand</span><span class="p">(</span><span class="nv">$db</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">search</span><span class="p">([</span><span class="s1">&#39;size&#39;</span> <span class="o">=&gt;</span> <span class="mi">0</span><span class="p">]);</span>
-<span class="k">if</span> <span class="p">(</span><span class="nx">isset</span><span class="p">(</span><span class="nv">$result</span><span class="p">[</span><span class="s1">&#39;hits&#39;</span><span class="p">][</span><span class="s1">&#39;total&#39;</span><span class="p">]))</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">is_array</span><span class="p">(</span><span class="nv">$result</span><span class="p">[</span><span class="s1">&#39;hits&#39;</span><span class="p">][</span><span class="s1">&#39;total&#39;</span><span class="p">])</span> <span class="o">?</span> <span class="p">(</span><span class="nx">int</span><span class="p">)</span><span class="nv">$result</span><span class="p">[</span><span class="s1">&#39;hits&#39;</span><span class="p">][</span><span class="s1">&#39;total&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">:</span>		  <span class="p">(</span><span class="nx">int</span><span class="p">)</span><span class="nv">$result</span><span class="p">[</span><span class="s1">&#39;hits&#39;</span><span class="p">][</span><span class="s1">&#39;total&#39;</span><span class="p">];</span>
-<span class="p">}</span>
-<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+$result = $this-&gt;createCommand($db)-&gt;search([&#39;size&#39; =&gt; 0]);
+if (isset($result[&#39;hits&#39;][&#39;total&#39;])) {
+    return is_array($result[&#39;hits&#39;][&#39;total&#39;]) ? (int)$result[&#39;hits&#39;][&#39;total&#39;][&#39;value&#39;] :		  (int)$result[&#39;hits&#39;][&#39;total&#39;];
+}
+return 0;
 </code></pre></td></tr></table>
 </div>
 </div><blockquote>
@@ -550,12 +549,12 @@ cluster.initial_master_nodes: [&#34;node-1&#34;]
 </span><span class="lnt">6
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-php" data-lang="php"><span class="s1">&#39;elasticsearch&#39;</span> <span class="o">=&gt;</span> <span class="p">[</span>
-    <span class="s1">&#39;class&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;yii\elasticsearch\Connection&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;nodes&#39;</span> <span class="o">=&gt;</span> <span class="p">[</span>
-        <span class="p">[</span><span class="s1">&#39;http_address&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;127.0.0.1:9200&#39;</span><span class="p">],</span>
-    <span class="p">],</span>
-<span class="p">],</span>
+<pre class="chroma"><code class="language-php" data-lang="php">&#39;elasticsearch&#39; =&gt; [
+    &#39;class&#39; =&gt; &#39;yii\elasticsearch\Connection&#39;,
+    &#39;nodes&#39; =&gt; [
+        [&#39;http_address&#39; =&gt; &#39;127.0.0.1:9200&#39;],
+    ],
+],
 </code></pre></td></tr></table>
 </div>
 </div><p>③ 创建 model</p>
@@ -589,7 +588,7 @@ cluster.initial_master_nodes: [&#34;node-1&#34;]
 </span><span class="lnt">26
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-php" data-lang="php"><span class="o">&lt;?</span><span class="nx">php</span>
+<pre class="chroma"><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
 <span class="k">namespace</span> <span class="nx">app\models</span><span class="p">;</span>
 <span class="k">use</span> <span class="nx">yii\elasticsearch\ActiveRecord</span><span class="p">;</span>
 <span class="k">class</span> <span class="nc">Search</span> <span class="k">extends</span> <span class="nx">ActiveRecord</span>
@@ -624,8 +623,8 @@ cluster.initial_master_nodes: [&#34;node-1&#34;]
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-php" data-lang="php"><span class="nv">$search</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Search</span><span class="p">();</span>
-<span class="nv">$query</span> <span class="o">=</span> <span class="nv">$search</span><span class="o">::</span><span class="na">find</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">all</span><span class="p">();</span>
+<pre class="chroma"><code class="language-php" data-lang="php">$search = new Search();
+$query = $search::find()-&gt;all();
 </code></pre></td></tr></table>
 </div>
 </div><h2 id="结束语">结束语</h2>
@@ -724,7 +723,7 @@ cluster.initial_master_nodes: [&#34;node-1&#34;]
   <span class="copyright-year">
     &copy; 
     2016 - 
-    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>Summer</span>
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>Summer</span>
   </span>
 </div>
 

@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.79.0 with theme even" />
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
 
 
 <link rel="canonical" href="https://summer90xia.github.io/post/laravel&#43;protobuf/" />
@@ -35,7 +35,7 @@
 
 <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
-<link href="/sass/main.min.b5a744db6de49a86cadafb3b70f555ab443f83c307a483402259e94726b045ff.css" rel="stylesheet">
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 <link rel="stylesheet" href="/css/">
 
@@ -48,14 +48,13 @@
 <meta property="article:modified_time" content="2019-12-06T17:24:06+08:00" />
 <meta itemprop="name" content="laravel中使用protobuf">
 <meta itemprop="description" content="laravel中使用protobuf">
-<meta itemprop="datePublished" content="2019-12-06T17:24:06+08:00" />
-<meta itemprop="dateModified" content="2019-12-06T17:24:06+08:00" />
+<meta itemprop="datePublished" content="2019-12-06T17:24:06&#43;08:00" />
+<meta itemprop="dateModified" content="2019-12-06T17:24:06&#43;08:00" />
 <meta itemprop="wordCount" content="537">
 
 
 
-<meta itemprop="keywords" content="laravel," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="laravel," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="laravel中使用protobuf"/>
 <meta name="twitter:description" content="laravel中使用protobuf"/>
 
@@ -215,26 +214,26 @@
 </span><span class="lnt">20
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-php" data-lang="php"> <span class="k">public</span> <span class="k">function</span> <span class="nf">testSendProtobuf</span><span class="p">(){</span>
-        <span class="nv">$from</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Comment</span><span class="p">();</span>
-        <span class="nv">$from</span><span class="o">-&gt;</span><span class="na">setId</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
-        <span class="nv">$from</span><span class="o">-&gt;</span><span class="na">setText</span><span class="p">(</span><span class="s1">&#39;Hello World!&#39;</span><span class="p">);</span>
-        <span class="nv">$from</span><span class="o">-&gt;</span><span class="na">setCreatedAt</span><span class="p">(</span><span class="nx">date</span><span class="p">(</span><span class="s1">&#39;Y-m-d h:i:s&#39;</span><span class="p">,</span> <span class="nx">time</span><span class="p">()));</span>
+<pre class="chroma"><code class="language-php" data-lang="php"> public function testSendProtobuf(){
+        $from = new Comment();
+        $from-&gt;setId(1);
+        $from-&gt;setText(&#39;Hello World!&#39;);
+        $from-&gt;setCreatedAt(date(&#39;Y-m-d h:i:s&#39;, time()));
 
-        <span class="nv">$packed</span> <span class="o">=</span> <span class="nv">$from</span><span class="o">-&gt;</span><span class="na">serializeToString</span><span class="p">();</span>
+        $packed = $from-&gt;serializeToString();
 
-        <span class="nv">$client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Client</span><span class="p">();</span>
-        <span class="nv">$r</span> <span class="o">=</span> <span class="nv">$client</span><span class="o">-&gt;</span><span class="na">request</span><span class="p">(</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="s1">&#39;http://127.0.0.1/protobuf/testReceiveProtobuf&#39;</span><span class="p">,</span> <span class="p">[</span>
-            <span class="s1">&#39;body&#39;</span> <span class="o">=&gt;</span> <span class="nv">$packed</span>
-        <span class="p">]);</span>
-        <span class="nx">\Log</span><span class="o">::</span><span class="na">info</span><span class="p">(</span><span class="nv">$r</span><span class="o">-&gt;</span><span class="na">getBody</span><span class="p">());</span>
-    <span class="p">}</span>
+        $client = new Client();
+        $r = $client-&gt;request(&#39;POST&#39;, &#39;http://127.0.0.1/protobuf/testReceiveProtobuf&#39;, [
+            &#39;body&#39; =&gt; $packed
+        ]);
+        \Log::info($r-&gt;getBody());
+    }
 
-    <span class="k">public</span> <span class="k">function</span> <span class="nf">testReceiveProtobuf</span><span class="p">(</span><span class="nx">Request</span> <span class="nv">$request</span><span class="p">){</span>
-        <span class="nv">$parsedComment</span><span class="o">=</span> <span class="k">new</span> <span class="nx">Comment</span><span class="p">();</span>
-        <span class="nv">$parsedComment</span><span class="o">-&gt;</span><span class="na">mergeFromString</span><span class="p">(</span><span class="nv">$request</span><span class="o">-&gt;</span><span class="na">getContent</span><span class="p">());</span>
-        <span class="k">return</span> <span class="p">[</span><span class="s1">&#39;id&#39;</span> <span class="o">=&gt;</span> <span class="nv">$parsedComment</span><span class="o">-&gt;</span><span class="na">getId</span><span class="p">(),</span> <span class="s1">&#39;text&#39;</span> <span class="o">=&gt;</span> <span class="nv">$parsedComment</span><span class="o">-&gt;</span><span class="na">getText</span><span class="p">(),</span> <span class="s1">&#39;created_at&#39;</span> <span class="o">=&gt;</span> <span class="nv">$parsedComment</span><span class="o">-&gt;</span><span class="na">getCreatedAt</span><span class="p">()];</span>
-    <span class="p">}</span>
+    public function testReceiveProtobuf(Request $request){
+        $parsedComment= new Comment();
+        $parsedComment-&gt;mergeFromString($request-&gt;getContent());
+        return [&#39;id&#39; =&gt; $parsedComment-&gt;getId(), &#39;text&#39; =&gt; $parsedComment-&gt;getText(), &#39;created_at&#39; =&gt; $parsedComment-&gt;getCreatedAt()];
+    }
 </code></pre></td></tr></table>
 </div>
 </div><p>配置好相关的路由，然后在浏览器中执行即可查看返回结果。</p>
@@ -331,7 +330,7 @@
   <span class="copyright-year">
     &copy; 
     2016 - 
-    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>Summer</span>
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>Summer</span>
   </span>
 </div>
 
