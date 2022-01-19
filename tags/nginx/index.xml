@@ -6,7 +6,20 @@
     <description>Recent content in nginx on Summer&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 18 Dec 2019 16:05:57 +0800</lastBuildDate><atom:link href="https://summer90xia.github.io/tags/nginx/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 09 Dec 2021 15:38:53 +0800</lastBuildDate>
+    
+	<atom:link href="https://summer90xia.github.io/tags/nginx/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Nginx如何实现高性能低消耗</title>
+      <link>https://summer90xia.github.io/post/nginx3/</link>
+      <pubDate>Thu, 09 Dec 2021 15:38:53 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/nginx3/</guid>
+      <description>Nginx 是一个轻量级的HTTP 服务程序，相比其他服务器程序如Apache，Nginx占用内存少，稳定性高，并发处理能力强。 同时Nginx 还是一个反</description>
+    </item>
+    
     <item>
       <title>使用docker实现nginx负载均衡</title>
       <link>https://summer90xia.github.io/post/nginx2/</link>

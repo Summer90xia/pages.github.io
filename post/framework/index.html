@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>一个高性能，高并发，高可用的系统是如何演变来的 - Summer&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Summer" /><meta name="description" content="大型电商系统或社交网站的系统架构从一开始就没有设计具有完整的高性能，高可用性，高可伸缩性等特性的。它是随着用户的增加和业务功能的扩展，逐步演" /><meta name="keywords" content="高性能, 高并发, 高可用" />
+
+
+<meta name="baidu-site-verification" content="QuqVC3Anf0" />
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://summer90xia.github.io/post/framework/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/">
+
+
+<meta property="og:title" content="一个高性能，高并发，高可用的系统是如何演变来的" />
+<meta property="og:description" content="大型电商系统或社交网站的系统架构从一开始就没有设计具有完整的高性能，高可用性，高可伸缩性等特性的。它是随着用户的增加和业务功能的扩展，逐步演" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://summer90xia.github.io/post/framework/" />
+<meta property="article:published_time" content="2021-11-29T15:48:23+08:00" />
+<meta property="article:modified_time" content="2021-11-29T15:48:23+08:00" />
+<meta itemprop="name" content="一个高性能，高并发，高可用的系统是如何演变来的">
+<meta itemprop="description" content="大型电商系统或社交网站的系统架构从一开始就没有设计具有完整的高性能，高可用性，高可伸缩性等特性的。它是随着用户的增加和业务功能的扩展，逐步演">
+<meta itemprop="datePublished" content="2021-11-29T15:48:23&#43;08:00" />
+<meta itemprop="dateModified" content="2021-11-29T15:48:23&#43;08:00" />
+<meta itemprop="wordCount" content="2504">
+
+
+
+<meta itemprop="keywords" content="实战技巧," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="一个高性能，高并发，高可用的系统是如何演变来的"/>
+<meta name="twitter:description" content="大型电商系统或社交网站的系统架构从一开始就没有设计具有完整的高性能，高可用性，高可伸缩性等特性的。它是随着用户的增加和业务功能的扩展，逐步演"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Summer&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">栏目</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Summer&#39;s Blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">栏目</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">一个高性能，高并发，高可用的系统是如何演变来的</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-11-29 </span>
+        <div class="post-category">
+            <a href="/categories/%E5%AD%A6%E7%94%B5%E8%84%91/"> 学电脑 </a>
+            </div>
+          <span class="more-meta"> 约 2504 字 </span>
+          <span class="more-meta"> 预计阅读 5 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>大型电商系统或社交网站的系统架构从一开始就没有设计具有完整的高性能，高可用性，高可伸缩性等特性的。它是随着用户的增加和业务功能的扩展，逐步演变和完善起来的。</p>
+<p>在此过程中，开发模式，技术体系结构和设计思想都发生了很大的变化。因此，随着业务的扩展，成熟的系统体系结构将逐渐得到改善。</p>
+<p>例如淘宝，解决海量商品信息的搜索，订购和支付问题；例如腾讯，解决了亿万用户的实时消息传输。百度处理大量搜索请求。</p>
+<p>他们都有各自的业务特性，系统架构也有所不同。不过我们也可以从这些不同的网站背景中，找出其中广泛运用在这些系统里共用的技术手段</p>
+<p>下面我们可以通过介绍大型网站系统的演化过程，来认识这些技术。</p>
+<h5 id="1-最开始的网站架构">1 最开始的网站架构</h5>
+<p>一个网站的最初开始，每个开发者都接触过。每个应用程序，数据库，静态文件等都会部署在一个服务器里。流量基本很小的网站，比如个人网站，博客等就可以这样部署。如图：</p>
+<p><img src="file:///C:%5CUsers%5Csummer%5CAppData%5CLocal%5CTemp%5Cksohtml%5Cwps838C.tmp.png" alt="img"></p>
+<h5 id="2-应用数据文件分离">2 应用、数据、文件分离</h5>
+<p>业务的扩展与需要，访问流量多了一点，一台服务器已经不能满足性能需求，这个时候我们就要把应用程序，数据库，文件等各自部署到独立的服务器上各自管理。并且根据用途配置不同的硬件。</p>
+<p>这样就达到了满足性能需求的最佳效果了。基本小型企业，业务每天流量不到1w的都可以算是最佳的。如图：</p>
+<p><img src="file:///C:%5CUsers%5Csummer%5CAppData%5CLocal%5CTemp%5Cksohtml%5Cwps838D.tmp.png" alt="img"></p>
+<h5 id="3-缓存改善网站性能">3 缓存改善网站性能</h5>
+<p>每个开发者在遇到性能瓶颈或者硬件性能有效的时候基本都会想到用缓存改善网站性能，经常用到的Nosql如：Memcached,Redis 。</p>
+<p>使用缓存主要源于热点数据的存在，为了减少热点数据的访问路径与提高用户体验，我们可以对热点数据进行缓存，提高网站性能。</p>
+<p>缓存实现的方式有：本地缓存，分布式缓存，还有 CDN、反向代理。</p>
+<p>1 本地缓存：速度快，根据本地空间缓存数据量。</p>
+<p>2 分布式缓存：Memcached、Redis</p>
+<p><img src="file:///C:%5CUsers%5Csummer%5CAppData%5CLocal%5CTemp%5Cksohtml%5Cwps838E.tmp.png" alt="img"></p>
+<h5 id="4-使用集群改善应用服务器性能">4 使用集群改善应用服务器性能</h5>
+<p>集群就是同一个业务，部署在多个服务器上(不同的服务器运行同样的代码，干同一件事)，那我们就可以用负载均衡来解决相应的问题，提高性能。</p>
+<p>方式：常用的负载均衡技术硬件的有 F5，价格比较贵，软件的有 LVS、Nginx、HAProxy。</p>
+<p>LVS 是四层负载均衡，根据目标地址和端口选择内部服务器，Nginx 和 HAProxy 是七层负载均衡，可以根据报文内容选择内部服务器。</p>
+<p>因此 LVS 分发路径优于 Nginx 和 HAProxy，性能要高。而 Nginx 和 HAProxy 则更具配置性，如可以用来做动静分离，比如根据请求报文特征，来选择静态资源服务器还是应用服务器。</p>
+<p>应用服务器是网站的入口，会承载大量的请求，我们就在应用服务器前面部署负载均衡服务器调度用户请求，根据分发策略将请求分发到多个应用服务器节点。如图：</p>
+<p><img src="file:///C:%5CUsers%5Csummer%5CAppData%5CLocal%5CTemp%5Cksohtml%5Cwps839F.tmp.png" alt="img"></p>
+<h5 id="5-数据库读写分离和分库分表">5 数据库读写分离和分库分表</h5>
+<p>这个相信大家都听过，但是会不会就不知道了。详细可以查看这篇文章：<a href="#wechat_redirect">【进阶】Mysql分库分表方案，如何分，怎样分？</a></p>
+<p>分库分表分为水平切分和垂直切分两种。</p>
+<p>1 水平切分是对一个数据库特大的表进行拆分，例如用户表。</p>
+<p>2 垂直切分则是根据业务的不同来切分，比如用户业务、商品业务相关的表放在不同的数据库中。</p>
+<p>一个网站的流量的增加，也就是用户访问量的增加，访问量的增加则数据库就会成为最大的瓶颈。</p>
+<p>然而改善数据库的性能，我们常用的手段是对数据库进行读写分离和分库分表。实现数据同步从而改善数据库性能。如图</p>
+<p><img src="file:///C:%5CUsers%5Csummer%5CAppData%5CLocal%5CTemp%5Cksohtml%5Cwps83A0.tmp.png" alt="img"></p>
+<h5 id="6-使用分布式文件系统">6 使用分布式文件系统</h5>
+<p>什么是分布式文件系统：分布式文件系统的全部不在同一台计算机，而是分散布置在多台计算机上。所以多个分散的小文件系统组合在一起，形成一个完整的文件系统。</p>
+<p>分布式的特点：分布式网络存储系统采用可扩展的系统结构，利用多台存储服务器分担存储负荷，利用位置服务器定位存储信息，它不但提高了系统的可靠性、可用性和存取效率，还易于扩展。</p>
+<p>这里使用到分布式文件系统，想想就知道了，用户每天都在增加，业务量越来越大，而产生的文件越来越多，单台的文件服务器已经不能满足需求，这时就需要分布式文件系统的支撑。常用的分布式文件系统有 GFS、HDFS、TFS。具体就不介绍了。看图：</p>
+<p><img src="file:///C:%5CUsers%5Csummer%5CAppData%5CLocal%5CTemp%5Cksohtml%5Cwps83A1.tmp.png" alt="img"></p>
+<h5 id="7-使用-cdn-和反向代理提高网站性能">7 使用 CDN 和反向代理提高网站性能</h5>
+<p>这一点也是很重要的。假如我们的服务器都部署在广州的机房，对于广东的用户来说访问是非常快的，而对于北京的用户访问就是较慢的了。</p>
+<p>北京用户访问需要通过互联路由器经过较长的路径才能访问到广州的服务器，返回路径也一样，所以数据传输时间比较长。这个时候我们想到的就是：使用CDN解决。</p>
+<p>CDN的特点就是将数据内容缓存到运营商的机房，用户访问时先从最近的运营商获取数据，大减少了网络访问的路径。从而提高访问速度。</p>
+<p>反向代理是部署在网站的机房，当用户请求达到时首先访问反向代理服务器，反向代理服务器将缓存的数据返回给用户。</p>
+<p>如果没有缓存数据才会继续访问应用服务器获取，这样做减少了获取数据的成本。反向代理的话我们经常用到Nginx。</p>
+<p><img src="file:///C:%5CUsers%5Csummer%5CAppData%5CLocal%5CTemp%5Cksohtml%5Cwps83A2.tmp.png" alt="img"></p>
+<h5 id="8-将应用服务器进行业务拆分">8 将应用服务器进行业务拆分</h5>
+<p>随着业务进一步扩展，应用程序变得非常臃肿，我们就要将应用程序进行业务拆分。看到这里，小编建议你去看看：集群，分布式与微服务有什么区别。</p>
+<p>为了应对日益复杂的业务场景，将整个系统业务分成不同的应用模块，应用之间通过超链接建立关系，业务之间通过消息进行通信或者共享数据库来实现。</p>
+<p>纵向拆分：</p>
+<ol>
+<li>将一个大应用拆分为多个小应用，如果新业务较为独立，那么就直接将其设计部署为一个独立的Web应用系统;</li>
+<li>纵向拆分相对较为简单，通过梳理业务，将较少相关的业务剥离即可。</li>
+</ol>
+<p>横向拆分：</p>
+<ol>
+<li>将复用的业务拆分出来，独立部署为分布式服务，新增业务只需要调用这些分布式服务;</li>
+<li>横向拆分需要识别可复用的业务，设计服务接口，规范服务依赖关系。</li>
+</ol>
+<p><img src="file:///C:%5CUsers%5Csummer%5CAppData%5CLocal%5CTemp%5Cksohtml%5Cwps83A3.tmp.png" alt="img"></p>
+<h5 id="9-业务拆分后演变为分布式服务">9 业务拆分后演变为分布式服务</h5>
+<p>根据上面对应用程序进行横向拆分后，各个业务应用就独立部署起来了。各个应用都有独自的业务服务，而这些业务服务抽取出来利用分步式服务框架搭建分布式服务。</p>
+<p>举例：分布式服务有：用户服务，商品服务，购物车，订单服务，支付与安全服务等。</p>
+<p><img src="file:///C:%5CUsers%5Csummer%5CAppData%5CLocal%5CTemp%5Cksohtml%5Cwps83B4.tmp.png" alt="img"></p>
+<h5 id="总结一下">总结一下</h5>
+<p>随着网站的架构的设计，业务功能的扩展，最后演变成一个高性能，高可用，高伸缩，可扩展，可维护的分布式系统。</p>
+<p>逐渐运用到的技能基本都涉及到了：文件分离，分布式缓存，负载均衡，集群，数据库读写分离，分库分表，分布式文件系统，反向代理，业务拆分，微服务等。</p>
+<p>我想说的是一个高级程序员就必须具备这些技能吧。</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Summer</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2021-11-29
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/%E5%AE%9E%E6%88%98%E6%8A%80%E5%B7%A7/">实战技巧</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/nginx3/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Nginx如何实现高性能低消耗</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/redis1/">
+            <span class="next-text nav-default">如何保证缓存与数据库的双写一致性</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+  <a href="https://summer90xia.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2016 - 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>Summer</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/raphael@2.2.7/raphael.min.js" integrity="sha256-67By+NpOtm9ka1R6xpUefeGOY8kWWHHRAKlvaTJ7ONI=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/flowchart.js@1.8.0/release/flowchart.min.js" integrity="sha256-zNGWjubXoY6rb5MnmpBNefO0RgoVYfle9p0tvOQM+6k=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.js" integrity="sha256-4O4pS1SH31ZqrSO2A/2QJTVjTPqVe+jnYgOWUVr7EEc=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/snapsvg@0.5.1/dist/snap.svg-min.js" integrity="sha256-oI+elz+sIm+jpn8F/qEspKoKveTc5uKeFHNNVexe6d8=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/underscore@1.8.3/underscore-min.js" integrity="sha256-obZACiHd7gkOk9iIL/pimWMTJ4W/pBsKu+oZnSeBIek=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.js" integrity="sha384-8748Vn52gHJYJI0XEuPB2QlPVNUkJlJn9tHqKec6J3q2r9l8fvRxrgn/E5ZHV0sP" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.css" integrity="sha384-6QbLKJMz5dS3adWSeINZe74uSydBGFbnzaAYmp+tKyq60S7H2p6V7g1TysM5lAaF" crossorigin="anonymous">
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+<script id="baidu_analytics">
+  var _hmt = _hmt || [];
+  (function() {
+    if (window.location.hostname === 'localhost') return;
+    var hm = document.createElement("script"); hm.async = true;
+    hm.src = "https://hm.baidu.com/hm.js?fc8cf18648f58ac4ad0594547ec6c1e3";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+<script id="baidu_push">
+  (function(){
+    if (window.location.hostname === 'localhost') return;
+    var bp = document.createElement('script'); bp.async = true;
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+      bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+      bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+  })();
+</script>
+
+
+<script src="/js/"></script>
+
+
+</body>
+</html>

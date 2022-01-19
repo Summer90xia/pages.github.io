@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>TCP详解 - Summer&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Summer" /><meta name="description" content="你是一台电脑，你的名字叫 A 经过《如果让你来设计网络，你会把它弄成啥样？》这篇文章中的一番折腾，只要你知道另一位伙伴 B 的 IP 地址，且你们之间的网" /><meta name="keywords" content="tcp" />
+
+
+<meta name="baidu-site-verification" content="QuqVC3Anf0" />
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://summer90xia.github.io/post/tcp/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/">
+
+
+<meta property="og:title" content="TCP详解" />
+<meta property="og:description" content="你是一台电脑，你的名字叫 A 经过《如果让你来设计网络，你会把它弄成啥样？》这篇文章中的一番折腾，只要你知道另一位伙伴 B 的 IP 地址，且你们之间的网" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://summer90xia.github.io/post/tcp/" />
+<meta property="article:published_time" content="2021-02-14T16:05:46+08:00" />
+<meta property="article:modified_time" content="2021-02-14T16:05:46+08:00" />
+<meta itemprop="name" content="TCP详解">
+<meta itemprop="description" content="你是一台电脑，你的名字叫 A 经过《如果让你来设计网络，你会把它弄成啥样？》这篇文章中的一番折腾，只要你知道另一位伙伴 B 的 IP 地址，且你们之间的网">
+<meta itemprop="datePublished" content="2021-02-14T16:05:46&#43;08:00" />
+<meta itemprop="dateModified" content="2021-02-14T16:05:46&#43;08:00" />
+<meta itemprop="wordCount" content="3472">
+
+
+
+<meta itemprop="keywords" content="tcp," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="TCP详解"/>
+<meta name="twitter:description" content="你是一台电脑，你的名字叫 A 经过《如果让你来设计网络，你会把它弄成啥样？》这篇文章中的一番折腾，只要你知道另一位伙伴 B 的 IP 地址，且你们之间的网"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Summer&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">栏目</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Summer&#39;s Blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">栏目</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">TCP详解</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-02-14 </span>
+        <div class="post-category">
+            <a href="/categories/%E5%AD%A6%E7%94%B5%E8%84%91/"> 学电脑 </a>
+            </div>
+          <span class="more-meta"> 约 3472 字 </span>
+          <span class="more-meta"> 预计阅读 7 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents"></nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p><strong>你是一台电脑，你的名字叫 A</strong></p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/GLeh42uInXRRr0taZIyx3pxsoyuia1c5uia1zRgca4DvIZBfTLQQwB78Uic6se6T2x10wr3OBqkWF7IIhdWpWcVlw/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="图片"></p>
+<p>经过<a href="http://mp.weixin.qq.com/s?__biz=MzA5NDIzNzY1OQ==&amp;mid=2735619614&amp;idx=1&amp;sn=268a2f70e7eedabc1f3ecfe37b34f35b&amp;chksm=b6ab38aa81dcb1bc67ca3f368e1121a819e42846ccff3a2e1b7adb7bf507685d73f9a5c9a806&amp;scene=21#wechat_redirect">《如果让你来设计网络，你会把它弄成啥样？》</a>这篇文章中的一番折腾，只要你知道另一位伙伴 B 的 IP 地址，且你们之间的网络是通的，无论多远，你都可以将一个数据包发送给你的伙伴 B。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/GLeh42uInXRRr0taZIyx3pxsoyuia1c5uGg6mZSFxenHTCuVkrsKibicOOq6GchqBw2zvlLq25CH0RUm1sAZ2IC4g/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="图片"></p>
+<p>这就是物理层、数据链路层、网络层这三层所做的事情。</p>
+<p>站在第四层的你，就可以不要脸地利用下三层所做的铺垫，随心所欲地发送数据，而不必担心找不到对方了。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_gif/GLeh42uInXRRr0taZIyx3pxsoyuia1c5uUzbtZStJRCNuJ65iaw1ecia9V9uUv7D82OP1qPoU0WgGlnciaplkptrIg/640?wx_fmt=gif&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1" alt="图片"></p>
+<p>虽然你此时还什么都没干，但你还是给自己这一层起了个响亮的名字，叫做<strong>传输层</strong>。</p>
+<p>你本以为自己所在的第四层万事大吉，啥事没有，但很快问题就接踵而至。</p>
+<h1 id="问题来了">问题来了</h1>
+<p>前三层协议只能把数据包从一个主机搬到另外一台主机，但是，到了目的地以后，数据包具体交给哪个<strong>程序</strong>（进程）呢？</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/GLeh42uInXRRr0taZIyx3pxsoyuia1c5ulEz2mGic1srDTvicfb6YBLpcB9MUs70zfd4loqIDApY2lDR09ZQ9LUuw/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="图片"></p>
+<p>所以，你需要把通信的进程区分开来，于是就给每个进程分配一个数字编号，你给它起了一个响亮的名字：<strong>端口号</strong>。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/GLeh42uInXRRr0taZIyx3pxsoyuia1c5uMBoTZjSbmcQicLRB1XIEtO3wy33sFMZic5HibucXJJELBIYDNxhcR73lw/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="图片"></p>
+<p>然后你在要发送的数据包上，增加了传输层的头部，<strong>源端口号</strong>与<strong>目标端口号</strong>。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/GLeh42uInXRRr0taZIyx3pxsoyuia1c5uEys9QwJJMED58ibhmfAf0SYxXPHZsmibPeNgxtSJibzAS8KzlQEPjQAww/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="图片"></p>
+<p>OK，这样你将原本主机到主机的通信，升级为了<strong>进程和进程之间的通信</strong>。</p>
+<p>你没有意识到，你不知不觉实现了 <strong>UDP 协议</strong>！</p>
+<p>（当然 UDP 协议中不光有源端口和目标端口，还有数据包长度和校验值，我们暂且略过）</p>
+<p>就这样，你用 UDP 协议无忧无虑地同 B 进行着通信，一直没发生什么问题。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_gif/GLeh42uInXRRr0taZIyx3pxsoyuia1c5uaoYXjnWd2wNx3DUFY0H1aDjgpqXp7jvc8yb7uLWnS8LmzXVwcXcDYA/640?wx_fmt=gif&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1" alt="图片"></p>
+<p>但很快，你发现事情变得非常复杂&hellip;&hellip;</p>
+<h1 id="丢包问题">丢包问题</h1>
+<p>由于网络的不可靠，数据包可能在半路丢失，而 A 和 B 却无法察觉。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_gif/GLeh42uInXRRr0taZIyx3pxsoyuia1c5u1QdibZVFJMh9lWgAUkF3to2dl9ISx9GjY0ZrsXjicQdjPUYIiakRRgdng/640?wx_fmt=gif&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1" alt="图片"></p>
+<p>对于丢包问题，只要解决两个事就好了。</p>
+<p><strong>第一个，A 怎么知道包丢了？</strong></p>
+<p>答案：让 B 告诉 A</p>
+<p><strong>第二个，丢了的包怎么办？</strong></p>
+<p>答案：重传</p>
+<p>于是你设计了如下方案，A 每发一个包，都必须收到来自 B 的<strong>确认</strong>（ACK），再发下一个，否则在一定时间内没有收到确认，就<strong>重传</strong>这个包。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_gif/GLeh42uInXRRr0taZIyx3pxsoyuia1c5uPicHiamlp4AZpWLfl5ibLG43M8Pdhiak93mqIAWwFpdn7zV3wbhHJl4BOw/640?wx_fmt=gif&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1" alt="图片"></p>
+<p>你管它叫<strong>停止等待协议</strong>。只要按照这个协议来，虽然 A 无法保证 B 一定能收到包，但 A 能够确认 B 是否收到了包，收不到就重试，尽最大努力让这个通信过程变得可靠，于是你们现在的通信过程又有了一个新的特征，<strong>可靠交付</strong>。</p>
+<h1 id="效率问题">效率问题</h1>
+<p>停止等待虽然能解决问题，但是效率太低了，A 原本可以在发完第一个数据包之后立刻开始发第二个数据包，但由于停止等待协议，A 必须等数据包到达了 B ，且 B 的 ACK 包又回到了 A，才可以继续发第二个数据包，这效率慢得可不是一点两点。</p>
+<p>于是你对这个过程进行了改进，采用<strong>流水线</strong>的方式，不再傻傻地等。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_gif/GLeh42uInXRRr0taZIyx3pxsoyuia1c5ux5buWickntcmwSq9WZfZfna02YVE7v5pibwib0VnX1LWWKVks5jgs24UA/640?wx_fmt=gif&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1" alt="图片"></p>
+<h1 id="顺序问题">顺序问题</h1>
+<p>但是网路是复杂的、不可靠的。</p>
+<p>有的时候 A 发出去的数据包，分别走了不同的路由到达 B，可能无法保证和发送数据包时一样的顺序。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_gif/GLeh42uInXRRr0taZIyx3pxsoyuia1c5u8e8WfXDWHAibcVjmNOLAoPxAx6g0co0N9ialyVr5aSRYlxbWiajIibjZiaQ/640?wx_fmt=gif&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1" alt="图片"></p>
+<p>在流水线中有多个数据包和ACK包在<strong>乱序流动</strong>，他们之间对应关系就乱掉了。</p>
+<p>难道还回到停止等待协议？A 每收到一个包的确认（ACK）再发下一个包，那就根本不存在顺序问题。应该有更好的办法！</p>
+<p>A 在发送的数据包中增加一个<strong>序号</strong>（seq），同时 B 要在 ACK 包上增加一个<strong>确认号</strong>（ack），这样不但解决了停止等待协议的效率问题，也通过这样标序号的方式解决了顺序问题。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_gif/GLeh42uInXRRr0taZIyx3pxsoyuia1c5uePhLOULLu5BbR10rFp9Z1ic381jH8h8yE90dOfd3TentbgiahKZbibiaSA/640?wx_fmt=gif&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1" alt="图片"></p>
+<p>而 B 这个确认号意味深长：比如 B 发了一个确认号为 ack = 3，它不仅仅表示 A 发送的序号为 2 的包收到了，还表示 2 之前的数据包都收到了。这种方式叫<strong>累计确认</strong>或<strong>累计应答</strong>。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_gif/GLeh42uInXRRr0taZIyx3pxsoyuia1c5u6rr0YStTXMtjDOnXPIicb9ZRjPn90DLLibicYXz6y7CaD3pMdhE0MCIKg/640?wx_fmt=gif&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1" alt="图片"></p>
+<p>注意，实际上 ack 的号是收到的最后一个数据包的序号 seq + 1，也就是告诉对方下一个应该发的序号是多少。但图中为了便于理解，ack 就表示收到的那个序号，不必纠结。</p>
+<h1 id="流量问题">流量问题</h1>
+<p>有的时候，A 发送数据包的速度太快，而 B 的接收能力不够，但 B 却没有告知 A 这个情况。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_gif/GLeh42uInXRRr0taZIyx3pxsoyuia1c5up8VVb1ICHRWHiaDYDaMcsGCM91ubbaccrNH9gPQxKxDRuFMJ7WuJczA/640?wx_fmt=gif&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1" alt="图片"></p>
+<p>怎么解决呢？</p>
+<p>很简单，B 告诉 A 自己的接收能力，A 根据 B 的接收能力，相应控制自己的<strong>发送速率</strong>，就好了。</p>
+<p>B 怎么告诉 A 呢？B 跟 A 说&quot;我很强&quot;这三个字么？那肯定不行，得有一个严谨的规范。</p>
+<p>于是 B 决定，每次发送数据包给 A 时，顺带传过来一个值，叫<strong>窗口大小</strong>（win)，这个值就表示 B 的<strong>接收能力</strong>。同理，每次 A 给 B 发包时也带上自己的窗口大小，表示 A 的接收能力。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_gif/GLeh42uInXRRr0taZIyx3pxsoyuia1c5u0USWUCZ37o6JcGsD8HETqMtB4jMdMqnTplXhmcBIOconwfwOwQoiaew/640?wx_fmt=gif&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1" alt="图片"></p>
+<p>B 告诉了 A 自己的窗口大小值，A 怎么利用它去做 A 这边发包的流量控制呢？</p>
+<p>很简单，假如 B 给 A 传过来的窗口大小 win = 5，那 A 根据这个值，把自己要发送的数据分成这么几类。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/GLeh42uInXRRr0taZIyx3pxsoyuia1c5uic3P0cv7nXKtEVP92yvvT3dymLF67eGpibuoiabr1hcCib6jUOVvYazwOQ/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="图片"></p>
+<p>图片过于清晰，就不再文字解释了。</p>
+<p>当 A 不断发送数据包时，<strong>已发送的最后一个序号</strong>就往右移动，直到碰到了窗口的上边界，此时 A 就无法继续发包，达到了流量控制。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_gif/GLeh42uInXRRr0taZIyx3pxsoyuia1c5ut1P6R45jbkbXv3AVib4YhtvlzQK2TBiafYEpMK4kDd6z5LzxRib5QRFAw/640?wx_fmt=gif&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1" alt="图片"></p>
+<p>但是当 A 不断发包的同时，A 也会收到来自 B 的确认包，此时<strong>整个窗口</strong>会往右移动，因此上边界也往右移动，A 就能发更多的数据包了。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_gif/GLeh42uInXRRr0taZIyx3pxsoyuia1c5uVZSgUovX9Np5nBPHW1Xzy0BpVAh4yWQRCwBdnescHeZZ2NE2Kro6Wg/640?wx_fmt=gif&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1" alt="图片"></p>
+<p>以上都是在窗口大小不变的情况下，而 B 在发给 A 的 ACK 包中，每一个都可以<strong>重新设置</strong>一个新的窗口大小，如果 A 收到了一个新的窗口大小值，A 会随之调整。</p>
+<p>如果 A 收到了比原窗口值更大的窗口大小，比如 win = 6，则 A 会直接将窗口上边界向右移动 1 个单位。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_gif/GLeh42uInXRRr0taZIyx3pxsoyuia1c5u6EKcBw1qdxRXE5icLiaVqcxLhJiaM9VsiabWibFtmtTwjCsngRvH6HK8zRA/640?wx_fmt=gif&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1" alt="图片"></p>
+<p>如果 A 收到了比原窗口值小的窗口大小，比如 win = 4，则 A 暂时不会改变窗口大小，更不会将窗口上边界向左移动，而是等着 ACK 的到来，不断将左边界向右移动，直到窗口大小值收缩到新大小为止。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_gif/GLeh42uInXRRr0taZIyx3pxsoyuia1c5u2xTwR7YZMxFcGf609TmGiaBZpsetQY6tGhNpGNWLyJvgjOPZpXibeWQQ/640?wx_fmt=gif&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1" alt="图片"></p>
+<p>OK，终于将流量控制问题解决得差不多了，你看着上面一个个小动图，给这个窗口起了一个更生动的名字，<strong>滑动窗口</strong>。</p>
+<h1 id="拥塞问题">拥塞问题</h1>
+<p>但有的时候，不是 B 的接受能力不够，而是网络不太好，造成了<strong>网络拥塞</strong>。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_gif/GLeh42uInXRRr0taZIyx3pxsoyuia1c5uOCO484zdmNPyxXPYTejTIdvH3wT8jdaJvUJLtvW7whicFbclLxbM9eA/640?wx_fmt=gif&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1" alt="图片"></p>
+<p>拥塞控制与流量控制有些像，但流量控制是受 B 的接收能力影响，而拥塞控制是受<strong>网络环境</strong>的影响。</p>
+<p>拥塞控制的解决办法依然是通过设置一定的窗口大小，只不过，流量控制的窗口大小是 B 直接告诉 A 的，而拥塞控制的窗口大小按理说就应该是网络环境主动告诉 A。</p>
+<p>但网络环境怎么可能主动告诉 A 呢？只能 A 单方面通过<strong>试探</strong>，不断感知网络环境的好坏，进而确定自己的拥塞窗口的大小。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_gif/GLeh42uInXRRr0taZIyx3pxsoyuia1c5uaoFvUia5aDwWk5OH2r1IiaiaM870gxy0U4dic5WelO9Q1ibEicTc1WZG22kw/640?wx_fmt=gif&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1" alt="图片"></p>
+<p>拥塞窗口大小的计算有很多复杂的算法，就不在本文中展开了，假如<strong>拥塞窗口的大小为  cwnd</strong>，上一部分流量控制的<strong>滑动窗口的大小为 rwnd</strong>，那么窗口的右边界受这两个值共同的影响，需要取它俩的最小值。</p>
+<p><strong>窗口大小 = min(cwnd, rwnd)</strong></p>
+<p>含义很容易理解，当 B 的接受能力比较差时，即使网络非常通畅，A 也需要根据 B 的接收能力限制自己的发送窗口。当网络环境比较差时，即使 B 有很强的接收能力，A 也要根据网络的拥塞情况来限制自己的发送窗口。正所谓受其<strong>短板</strong>的影响嘛~</p>
+<h1 id="连接问题">连接问题</h1>
+<p>有的时候，B 主机的相应进程还没有准备好或是挂掉了，A 就开始发送数据包，导致了浪费。</p>
+<p><img src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" alt="图片"></p>
+<p>这个问题在于，A 在跟 B 通信之前，没有事先确认 B 是否已经准备好，就开始发了一连串的信息。就好比你和另一个人打电话，你还没有&quot;喂&quot;一下确认对方有没有在听，你就巴拉巴拉说了一堆。</p>
+<p>这个问题该怎么解决呢？</p>
+<p>地球人都知道，<strong>三次握手</strong>嘛！</p>
+<p>A：我准备好了(SYN)</p>
+<p>B：我知道了(ACK)，我也准备好了(SYN)</p>
+<p>A：我知道了(ACK)</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_gif/GLeh42uInXRRr0taZIyx3pxsoyuia1c5u0c2L6icFT0CyHd0Tc0ibmC7EnFg3Ey41U2veIaow9vSibmZD4pb50y54g/640?wx_fmt=gif&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1" alt="图片"></p>
+<p>A 与 B 各自在内存中维护着自己的状态变量，三次握手之后，双方的状态都变成了<strong>连接已建立</strong>（ESTABLISHED）。</p>
+<p>虽然就只是发了三次数据包，并且在各自的内存中维护了状态变量，但这么说总觉得太 low，你看这个过程相当于双方建立连接的过程，于是你灵机一动，就叫它<strong>面向连接</strong>吧。</p>
+<p>注意：这个连接是虚拟的，是由 A 和 B 这两个终端共同维护的，在网络中的设备根本就不知道连接这回事儿！</p>
+<p>但凡事有始就有终，有了建立连接的过程，就要考虑释放连接的过程，又是地球人都知道，<strong>四次挥手</strong>嘛！</p>
+<p>A：再见，我要关闭了(FIN)</p>
+<p>B：我知道了(ACK)</p>
+<p>给 B 一段时间把自己的事情处理完&hellip;</p>
+<p>B：再见，我要关闭了(FIN)</p>
+<p>A：我知道了(ACK)</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_gif/GLeh42uInXRRr0taZIyx3pxsoyuia1c5usyQE3j0u3HBnAnIQU0vMhUqbdrnlQoclx3JcoaVcef0xlxc437TmqA/640?wx_fmt=gif&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1" alt="图片"></p>
+<h1 id="总结">总结</h1>
+<p>以上讲述的，就是 TCP 协议的核心思想，上面过程中需要传输的信息，就体现在 TCP 协议的头部，这里放上最常见的 TCP 协议头解读的图。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/GLeh42uInXRRr0taZIyx3pxsoyuia1c5ul4bmQic8Hca0NBLCaVwuYAmmxWsDmH1bLcVictH0Nfiayia9ibAyvfGbS7Q/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="图片"></p>
+<p>不知道你现在再看下面这句话，是否能理解：</p>
+<p><strong>TCP 是</strong></p>
+<p><strong>面向连接的、可靠的、基于字节流的</strong></p>
+<p><strong>传输层通信协议</strong></p>
+<p>面向连接、可靠，这两个词通过上面的讲述很容易理解，那什么叫做基于字节流呢？</p>
+<p>很简单，TCP 在建立连接时，需要告诉对方 MSS（最大报文段大小）。</p>
+<p>也就是说，如果要发送的数据很大，在 TCP 层是需要按照 MSS 来切割成一个个的 <strong>TCP 报文段</strong> 的。</p>
+<p>切割的时候我才不管你原来的数据表示什么意思，需要在哪里断句啥的，我就把它当成一串毫无意义的字节，在我想要切割的地方咔嚓就来一刀，标上序号，只要接收方再根据这个序号拼成最终想要的完整数据就行了。</p>
+<p>在我 TCP 传输这里，我就把它当做一个个的<strong>字节</strong>，也就是基于字节流的含义了。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_jpg/GLeh42uInXRRr0taZIyx3pxsoyuia1c5uBxhzznrA9Bn2ecGdBYdu7uhbcW9kmHjrpQUnoKOicyc9ibglIGibzpTNA/640?wx_fmt=jpeg&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="图片"></p>
+<blockquote>
+<blockquote>
+<p><strong>后记</strong></p>
+</blockquote>
+</blockquote>
+<p>一提到 TCP，可能很多人都想起被三次握手和四次挥手所支配的恐惧。但其实你跟着文中的思路你就会发现，三次握手与四次挥手只占 TCP 所解决的核心问题中很小的一部分，只是因为它在面试中很适合作为知识点进行考察，所以在很多人的印象中就好像 TCP 的核心就是握手和挥手似的。</p>
+<p>如果你能从问题出发，真正理解 TCP 所想要解决的问题，你会发现很多原理就好像生活常识一样顺其自然，并不复杂，希望你读完本文能有所收获～</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Summer</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2021-02-14
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/tcp/">tcp</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/learn-document/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">学习资料搜集</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/io2/">
+            <span class="next-text nav-default">I/O多路复用</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+  <a href="https://summer90xia.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2016 - 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>Summer</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/raphael@2.2.7/raphael.min.js" integrity="sha256-67By+NpOtm9ka1R6xpUefeGOY8kWWHHRAKlvaTJ7ONI=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/flowchart.js@1.8.0/release/flowchart.min.js" integrity="sha256-zNGWjubXoY6rb5MnmpBNefO0RgoVYfle9p0tvOQM+6k=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.js" integrity="sha256-4O4pS1SH31ZqrSO2A/2QJTVjTPqVe+jnYgOWUVr7EEc=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/snapsvg@0.5.1/dist/snap.svg-min.js" integrity="sha256-oI+elz+sIm+jpn8F/qEspKoKveTc5uKeFHNNVexe6d8=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/underscore@1.8.3/underscore-min.js" integrity="sha256-obZACiHd7gkOk9iIL/pimWMTJ4W/pBsKu+oZnSeBIek=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.js" integrity="sha384-8748Vn52gHJYJI0XEuPB2QlPVNUkJlJn9tHqKec6J3q2r9l8fvRxrgn/E5ZHV0sP" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.css" integrity="sha384-6QbLKJMz5dS3adWSeINZe74uSydBGFbnzaAYmp+tKyq60S7H2p6V7g1TysM5lAaF" crossorigin="anonymous">
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+<script id="baidu_analytics">
+  var _hmt = _hmt || [];
+  (function() {
+    if (window.location.hostname === 'localhost') return;
+    var hm = document.createElement("script"); hm.async = true;
+    hm.src = "https://hm.baidu.com/hm.js?fc8cf18648f58ac4ad0594547ec6c1e3";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+<script id="baidu_push">
+  (function(){
+    if (window.location.hostname === 'localhost') return;
+    var bp = document.createElement('script'); bp.async = true;
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+      bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+      bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+  })();
+</script>
+
+
+<script src="/js/"></script>
+
+
+</body>
+</html>

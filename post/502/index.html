@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>常见502故障有哪些解决方案 - Summer&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Summer" /><meta name="description" content="如果你服务器用的是Nginx的话，在开发的过程中，偶尔会出现 Nginx 502 Bad Gateway，那你会如何排查这种问题呢？ 下面给大家总结了一些排查问题与解" /><meta name="keywords" content="502" />
+
+
+<meta name="baidu-site-verification" content="QuqVC3Anf0" />
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://summer90xia.github.io/post/502/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/">
+
+
+<meta property="og:title" content="常见502故障有哪些解决方案" />
+<meta property="og:description" content="如果你服务器用的是Nginx的话，在开发的过程中，偶尔会出现 Nginx 502 Bad Gateway，那你会如何排查这种问题呢？ 下面给大家总结了一些排查问题与解" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://summer90xia.github.io/post/502/" />
+<meta property="article:published_time" content="2021-08-23T15:50:47+08:00" />
+<meta property="article:modified_time" content="2021-08-23T15:50:47+08:00" />
+<meta itemprop="name" content="常见502故障有哪些解决方案">
+<meta itemprop="description" content="如果你服务器用的是Nginx的话，在开发的过程中，偶尔会出现 Nginx 502 Bad Gateway，那你会如何排查这种问题呢？ 下面给大家总结了一些排查问题与解">
+<meta itemprop="datePublished" content="2021-08-23T15:50:47&#43;08:00" />
+<meta itemprop="dateModified" content="2021-08-23T15:50:47&#43;08:00" />
+<meta itemprop="wordCount" content="2162">
+
+
+
+<meta itemprop="keywords" content="实战技巧," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="常见502故障有哪些解决方案"/>
+<meta name="twitter:description" content="如果你服务器用的是Nginx的话，在开发的过程中，偶尔会出现 Nginx 502 Bad Gateway，那你会如何排查这种问题呢？ 下面给大家总结了一些排查问题与解"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Summer&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">栏目</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Summer&#39;s Blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">栏目</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">常见502故障有哪些解决方案</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-08-23 </span>
+        <div class="post-category">
+            <a href="/categories/%E5%AD%A6%E7%94%B5%E8%84%91/"> 学电脑 </a>
+            </div>
+          <span class="more-meta"> 约 2162 字 </span>
+          <span class="more-meta"> 预计阅读 5 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>如果你服务器用的是Nginx的话，在开发的过程中，偶尔会出现 Nginx 502 Bad Gateway，那你会如何排查这种问题呢？</p>
+<h4 id="下面给大家总结了一些排查问题与解决方案来看看吧">下面给大家总结了一些排查问题与解决方案，来看看吧！</h4>
+<p><strong>Nginx 502错误情况1：</strong></p>
+<p>网站的访问量大，而<code>php-cgi</code>的进程数偏少。</p>
+<p>针对这种情况的502错误，只需增加<code>php-cgi</code>的进程数。具体就是修改<code>/usr/local/php/etc/php-fpm.conf</code> 文件，将其中的<code>max_children</code>值适当增加。这个数据要依据你的VPS或独立服务器的配置进行设置。一般一个<code>php-cgi</code>进程占20M内存，你可以自己计算下，适量增多。</p>
+<p>然后重启一下</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">/usr/local/php/sbin/php-fpm restart .
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>Nginx 502错误情况2:</strong></p>
+<p>CPU占用率、内存占用率非常高，遭到<code>CC</code>攻击.</p>
+<p>解决方法请参考：<code>Linux VPS</code>简单解决<code>CC</code>攻击</p>
+<p><strong>Nginx 502错误情况3：</strong></p>
+<p>CPU占用率不高，内存溢出。</p>
+<p>检查一下网站程序有没有问题？一般小型站点常常会出现内存溢出。</p>
+<p>检查一下<code>/var/log/</code>目录下的日志，看看是不是有人爆破<code>SSH</code>和<code>FTP</code>端口？</p>
+<p><code>SSH、FTP</code>遭到穷举也会占用大量内存。是的话改掉<code>SSH</code>端口和<code>FTP</code>端口即可</p>
+<p>将网上找到的一些和<code>502 Bad Gateway</code>错误有关的问题和排查方法列一下，先从<code>FastCGI</code>配置入手：</p>
+<p><strong>1.查看FastCGI进程是否已经启动</strong></p>
+<p>NGINX 502错误的含义是<code>sock</code>、端口没被监听造成的。我们先检查<code>fastcgi</code>是否在运行</p>
+<p><strong>2.检查系统Fastcgi进程运行情况</strong></p>
+<p>除了第一种情况，<code>fastcgi</code>进程数不够用、php执行时间长、或者是<code>php-cgi</code>进程死掉也可能造成nginx的502错误</p>
+<p>运行以下命令判断是否接近<code>FastCGI</code>进程，如果<code>fastcgi</code>进程数接近配置文件中设置的数值，表明<code>worker</code>进程数设置太少</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">netstat -anpo | grep &#34;php-cgi&#34; | wc -l
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>3.FastCGI执行时间过长</strong></p>
+<p>根据实际情况调高以下参数值</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">fastcgi_connect_timeout 300; 
+
+fastcgi_send_timeout 300; 
+
+fastcgi_read_timeout 300;
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>4.头部太大</strong></p>
+<p><code>nginx</code>和<code>apache</code>一样，有前端缓冲限制，可以调整缓冲参数</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">fastcgi_buffer_size 32k; 
+fastcgi_buffers 8 32k;
+</code></pre></td></tr></table>
+</div>
+</div><p>如果你使用的是<code>nginx</code>的负载均衡<code>Proxying</code>，调整</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">proxy_buffer_size 16k; 
+
+proxy_buffers 4 16k;
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>5.https转发配置错误</strong>*</p>
+<p>正确的配置方法</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">server_name www.jb51.net; location /myproj/repos 
+{ 
+ set $fixed_destination $http_destination; 
+ if ( $http_destination ~* ^https(.*)$ )
+     { 
+  set $fixed_destination http$1;
+  } 
+ proxy_set_header Host $host; 
+ proxy_set_header X-Real-IP $remote_addr; 
+ proxy_set_header Destination $fixed_destination; 
+ proxy_pass http://subversion_hosts; 
+}
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>6 max-children和max-requests</strong>
+一台服务器上运行着<code>nginx php(fpm) xcache</code>，访问量日均 300W pv左右</p>
+<p>最近经常会出现这样的情况：php页面打开很慢，cpu使用率突然降至很低，系统负载突然升至很高，查看网卡的流量，也会发现突然降到了很低。这种情况只持续数秒钟就恢复了</p>
+<p>检查<code>php-fpm</code>的日志文件发现了一些线索：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">Sep3008:32:23.289973[NOTICE] fpm_unix_init_main(), line 271: getrlimit(nofile): max:51200,cur:51200
+Sep3008:32:23.290212[NOTICE] fpm_sockets_init_main(), line 371:using inherited socket fd=10,“127.0.0.1:9000″
+Sep3008:32:23.290342[NOTICE] fpm_event_init_main(), line 109: libevent:using epoll
+Sep3008:32:23.296426[NOTICE] fpm_init(), line 47: fpm is running, pid 30587
+</code></pre></td></tr></table>
+</div>
+</div><p>在这几句的前面，是1000多行的关闭<code>children</code>和开启<code>children</code>的日志</p>
+<p>原来，<code>php-fpm</code>有一个参数<code>max_requests</code>，该参数指明了，每个<code>children</code>最多处理多少个请求后便会被关闭，默认的设置是500。因为php是把请求轮询给每个<code>children</code>，在大流量下，每个<code>childre</code>到达<code>max_requests</code>所用的时间都差不多，这样就造成所有的<code>children</code>基本上在同一时间被关闭。</p>
+<p>在这期间，<code>nginx</code>无法将php文件转交给<code>php-fpm</code>处理，所以cpu会降至很低(不用处理php，更不用执行sql)，而负载会升至很高(关闭和开启<code>children</code>、<code>nginx</code>等待<code>php-fpm</code>)，网卡流量也降至很低(<code>nginx</code>无法生成数据传输给客户端)</p>
+<p>解决问题很简单，增加<code>children</code>的数量，并且将 <code>max_requests</code> 设置未 0 或者一个比较大的值：</p>
+<p>打开 <code>/usr/local/php/etc/php-fpm.conf</code></p>
+<p>调大以下两个参数(根据服务器实际情况，过大也不行）</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">&lt;valuename=”max_children”&gt;5120&lt;/value&gt;
+&lt;valuename=”max_requests”&gt;600&lt;/value&gt;
+</code></pre></td></tr></table>
+</div>
+</div><p>然后重启<code>php-fpm</code>。</p>
+<p><strong>7、增加缓冲区容量大小</strong>
+将<code>nginx</code>的<code>error log</code>打开，发现<code>“pstream sent too big header while reading response header from upstream”</code>这样的错误提示。</p>
+<p>查阅了一下资料，大意是<code>nginx</code>缓冲区有一个<code>bug</code>造成的,我们网站的页面消耗占用缓冲区可能过大。参考老外写的修改办法增加了缓冲区容量大小设置，502问题彻底解决。后来系统管理员又对参数做了调整只保留了2个设置参数：<code>client head buffer</code>，<code>fastcgi buffer size</code>。</p>
+<p><strong>8、request_terminate_timeout</strong>
+如果主要是在一些<code>post</code>或者数据库操作的时候出现502这种情况，而不是在静态页面操作中常见，那么可以查看一下<code>php-fpm.conf</code>设置中的一项：<code>request_terminate_timeout</code></p>
+<p>这个值是<code>max_execution_time</code>，就是<code>fast-cgi</code>的执行脚本时间。</p>
+<p>0s为关闭，就是无限执行下去。</p>
+<p>发现问题解决了，执行很长时间也不会出错了。</p>
+<p>优化<code>fastcgi</code>中，还可以改改这个值为5s 看看效果。</p>
+<p><code>php-cgi</code>进程数不够用、php执行时间长、或者是<code>php-cgi</code>进程死掉，都会出现502错误。</p>
+<p>上面总结的出现502的错误就这么多，更多的502问题在开发过程中需要大家去发现，然后最好是做更多的总结，总结经验！</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Summer</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2021-08-23
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/%E5%AE%9E%E6%88%98%E6%8A%80%E5%B7%A7/">实战技巧</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/io/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">IO模型详解</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/mysql1/">
+            <span class="next-text nav-default">Mysql唯一索引性能问题</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+  <a href="https://summer90xia.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2016 - 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>Summer</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/raphael@2.2.7/raphael.min.js" integrity="sha256-67By+NpOtm9ka1R6xpUefeGOY8kWWHHRAKlvaTJ7ONI=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/flowchart.js@1.8.0/release/flowchart.min.js" integrity="sha256-zNGWjubXoY6rb5MnmpBNefO0RgoVYfle9p0tvOQM+6k=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.js" integrity="sha256-4O4pS1SH31ZqrSO2A/2QJTVjTPqVe+jnYgOWUVr7EEc=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/snapsvg@0.5.1/dist/snap.svg-min.js" integrity="sha256-oI+elz+sIm+jpn8F/qEspKoKveTc5uKeFHNNVexe6d8=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/underscore@1.8.3/underscore-min.js" integrity="sha256-obZACiHd7gkOk9iIL/pimWMTJ4W/pBsKu+oZnSeBIek=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.js" integrity="sha384-8748Vn52gHJYJI0XEuPB2QlPVNUkJlJn9tHqKec6J3q2r9l8fvRxrgn/E5ZHV0sP" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.css" integrity="sha384-6QbLKJMz5dS3adWSeINZe74uSydBGFbnzaAYmp+tKyq60S7H2p6V7g1TysM5lAaF" crossorigin="anonymous">
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+<script id="baidu_analytics">
+  var _hmt = _hmt || [];
+  (function() {
+    if (window.location.hostname === 'localhost') return;
+    var hm = document.createElement("script"); hm.async = true;
+    hm.src = "https://hm.baidu.com/hm.js?fc8cf18648f58ac4ad0594547ec6c1e3";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+<script id="baidu_push">
+  (function(){
+    if (window.location.hostname === 'localhost') return;
+    var bp = document.createElement('script'); bp.async = true;
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+      bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+      bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+  })();
+</script>
+
+
+<script src="/js/"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Nginx如何实现高性能低消耗 - Summer&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Summer" /><meta name="description" content="Nginx 是一个轻量级的HTTP 服务程序，相比其他服务器程序如Apache，Nginx占用内存少，稳定性高，并发处理能力强。 同时Nginx 还是一个反" /><meta name="keywords" content="nginx" />
+
+
+<meta name="baidu-site-verification" content="QuqVC3Anf0" />
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://summer90xia.github.io/post/nginx3/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/">
+
+
+<meta property="og:title" content="Nginx如何实现高性能低消耗" />
+<meta property="og:description" content="Nginx 是一个轻量级的HTTP 服务程序，相比其他服务器程序如Apache，Nginx占用内存少，稳定性高，并发处理能力强。 同时Nginx 还是一个反" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://summer90xia.github.io/post/nginx3/" />
+<meta property="article:published_time" content="2021-12-09T15:38:53+08:00" />
+<meta property="article:modified_time" content="2021-12-09T15:38:53+08:00" />
+<meta itemprop="name" content="Nginx如何实现高性能低消耗">
+<meta itemprop="description" content="Nginx 是一个轻量级的HTTP 服务程序，相比其他服务器程序如Apache，Nginx占用内存少，稳定性高，并发处理能力强。 同时Nginx 还是一个反">
+<meta itemprop="datePublished" content="2021-12-09T15:38:53&#43;08:00" />
+<meta itemprop="dateModified" content="2021-12-09T15:38:53&#43;08:00" />
+<meta itemprop="wordCount" content="2614">
+
+
+
+<meta itemprop="keywords" content="nginx," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Nginx如何实现高性能低消耗"/>
+<meta name="twitter:description" content="Nginx 是一个轻量级的HTTP 服务程序，相比其他服务器程序如Apache，Nginx占用内存少，稳定性高，并发处理能力强。 同时Nginx 还是一个反"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Summer&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">栏目</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Summer&#39;s Blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">栏目</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Nginx如何实现高性能低消耗</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-12-09 </span>
+        <div class="post-category">
+            <a href="/categories/%E5%AD%A6%E7%94%B5%E8%84%91/"> 学电脑 </a>
+            </div>
+          <span class="more-meta"> 约 2614 字 </span>
+          <span class="more-meta"> 预计阅读 6 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>Nginx 是一个轻量级的HTTP 服务程序，相比其他服务器程序如Apache，Nginx占用内存少，稳定性高，并发处理能力强。</p>
+<p>同时Nginx 还是一个反向代理服务程序，和邮件代理服务程序。Nginx具有丰富的模块库、灵活的配置、较低资源消耗等优点。下面，我们一起深入看一下Nginx的工作机制</p>
+<h5 id="1-nginx-如何实现高性能低消耗的呢">1. Nginx 如何实现高性能低消耗的呢</h5>
+<p>我们从以下几个方面说明以下：</p>
+<h6 id="网络事件处理机制">网络事件处理机制</h6>
+<h6 id="nginx-采用异步非阻塞的方式处理请求可以同时处理上万的请求支持-selectepoll-等流行事件处理机制根据系统环境自动选择nginx-采用独立于系统的事件处理机制能够高效处理请求">Nginx 采用异步非阻塞的方式处理请求，可以同时处理上万的请求；支持 select/epoll 等流行事件处理机制，根据系统环境自动选择。Nginx 采用独立于系统的事件处理机制，能够高效处理请求</h6>
+<h6 id="heading"></h6>
+<h6 id="资源分配技术">资源分配技术</h6>
+<p>Nginx 采用分阶段资源分配技术，使得它的CPU和内存消耗非常低。</p>
+<h6 id="多核处理优化">多核处理优化</h6>
+<ul>
+<li>
+<p>Nginx 默认采用多进程启动模式</p>
+</li>
+<li>
+<p>Nginx 包含Master 进程 和 Worker 进程</p>
+</li>
+<li>
+<p>能够充分利用 SMP 对称多处理的优势，减少Worker进程磁盘I/O的阻塞</p>
+</li>
+<li>
+<p>Nginx 支持Worker进程和CPU内核 一一对应绑定，避免进程上下文的切换致使cache失效。基于上面提到技术，以及Nginx很多地方的优化，让Nginx成为最快的HTTP服务器。</p>
+</li>
+</ul>
+<h5 id="2nginx的进程模型">2.Nginx的进程模型</h5>
+<p>在Nginx的技术架构中，进程模型是至关重要的一部分。接下来，我们一起看看Nginx进程模型，以及它们的工作机制。</p>
+<p>Linux 系统中，Nginx默认以守护进程daemon方式启动，默认采用多进程方式。Nginx包括两种类型的进程：</p>
+<p>1 Master 进程，数量只有一个，管理Nginx本身和Worker进程</p>
+<p>2 Worker 进程，数量一般和CPU核数相等，Nginx的所有请求处理，均是在Worker进程中完成。</p>
+<p>下面，我们分别深入看一下Master和Worker进程</p>
+<h6 id="21-master-进程工作机制">2.1 Master 进程工作机制</h6>
+<p>在Nginx启动时，Master进程创建，主要负责初始化Nginx和相关模块、fork Worker进程、接收处理外界信号等工作。</p>
+<p>Nginx的初始化过程：</p>
+<p>1 解析配置文件，这是Nginx初始化最重要的一个环节。</p>
+<p>2 调用各个配置指令回调函数，完成各个模块的配置、相互关联等。</p>
+<p>3 建立listen 的 socket(listenfd)。</p>
+<p>4 准备工作都完成后，fork worker子进程和cache子进程，Master 进程信号处理机制</p>
+<p>我们通过kill命令发送信号给Nignx Master 进程，看看Master进程如何处理：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">root@eg001:~# ps -ef | grep nginx | grep -v grep
+root     16533     1  0 Aug28 ?        00:00:00 nginx: master process nginx
+www-data 16534 16533  0 Aug28 ?        00:00:47 nginx: worker process
+www-data 16535 16533  0 Aug28 ?        00:00:51 nginx: worker process
+www-data 16536 16533  0 Aug28 ?        00:00:53 nginx: worker process
+www-data 16537 16533  0 Aug28 ?        00:00:51 nginx: worker process
+root@eg001:~# kill -HUP 16533
+root@eg001:~# ps -ef | grep nginx | grep -v grep
+root     16533     1  0 Aug28 ?        00:00:00 nginx: master process nginx
+www-data 28194 16533  0 09:40 ?        00:00:00 nginx: worker process
+www-data 28195 16533  0 09:40 ?        00:00:00 nginx: worker process
+www-data 28196 16533  0 09:40 ?        00:00:00 nginx: worker process
+www-data 28197 16533  0 09:40 ?        00:00:00 nginx: worker process
+root@eg001:~# 
+</code></pre></td></tr></table>
+</div>
+</div><p>分析流程：</p>
+<ul>
+<li>Master 进程接收到 HUP 信号</li>
+<li>Master 进程重新加载配置文件</li>
+<li>Master 进程启动新的Worker进程</li>
+<li>Master 进程发送信号给Worker 进程</li>
+<li>老的Worker进程不再接收新的请求</li>
+<li>老的Worker进程处理完当前请求，退出</li>
+<li>至此，Nginx完成平滑重启</li>
+</ul>
+<p>注意：Nginx 0.8 版本以后，提供了 -s参数，用于管理Nginx服务的停止和重启，注意line 11：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">root@eg001:~# nginx -h
+nginx version: nginx/1.1.19
+Usage: nginx [-?hvVtq] [-s signal] [-c filename] [-p prefix] [-g directives]
+
+Options:
+  -?,-h         : this help
+  -v            : show version and exit
+  -V            : show version and configure options then exit
+  -t            : test configuration and exit
+  -q            : suppress non-error messages during configuration testing
+  -s signal     : send signal to a master process: stop, quit, reopen, reload
+  -p prefix     : set prefix path (default: /etc/nginx/)
+  -c filename   : set configuration file (default: /etc/nginx/nginx.conf)
+  -g directives : set global directives out of configuration file
+</code></pre></td></tr></table>
+</div>
+</div><h6 id="22-worker-进程工作机制">2.2 Worker 进程工作机制</h6>
+<p>Worker进程负责所有请求的处理工作，我们通过一个HTTP请求，来梳理一下Worker的工作流程：</p>
+<ul>
+<li>新的请求到来：所有的Work进程的listenfd都会变得可读。</li>
+<li>竟抢互斥锁：所有 Worker 进程在注册listenfd读事件前，要先抢accept_mutex。</li>
+<li>抢到互斥锁的Worker，注册listenfd读事件，在事件中调用accept接受该连接。</li>
+<li>拿到请求后，Worker进程开始读取请求，解析请求，处理请求，产生数据，再返回给客户端。</li>
+<li>Worker进程断开连接。</li>
+</ul>
+<p>需要注意：一个HTTP请求，完全由Worker进程处理，而且只在一个Worker中处理。</p>
+<h6 id="23-master-worker-进程架构机制的优势有哪些">2.3 Master-Worker 进程架构机制的优势有哪些？</h6>
+<p>对于每个Worker 进程来说，独立的进程，不需要加锁，节约锁导致的资源开销；worker进程之间，互不干扰，平滑重启就是很好的例子，服务不中断。</p>
+<h6 id="24-网络事件处理机制">2.4 网络事件处理机制</h6>
+<p>Nginx 采用的是异步非阻塞事件处理机制，支持select/poll/epoll/kqueue 等等。Nginx 同时会监控多个事件，调用他们是阻塞的。</p>
+<p>但是调用有超时时间，在超时时间内，如果有事件准备好了，就返回，否则重新放入epoll中。当读写返回EAGAIN时，事件将会被再次放入epoll中。</p>
+<p>处理线程只有一个，同时处理的请求也只有一个，所谓多请求并发，只是在不断的切换请求而已。虽然是切换，但这种切换不涉及上下文切换，相比十分轻量。更多的并发，只是会占用更多的内存。</p>
+<p>进程相关的还有，信号和定时器，这部分另外单独讲解。</p>
+<h5 id="3-nginx-包含哪些模块">3. Nginx 包含哪些模块</h5>
+<p>Nginx是模块化架构的服务，丰富的模块，松散耦合，也让Nginx更加强大！我看看Nginx 都有哪些模块</p>
+<p>内核模块
+实现了底层的通讯协议，为其他模块/进程构建运行环境、协作基础，打开listen 的端口，启动worker进程</p>
+<p>HTTP/Mail模块
+两个特殊模块，位于内核模块和各功能模块间；在内核模块之上实现了另一层的抽象；处理HTTP/MAIL协议事件；确保调用功能模块顺序正确。</p>
+<p>Event模块
+负责监听accept后建立的连接，对读写事件进行添加删除；与非阻塞 I/O 模型结合使用；支持select/poll/epoll/kqueue等；注意惊群效应，后面有解释。</p>
+<p>Handler模块
+负责接受客户端请求并产生输出；通过配置文件中location指令配置 content handler 模块。</p>
+<p>Filter模块
+负责输出内容处理，修改输出内容；Fiter模块在获取回复内容之后，向用户发送响应之前，执行处理动作；调用顺序在编译时就确定了。</p>
+<p>Upstream模块
+实现反向代理的功能，负责将请求转发到后端服务器上，并读取响应，发回客户端；跨越单机的限制，完成网络数据的接收、处理和转发；</p>
+<p>LoadBalancer模块
+根据配置指定算法，在众多的后端服务器中选择一个，完成请求的转发服务器；都有哪些算法呢？</p>
+<p>惊群效应：</p>
+<ul>
+<li>当内核 accept 一个连接时，会唤醒所有等待中的进程。</li>
+<li>但实际上只有一个进程能获取连接，其他的进程都是被无效唤醒的。</li>
+<li>所以 Nginx 采用了自有的一套 accept 加锁机制，避免多个进程同时调用 accept</li>
+<li>Nginx 多进程的锁在底层默认是通过 CPU 自旋锁来实现。如果操作系统不支持自旋锁，就采用文件锁。</li>
+</ul>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Summer</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2021-12-09
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/nginx/">nginx</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/year-summary/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">年终总结</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/framework/">
+            <span class="next-text nav-default">一个高性能，高并发，高可用的系统是如何演变来的</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+  <a href="https://summer90xia.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2016 - 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>Summer</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/raphael@2.2.7/raphael.min.js" integrity="sha256-67By+NpOtm9ka1R6xpUefeGOY8kWWHHRAKlvaTJ7ONI=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/flowchart.js@1.8.0/release/flowchart.min.js" integrity="sha256-zNGWjubXoY6rb5MnmpBNefO0RgoVYfle9p0tvOQM+6k=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.js" integrity="sha256-4O4pS1SH31ZqrSO2A/2QJTVjTPqVe+jnYgOWUVr7EEc=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/snapsvg@0.5.1/dist/snap.svg-min.js" integrity="sha256-oI+elz+sIm+jpn8F/qEspKoKveTc5uKeFHNNVexe6d8=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/underscore@1.8.3/underscore-min.js" integrity="sha256-obZACiHd7gkOk9iIL/pimWMTJ4W/pBsKu+oZnSeBIek=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.js" integrity="sha384-8748Vn52gHJYJI0XEuPB2QlPVNUkJlJn9tHqKec6J3q2r9l8fvRxrgn/E5ZHV0sP" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.css" integrity="sha384-6QbLKJMz5dS3adWSeINZe74uSydBGFbnzaAYmp+tKyq60S7H2p6V7g1TysM5lAaF" crossorigin="anonymous">
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+<script id="baidu_analytics">
+  var _hmt = _hmt || [];
+  (function() {
+    if (window.location.hostname === 'localhost') return;
+    var hm = document.createElement("script"); hm.async = true;
+    hm.src = "https://hm.baidu.com/hm.js?fc8cf18648f58ac4ad0594547ec6c1e3";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+<script id="baidu_push">
+  (function(){
+    if (window.location.hostname === 'localhost') return;
+    var bp = document.createElement('script'); bp.async = true;
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+      bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+      bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+  })();
+</script>
+
+
+<script src="/js/"></script>
+
+
+</body>
+</html>

@@ -6,7 +6,31 @@
     <description>Recent content in mysql on Summer&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 02 Dec 2020 09:53:13 +0800</lastBuildDate><atom:link href="https://summer90xia.github.io/tags/mysql/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 18 Jul 2021 15:51:40 +0800</lastBuildDate>
+    
+	<atom:link href="https://summer90xia.github.io/tags/mysql/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Mysql唯一索引性能问题</title>
+      <link>https://summer90xia.github.io/post/mysql1/</link>
+      <pubDate>Sun, 18 Jul 2021 15:51:40 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/mysql1/</guid>
+      <description>Q：如果业务保证了唯一。从性能的角度考虑，选择唯一索引还是普通索引呢？ 查询过程： 唯一索引：查找到第一个满足的条件就停止检索 普通索引：直到不满</description>
+    </item>
+    
+    <item>
+      <title>Mysql优化方法</title>
+      <link>https://summer90xia.github.io/post/mysql2/</link>
+      <pubDate>Tue, 19 Jan 2021 16:07:36 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/mysql2/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;总结了一些mysql的优化方法&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
     <item>
       <title>为什么SELECT * 会导致查询效率低</title>
       <link>https://summer90xia.github.io/post/mysql-select/</link>

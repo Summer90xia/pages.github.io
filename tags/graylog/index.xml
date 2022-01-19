@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Graylog on Summer&#39;s Blog</title>
+    <link>https://summer90xia.github.io/tags/graylog/</link>
+    <description>Recent content in Graylog on Summer&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Thu, 13 May 2021 16:01:32 +0800</lastBuildDate>
+    
+	<atom:link href="https://summer90xia.github.io/tags/graylog/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Graylog使用方法简介</title>
+      <link>https://summer90xia.github.io/post/graylog/</link>
+      <pubDate>Thu, 13 May 2021 16:01:32 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/graylog/</guid>
+      <description>前言 当我们公司内部部署很多服务以及测试、正式环境的时候，查看日志就变成了一个非常刚需的需求了。 是多个环境的日志统一收集，然后使用 Nginx 对外提供服</description>
+    </item>
+    
+  </channel>
+</rss>

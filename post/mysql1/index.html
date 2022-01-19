@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Mysql唯一索引性能问题 - Summer&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Summer" /><meta name="description" content="Q：如果业务保证了唯一。从性能的角度考虑，选择唯一索引还是普通索引呢？ 查询过程： 唯一索引：查找到第一个满足的条件就停止检索 普通索引：直到不满" /><meta name="keywords" content="mysql" />
+
+
+<meta name="baidu-site-verification" content="QuqVC3Anf0" />
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://summer90xia.github.io/post/mysql1/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/">
+
+
+<meta property="og:title" content="Mysql唯一索引性能问题" />
+<meta property="og:description" content="Q：如果业务保证了唯一。从性能的角度考虑，选择唯一索引还是普通索引呢？ 查询过程： 唯一索引：查找到第一个满足的条件就停止检索 普通索引：直到不满" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://summer90xia.github.io/post/mysql1/" />
+<meta property="article:published_time" content="2021-07-18T15:51:40+08:00" />
+<meta property="article:modified_time" content="2021-07-18T15:51:40+08:00" />
+<meta itemprop="name" content="Mysql唯一索引性能问题">
+<meta itemprop="description" content="Q：如果业务保证了唯一。从性能的角度考虑，选择唯一索引还是普通索引呢？ 查询过程： 唯一索引：查找到第一个满足的条件就停止检索 普通索引：直到不满">
+<meta itemprop="datePublished" content="2021-07-18T15:51:40&#43;08:00" />
+<meta itemprop="dateModified" content="2021-07-18T15:51:40&#43;08:00" />
+<meta itemprop="wordCount" content="1991">
+
+
+
+<meta itemprop="keywords" content="mysql," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Mysql唯一索引性能问题"/>
+<meta name="twitter:description" content="Q：如果业务保证了唯一。从性能的角度考虑，选择唯一索引还是普通索引呢？ 查询过程： 唯一索引：查找到第一个满足的条件就停止检索 普通索引：直到不满"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Summer&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">栏目</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Summer&#39;s Blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">栏目</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Mysql唯一索引性能问题</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-07-18 </span>
+        <div class="post-category">
+            <a href="/categories/%E5%AD%A6%E7%94%B5%E8%84%91/"> 学电脑 </a>
+            </div>
+          <span class="more-meta"> 约 1991 字 </span>
+          <span class="more-meta"> 预计阅读 4 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents"></nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>Q：如果业务保证了唯一。从性能的角度考虑，选择唯一索引还是普通索引呢？</p>
+<h1 id="查询过程">查询过程：</h1>
+<blockquote>
+<p>唯一索引：查找到第一个满足的条件就停止检索 普通索引：直到不满足条件时停止检索 性能差异：极低可忽略</p>
+</blockquote>
+<p>InnoDB 的数据是按<strong>数据页</strong>为单位来读写的。也就是说，当需要读一条记录的时候，并不是将这个记录本身从磁盘读出来，而是以页为单位，将其整体读入内存。在 InnoDB 中，每个数据页的大小默认是 16KB。</p>
+<p>因为引擎是按页读写的，所以说，当找到一条记录的时候，它所在的数据页就都在内存里了。那么，对于普通索引来说，要多做的那一次“查找和判断下一条记录”的操作，就只需要一次指针寻找和一次计算。如果刚好是该数据页最后一条记录，必须读下一数据页会稍微复杂。但其概率很小，如对于整型字段，一个数据页可以放仅千个key。</p>
+<h1 id="更新过程">更新过程：</h1>
+<p>change buffer介绍：</p>
+<blockquote>
+<p>当需要<strong>更新一个数据页</strong>时，如果数据页在内存中就直接更新，而**如果这个数据页还没有在内存中的话，在不影响数据一致性的前提下，InooDB 会将这些更新操作缓存在 change buffer 中，这样就不需要从磁盘中读入这个数据页了。**在下次查询需要访问这个数据页的时候，将数据页读入内存，然后执行 change buffer 中与这个页有关的操作。通过这种方式就能保证这个数据逻辑的正确性。</p>
+</blockquote>
+<p>将 change buffer 中的操作应用到原数据页，得到最新结果的过程称为 merge。除了<strong>访问这个数据页</strong>会触发 merge 外，系统有后台线程会定期 merge。在数据库正常关闭（shutdown）的过程中，也会执行 merge 操作。</p>
+<p>change buffer优点：</p>
+<ul>
+<li></li>
+</ul>
+<p><strong>减少IO，提升执行速度</strong>：如果能够将更新操作先记录在 change buffer，减少读磁盘IO，语句的执行速度会得到明显的提升。</p>
+<ul>
+<li></li>
+</ul>
+<p><strong>提高内存利用率</strong>：数据读入内存是需要占用 buffer pool 的，所以这种方式还能够避免占用内存，提高内存利用率。</p>
+<p><strong>唯一索引更新会先判断唯一性约束，必须要将数据页读入内存才能判断。因此不会使用change buffer。</strong></p>
+<p>change buffer 用的是 buffer pool 里的内存，因此不能无限增大。change buffer 的大小，可以通过参数 <code>innodb_change_buffer_max_size</code> 来动态设置。这个参数设置为 50 的时候，表示 change buffer 的大小最多只能占用 buffer pool 的 50%。</p>
+<p>执行更新插入操作时，普通索引和唯一索引区别</p>
+<ul>
+<li></li>
+</ul>
+<p>如果记录要更新的目标页在内存中，影响不大</p>
+<ul>
+<li></li>
+</ul>
+<p>如果记录要更新的目标页不在内存中</p>
+<ul>
+<li></li>
+</ul>
+<pre><code>唯一索引：需要**将数据页读入内存**。判断到没有冲突，插入这个值。
+</code></pre>
+<ul>
+<li></li>
+</ul>
+<pre><code>普通索引：将更新记录在 change buffer，语句执行就结束了。
+</code></pre>
+<p>将数据从磁盘读入内存涉及随机 IO 的访问，是数据库里面成本最高的操作之一。change buffer 因为减少了随机磁盘访问，所以对更新性能的提升是会很明显的。</p>
+<h1 id="change-buffer-的使用场景">change buffer 的使用场景</h1>
+<p>Q：普通索引的所有场景，使用 change buffer 都可以起到加速作用吗？</p>
+<p>merge 的时候是真正进行数据更新的时刻，而 change buffer 的主要目的就是将记录的变更动作缓存下来，所以在一个数据页做 merge 之前，change buffer 记录的变更越多（也就是这个页面上要更新的次数越多），收益就越大。</p>
+<ul>
+<li></li>
+</ul>
+<p>对于<strong>写多读少</strong>的业务来说，页面在写完以后马上被访问到的概率比较小，此时 change buffer 的使用效果最好。这种业务模型常见的就是<strong>账单类、日志类</strong>的系统。</p>
+<ul>
+<li></li>
+</ul>
+<p>对于<strong>更新后马上会查询</strong>的业务来说，随机访问 IO 的次数不会减少，反而增加了 change buffer 的维护代价。</p>
+<h1 id="change-buffer-与redo-log">change buffer 与redo log</h1>
+<p>Mysql中WAL技术，即<code>Write-aheading Logging</code>，关键点就是先写日志再写磁盘。如果每条更新都要写磁盘，磁盘找到记录再更新整个IO、查找成本都很高。所以更新操作时，先把记录写到redo log，并更新内存就算更新完成。在适当的时候将记录更新到磁盘。</p>
+<p>如何理解change buffer 和 redo log的顺序？</p>
+<p>假设语句<code>insert into t(id,k) values(id1,k1),(id2,k2);</code> 其中k1所在数据页在内存中，k2数据页不在更新操作：</p>
+<ol>
+<li>
+<ol>
+<li></li>
+</ol>
+<p>k1对应Page 1在内存中直接更新内存</p>
+</li>
+<li>
+<ol start="2">
+<li></li>
+</ol>
+<p>k2对应Page 2 没有在内存中，就在内存的 change buffer 区域，记录下“我要往 Page 2 插入一行”这个信息</p>
+</li>
+<li>
+<ol start="3">
+<li></li>
+</ol>
+<p>将上述两个动作记入 redo log 中</p>
+</li>
+</ol>
+<p>上述做完事务完成，更新的成本很低，写了两处内存，一处磁盘（两次操作合在一起写，还是顺序写）</p>
+<p>如果后续读操作，假设此时内存中数据页还在：</p>
+<ol>
+<li>
+<ol>
+<li></li>
+</ol>
+<p>读page1直接从内存中返回。此处可能会疑惑，wal后是否一定要读盘，是否一定要从redo log里将数据更新后才返回。其实不需要，直接从内存返回结果</p>
+</li>
+<li>
+<ol start="2">
+<li></li>
+</ol>
+<p>读 Page 2 的时候，需要把 Page 2 从磁盘读入内存中，然后应用 change buffer 里面的操作日志，生成一个正确的版本并返回结果。</p>
+</li>
+</ol>
+<p>Q:如果某次写入使用了 change buffer 机制，之后主机异常重启，是否会丢失 change buffer 和数据?</p>
+<p>不会丢失。虽然是只更新内存，但是在事务提交的时候，我们把 change buffer 的操作也记录到 redo log 里了，所以崩溃恢复的时候，change buffer 也能找回来。</p>
+<h1 id="总结">总结</h1>
+<p>普通索引和唯一索引查询能力没差别，主要在<strong>更新性能</strong>影响。<strong>如果所有的更新后面马上伴随了查询，应该关闭change buffer</strong>。**change buffer主要适用于写多读少的场景。**如果碰上了大量插入数据慢、内存命中率低的时候，可以考虑唯一索引方向的排查思路。历史数据的归档库，可以考虑唯一索引改成普通索引。</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Summer</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2021-07-18
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/mysql/">mysql</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/502/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">常见502故障有哪些解决方案</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/api/">
+            <span class="next-text nav-default">接口性能优化的11技巧</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+  <a href="https://summer90xia.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2016 - 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>Summer</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/raphael@2.2.7/raphael.min.js" integrity="sha256-67By+NpOtm9ka1R6xpUefeGOY8kWWHHRAKlvaTJ7ONI=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/flowchart.js@1.8.0/release/flowchart.min.js" integrity="sha256-zNGWjubXoY6rb5MnmpBNefO0RgoVYfle9p0tvOQM+6k=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.js" integrity="sha256-4O4pS1SH31ZqrSO2A/2QJTVjTPqVe+jnYgOWUVr7EEc=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/snapsvg@0.5.1/dist/snap.svg-min.js" integrity="sha256-oI+elz+sIm+jpn8F/qEspKoKveTc5uKeFHNNVexe6d8=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/underscore@1.8.3/underscore-min.js" integrity="sha256-obZACiHd7gkOk9iIL/pimWMTJ4W/pBsKu+oZnSeBIek=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.js" integrity="sha384-8748Vn52gHJYJI0XEuPB2QlPVNUkJlJn9tHqKec6J3q2r9l8fvRxrgn/E5ZHV0sP" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.css" integrity="sha384-6QbLKJMz5dS3adWSeINZe74uSydBGFbnzaAYmp+tKyq60S7H2p6V7g1TysM5lAaF" crossorigin="anonymous">
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+<script id="baidu_analytics">
+  var _hmt = _hmt || [];
+  (function() {
+    if (window.location.hostname === 'localhost') return;
+    var hm = document.createElement("script"); hm.async = true;
+    hm.src = "https://hm.baidu.com/hm.js?fc8cf18648f58ac4ad0594547ec6c1e3";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+<script id="baidu_push">
+  (function(){
+    if (window.location.hostname === 'localhost') return;
+    var bp = document.createElement('script'); bp.async = true;
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+      bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+      bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+  })();
+</script>
+
+
+<script src="/js/"></script>
+
+
+</body>
+</html>

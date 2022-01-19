@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>网络编程 on Summer&#39;s Blog</title>
+    <link>https://summer90xia.github.io/tags/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/</link>
+    <description>Recent content in 网络编程 on Summer&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Wed, 08 Sep 2021 15:50:22 +0800</lastBuildDate>
+    
+	<atom:link href="https://summer90xia.github.io/tags/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>IO模型详解</title>
+      <link>https://summer90xia.github.io/post/io/</link>
+      <pubDate>Wed, 08 Sep 2021 15:50:22 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/io/</guid>
+      <description>同步IO、异步IO、阻塞IO、非阻塞IO，这几个词常见于各种各样的与网络相关的文章之中，往往不同上下文中它们的意思是不一样的，以致于我在很长</description>
+    </item>
+    
+    <item>
+      <title>I/O多路复用</title>
+      <link>https://summer90xia.github.io/post/io2/</link>
+      <pubDate>Sat, 23 Jan 2021 16:07:01 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/io2/</guid>
+      <description>&lt;blockquote&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;这次，我们以最简单 socket 网络模型，一步一步地过渡到 I/O 多路复用。&lt;/p&gt;
+&lt;p&gt;但我不会具体细节说到每个系统调用的参数，这方面书上肯定比我说的详细。&lt;/p&gt;
+&lt;p&gt;好了，发车！&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

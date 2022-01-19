@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>三阶魔方快速还原方法 - Summer&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Summer" /><meta name="description" content="三阶魔方快速还原方法" /><meta name="keywords" content="魔方" />
+
+
+<meta name="baidu-site-verification" content="QuqVC3Anf0" />
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://summer90xia.github.io/post/mofang/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/">
+
+
+<meta property="og:title" content="三阶魔方快速还原方法" />
+<meta property="og:description" content="三阶魔方快速还原方法" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://summer90xia.github.io/post/mofang/" />
+<meta property="article:published_time" content="2019-06-17T15:28:12+08:00" />
+<meta property="article:modified_time" content="2019-06-17T15:28:12+08:00" />
+<meta itemprop="name" content="三阶魔方快速还原方法">
+<meta itemprop="description" content="三阶魔方快速还原方法">
+<meta itemprop="datePublished" content="2019-06-17T15:28:12&#43;08:00" />
+<meta itemprop="dateModified" content="2019-06-17T15:28:12&#43;08:00" />
+<meta itemprop="wordCount" content="907">
+
+
+
+<meta itemprop="keywords" content="魔方," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="三阶魔方快速还原方法"/>
+<meta name="twitter:description" content="三阶魔方快速还原方法"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Summer&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">栏目</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Summer&#39;s Blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">栏目</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">三阶魔方快速还原方法</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2019-06-17 </span>
+        <div class="post-category">
+            <a href="/categories/%E4%BC%AA%E6%96%87%E8%89%BA/"> 伪文艺 </a>
+            </div>
+          <span class="more-meta"> 约 907 字 </span>
+          <span class="more-meta"> 预计阅读 2 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#还原第一层">还原第一层</a></li>
+    <li><a href="#还原第二层">还原第二层</a></li>
+    <li><a href="#还原顶层">还原顶层</a>
+      <ul>
+        <li><a href="#还原顶部十字">还原顶部十字</a></li>
+        <li><a href="#还原顶部角块">还原顶部角块</a></li>
+      </ul>
+    </li>
+    <li><a href="#全部还原">全部还原</a></li>
+    <li><a href="#再进一步">再进一步</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p>写代码思路遇到阻塞时，喜欢转一下魔方。短暂的思维高度集中，能让大脑得到很好的休息，之后重新整理头绪，换个思路，往往问题便会迎刃而解</p>
+</blockquote>
+<h2 id="还原第一层">还原第一层</h2>
+<p>1.找到中心点是白色的那一面为底面</p>
+<p><img src="https://blog.summer90.top/images/mofang/1.jpg" style="zoom:50%;width: 25%" /></p>
+<p>2.还原底部十字，注意与白色相邻块的颜色须与其他面的中心颜色保持一致</p>
+<p><img src="https://blog.summer90.top/images/mofang/2.png" style="zoom:50%;width: 25%" /></p>
+<p>3.还原底部角块</p>
+<p><img src="https://blog.summer90.top/images/mofang/3.png" style="zoom:50%;width: 25%" /></p>
+<h2 id="还原第二层">还原第二层</h2>
+<blockquote>
+<p>将已还原的白色面为底面，将顶部的色块还原到第二层的棱边上，可能出现两种情况，如下图所示。记忆方法：这两个公式是对称的，都是只转动右侧和顶层，唯一的区别是开始时右侧是顺时针还是逆时针转动，注意：<em>左逆右顺</em></p>
+</blockquote>
+<p>情况1：              <img src="https://blog.summer90.top/images/mofang/4.png" style="zoom:50%;width: 25%" /></p>
+<p>还原方法：白色面朝下，将魔方整体向右手边转动一面，然后执行 <code>r'u'r'u'r'urur</code></p>
+<p>情况2：  <img src="https://blog.summer90.top/images/mofang/5.png" style="zoom:50%;width: 25%" /></p>
+<p>还原方法：白色面朝下，将魔方整体向右手边转动一面，然后执行 <code>rururu'r'u'r'</code></p>
+<p>第二层还原后如图：<img src="https://blog.summer90.top/images/mofang/6.png" style="zoom:50%;width: 25%" /></p>
+<h2 id="还原顶层">还原顶层</h2>
+<blockquote>
+<p>还原顶部是出现的情况比较多，但是一般都可以通过一些公式将遇到的情况转变成熟悉的情况</p>
+</blockquote>
+<h3 id="还原顶部十字">还原顶部十字</h3>
+<p>​  第二层还原后会出现以下两种情况：</p>
+<p>情况1：<img src="https://blog.summer90.top/images/mofang/888.png" style="zoom:50%;width: 25%" /> 情况2：<img src="https://blog.summer90.top/images/mofang/7.png" style="zoom:50%;width: 25%" /></p>
+<p>情况1时执行 <code>frur'u'f'</code>  后可以转换成情况2</p>
+<p>情况2时执行 <code>mumumuum'um'um'uu</code> 即可完成顶部十字</p>
+<p>顶部十字： <img src="https://blog.summer90.top/images/mofang/8.png" style="zoom:50%;width: 25%" /></p>
+<h3 id="还原顶部角块">还原顶部角块</h3>
+<p>​	这里需要熟记两个公式，<code>左手公式</code> 和 <code>右手公式</code></p>
+<p><strong>左手公式</strong>：<code>l'u'lu'l'u'u'l</code></p>
+<p><strong>右手公式</strong>：<code>rur'uruur'</code></p>
+<p>还原方法：在顶部十字的前提下，反复使用<code>左右手公式</code>直至出现如下情况</p>
+<p><img src="https://blog.summer90.top/images/mofang/10.png" style="zoom:50%;width: 25%" /></p>
+<p>此时，采用如图的方式拿魔方， 先执行 <code>右手公式</code> 后执行 <code>左手公式</code> 便可还原顶部</p>
+<blockquote>
+<p>也可能出现<code>田字</code>在右下角，左下角色块为非黄色的情况，此时只要 先执行 <code>左手公式</code> 后执行 <code>右手公式</code> 便可还原顶部</p>
+</blockquote>
+<h2 id="全部还原">全部还原</h2>
+<p>顶部还原后会有两种情况出现：</p>
+<p>情况1：<img src="https://blog.summer90.top/images/mofang/999.png" style="zoom:50%;width: 25%" />  情况2：<img src="https://blog.summer90.top/images/mofang/11.png" style="zoom:50%;width: 25%" /></p>
+<p>在情况1的时候，执行 <code>r'fr'bbrf'r'bbrr</code> 便可转换至情况 2，有时候可能需要重复执行多次</p>
+<p>出现情况2的时候，需要先观察需要归位的中间色块是按找顺时针排列还是逆时针排列，</p>
+<ol>
+<li>顺时针时 先执行 <code>右手公式</code> 后执行 <code>左手公式</code> 即可</li>
+<li>逆时针时 先执行 <code>左手公式</code> 后执行 <code>右手公式</code> 即可</li>
+</ol>
+<p>全部还原 ：<img src="https://blog.summer90.top/images/mofang/12.png" style="zoom:50%;width: 25%" /></p>
+<h2 id="再进一步">再进一步</h2>
+<p>一直以为魔方全部还原后即是最终状态，其实再多进一步，即可出现很多<strong>有规律</strong>的排列图案</p>
+<p><img src="https://blog.summer90.top/images/mofang/cc.png" style="zoom:50%;width: 25%" />
+<img src="https://blog.summer90.top/images/mofang/bb.png" style="zoom:50%;width: 25%" />
+<img src="https://blog.summer90.top/images/mofang/aa.png" style="zoom:50%;width: 25%" /></p>
+<blockquote>
+<p>ps : 平时完成三阶魔方的复原需要2分钟左右时间，但是写这篇文档却花了2个多小时。因为熟练以后会形成肌肉记忆，根本不需要进过大脑思考，现在需要一步一步的拆分开记录，很多时候一个动作都需要停下来多次复现才能记录完整。所以想要掌握一项技能只能勤加练习</p>
+</blockquote>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Summer</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2019-06-17
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/%E9%AD%94%E6%96%B9/">魔方</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/laradock/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">laradock 使用文档</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/os/">
+            <span class="next-text nav-default">计算机操作系统基本原理笔记</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+  <a href="https://summer90xia.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2016 - 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>Summer</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/raphael@2.2.7/raphael.min.js" integrity="sha256-67By+NpOtm9ka1R6xpUefeGOY8kWWHHRAKlvaTJ7ONI=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/flowchart.js@1.8.0/release/flowchart.min.js" integrity="sha256-zNGWjubXoY6rb5MnmpBNefO0RgoVYfle9p0tvOQM+6k=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.js" integrity="sha256-4O4pS1SH31ZqrSO2A/2QJTVjTPqVe+jnYgOWUVr7EEc=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/snapsvg@0.5.1/dist/snap.svg-min.js" integrity="sha256-oI+elz+sIm+jpn8F/qEspKoKveTc5uKeFHNNVexe6d8=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/underscore@1.8.3/underscore-min.js" integrity="sha256-obZACiHd7gkOk9iIL/pimWMTJ4W/pBsKu+oZnSeBIek=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.js" integrity="sha384-8748Vn52gHJYJI0XEuPB2QlPVNUkJlJn9tHqKec6J3q2r9l8fvRxrgn/E5ZHV0sP" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.css" integrity="sha384-6QbLKJMz5dS3adWSeINZe74uSydBGFbnzaAYmp+tKyq60S7H2p6V7g1TysM5lAaF" crossorigin="anonymous">
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+<script id="baidu_analytics">
+  var _hmt = _hmt || [];
+  (function() {
+    if (window.location.hostname === 'localhost') return;
+    var hm = document.createElement("script"); hm.async = true;
+    hm.src = "https://hm.baidu.com/hm.js?fc8cf18648f58ac4ad0594547ec6c1e3";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+<script id="baidu_push">
+  (function(){
+    if (window.location.hostname === 'localhost') return;
+    var bp = document.createElement('script'); bp.async = true;
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+      bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+      bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+  })();
+</script>
+
+
+<script src="/js/"></script>
+
+
+</body>
+</html>

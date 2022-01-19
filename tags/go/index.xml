@@ -6,7 +6,11 @@
     <description>Recent content in go on Summer&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 10 Jan 2020 14:50:52 +0800</lastBuildDate><atom:link href="https://summer90xia.github.io/tags/go/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 10 Jan 2020 14:50:52 +0800</lastBuildDate>
+    
+	<atom:link href="https://summer90xia.github.io/tags/go/index.xml" rel="self" type="application/rss+xml" />
+    
+    
     <item>
       <title>使用beego实现用户管理</title>
       <link>https://summer90xia.github.io/post/beego/</link>

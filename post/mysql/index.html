@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Mysql-从优化到高可用 - Summer&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Summer" /><meta name="description" content="Mysql-从优化到高可用" /><meta name="keywords" content="mysql" />
+
+
+<meta name="baidu-site-verification" content="QuqVC3Anf0" />
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://summer90xia.github.io/post/mysql/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/">
+
+
+<meta property="og:title" content="Mysql-从优化到高可用" />
+<meta property="og:description" content="Mysql-从优化到高可用" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://summer90xia.github.io/post/mysql/" />
+<meta property="article:published_time" content="2019-12-20T16:28:12+08:00" />
+<meta property="article:modified_time" content="2019-12-20T16:28:12+08:00" />
+<meta itemprop="name" content="Mysql-从优化到高可用">
+<meta itemprop="description" content="Mysql-从优化到高可用">
+<meta itemprop="datePublished" content="2019-12-20T16:28:12&#43;08:00" />
+<meta itemprop="dateModified" content="2019-12-20T16:28:12&#43;08:00" />
+<meta itemprop="wordCount" content="6678">
+
+
+
+<meta itemprop="keywords" content="mysql," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Mysql-从优化到高可用"/>
+<meta name="twitter:description" content="Mysql-从优化到高可用"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Summer&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">栏目</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Summer&#39;s Blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">栏目</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Mysql-从优化到高可用</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2019-12-20 </span>
+        <div class="post-category">
+            <a href="/categories/%E5%AD%A6%E7%94%B5%E8%84%91/"> 学电脑 </a>
+            </div>
+          <span class="more-meta"> 约 6678 字 </span>
+          <span class="more-meta"> 预计阅读 14 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#一-mysql-的优点及特点">一 Mysql 的优点及特点</a></li>
+    <li><a href="#二-重点知识块">二 重点知识块</a>
+      <ul>
+        <li><a href="#1-并发控制">1 并发控制</a></li>
+        <li><a href="#2-事务acid">2 事务（ACID）</a></li>
+        <li><a href="#3-索引">3 索引</a></li>
+      </ul>
+    </li>
+    <li><a href="#三-性能优化">三 性能优化</a>
+      <ul>
+        <li><a href="#1-系统配置">1 系统配置</a></li>
+        <li><a href="#2-基准测试">2 基准测试</a></li>
+        <li><a href="#3-慢查询及explain分析">3 慢查询及explain分析</a></li>
+        <li><a href="#4-sql语句优化">4 sql语句优化</a></li>
+        <li><a href="#5-硬件选择">5 硬件选择</a></li>
+        <li><a href="#6-分库分表分区技术">6 分库分表分区技术</a></li>
+      </ul>
+    </li>
+    <li><a href="#四-高可用">四 高可用</a>
+      <ul>
+        <li><a href="#1-基于主从复制">1 基于主从复制</a></li>
+        <li><a href="#2-基于galera协议">2 基于Galera协议</a></li>
+      </ul>
+    </li>
+    <li><a href="#五-相关扩展">五 相关扩展</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p>将工作中使用mysql的经验做一个梳理</p>
+</blockquote>
+<h2 id="一-mysql-的优点及特点">一 Mysql 的优点及特点</h2>
+<ol>
+<li>性能卓越服务稳定，很少出现异常宕机</li>
+<li>开放源代码且无版权制约，自主性强、使用成本低。</li>
+<li>历史悠久、社区及用户非常活跃，遇到问题，可以很快获取到帮助。</li>
+<li>软件体积小，安装使用简单，并且易于维护，安装及维护成本低。</li>
+<li>支持多种操作系统，提供多种api几口，支持多种开发语言。</li>
+</ol>
+<h2 id="二-重点知识块">二 重点知识块</h2>
+<h3 id="1-并发控制">1 并发控制</h3>
+<p>​	<strong>1.共享锁（shared lock，读锁）</strong>：共享的，相互不阻塞的。</p>
+<p>​	<strong>2.排他锁（exclusive lock，写锁）</strong>：排他的，一个写锁会阻塞其他的写锁和读锁。</p>
+<h3 id="2-事务acid">2 事务（ACID）</h3>
+<ul>
+<li>
+<p>原子性（atomicity）一个事务必须被视为一个不可分割的最小工作单元，整个事务中所有操作要么全部提交成功，要么全部失败回滚，对于一个事务来说，不可能只执行其中的一部分操作；</p>
+</li>
+<li>
+<p>一致性（consistency）数据库总是从一个一致性的状态转换到另外一个一致性的状态；</p>
+</li>
+<li>
+<p>隔离性（isolation）一个事务所做的修改在最终提交以前，对其他事务是不可见的；</p>
+</li>
+<li>
+<p>持久性（durability）一旦事务提交，则其所做的修改就会永久保存到数据库中。</p>
+</li>
+</ul>
+<p>​</p>
+<h4 id="21-事务隔离机制">2.1 事务隔离机制</h4>
+<blockquote>
+<p>查看事务隔离级别：<code>SELECT @@transaction_isolation;</code> ( 老版本mysql用的是tx_isolation，mysql8中使用transaction_isolation)</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>隔离级别</th>
+<th>脏读（Dirty Read）</th>
+<th>不可重复读（NonRepeatable Read）</th>
+<th>幻读（Phantom Read）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>未提交读（Read uncommitted）</td>
+<td>可能</td>
+<td>可能</td>
+<td>可能</td>
+</tr>
+<tr>
+<td>已提交读（Read committed）</td>
+<td>不可能</td>
+<td>可能</td>
+<td>可能</td>
+</tr>
+<tr>
+<td>可重复读（Repeatable read）</td>
+<td>不可能</td>
+<td>不可能</td>
+<td>可能</td>
+</tr>
+<tr>
+<td>可串行化（Serializable ）</td>
+<td>不可能</td>
+<td>不可能</td>
+<td>不可能</td>
+</tr>
+</tbody>
+</table>
+<h4 id="22-可能出现的问题">2.2 可能出现的问题</h4>
+<p><strong>① 脏读:</strong> 脏读就是指当一个事务正在访问数据，并且对数据进行了修改，而这种修改还没有提交到数据库中或执行<code>rollback</code>，这时，另外一个事务也访问这个数据，然后使用了这个数据。</p>
+<p>​	&ndash; <em>A事务未提交或回滚后B事务读取到A修改的数据</em></p>
+<p>**② 不可重复读:**是指在一个事务内，多次读同一数据。在这个事务还没有结束时，另外一个事务也访问该同一数据。那么，在第一个事务中的两次读数据之间，由于第二个事务的修改，那么第一个事务两次读到的的数据可能是不一样的。这样就发生了在一个事务内两次读到的数据是不一样的，因此称为是不可重复读。</p>
+<p>​	&ndash; <em>A事务提交后B事务读取新数据</em></p>
+<p>**③ 可重复读:**遵循事务在执行期间看到的数据前后必须是一致的 (类似于 <code>幂等</code>)</p>
+<p>​	&ndash; <em>A事务提交后B事务未提交前，B事务读取的数据相同</em></p>
+<p>**④ 幻读:**当某个事务在读取某个范围内的记录时，另外一个事务又在该范围内插入了新的记录，当之前的事务再次读取该范围的记录时，会产生幻行。InnoDB存储引擎通过多版本并发控制（MVCC）解决了幻读的问题。</p>
+<p>​	&ndash; <em>可重复读时，不会产生幻读行数据。但当A事务插入/删除数据时，B事务会出现不能写入/删除数据的操作</em></p>
+<p>幻读示例  <img src="https://blog.summer90.top/images/mysql/mysql_huandu.png" style="zoom:75%;width:75%" /></p>
+<p><a href="https://juejin.im/post/5ba0c3a6e51d450e597b2fb4">经典案例</a></p>
+<h3 id="3-索引">3 索引</h3>
+<blockquote>
+<p>索引（Index）是帮助MySQL高效获取数据的<code>数据结构</code>。索引的目的在于提高查询效率，可以类比字典，如果要查“mysql”这个单词，我们肯定需要定位到m字母，然后从下往下找到y字母，再找到剩下的sql。通过不断的缩小想要获得数据的范围来筛选出最终想要的结果，同时把随机的事件变成顺序的事件，也就是我们总是通过同一种查找方式来锁定数据。</p>
+</blockquote>
+<h4 id="31-索引方法">3.1 索引方法</h4>
+<ul>
+<li>B-Tree 索引：最常见的索引类型，大部分引擎都支持B树索引。</li>
+<li>HASH 索引：只有Memory引擎支持，使用场景简单。</li>
+<li>R-Tree 索引(空间索引)：空间索引是MyISAM的一种特殊索引类型，主要用于地理空间数据类型。</li>
+<li>Full-text (全文索引)：全文索引也是MyISAM的一种特殊索引类型，主要用于全文索引，InnoDB从MYSQL5.6版本提供对全文索引的支持。</li>
+</ul>
+<p>由于，索引是在MYSQL的存储引擎层中实现的，而不是在服务层实现的。所以每种存储引擎的索引都不一定完全相同，也不是所有的存储引擎都支持所有的索引类型。</p>
+<table>
+<thead>
+<tr>
+<th>索引</th>
+<th>MyISAM引擎</th>
+<th>InnoDB引擎</th>
+<th>Memory引擎</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>B-Tree 索引</td>
+<td>支持</td>
+<td>支持</td>
+<td>支持</td>
+</tr>
+<tr>
+<td>HASH 索引</td>
+<td>不支持</td>
+<td>不支持</td>
+<td>支持</td>
+</tr>
+<tr>
+<td>R-Tree 索引</td>
+<td>支持</td>
+<td>不支持</td>
+<td>不支持</td>
+</tr>
+<tr>
+<td>Full-text 索引</td>
+<td>不支持</td>
+<td>暂不支持</td>
+<td>不支持</td>
+</tr>
+</tbody>
+</table>
+<h4 id="32-b-tree索引类型">3.2 B-TREE索引类型</h4>
+<ul>
+<li><strong>普通索引</strong>
+这是最基本的索引类型，而且它没有唯一性之类的限制。普通索引可以通过以下几种方式创建：
+（1）创建索引: CREATE INDEX 索引名 ON 表名(列名1，列名2,&hellip;);
+（2）修改表: ALTER TABLE 表名ADD INDEX 索引名 (列名1，列名2,&hellip;);
+（3）创建表时指定索引：CREATE TABLE 表名 ( [&hellip;], INDEX 索引名 (列名1，列名 2,&hellip;) );</li>
+<li><strong>UNIQUE索引</strong>
+表示唯一的，不允许重复的索引，如果该字段信息保证不会重复例如身份证号用作索引时，可设置为unique：
+（1）创建索引：CREATE UNIQUE INDEX 索引名 ON 表名(列的列表);
+（2）修改表：ALTER TABLE 表名ADD UNIQUE 索引名 (列的列表);
+（3）创建表时指定索引：CREATE TABLE 表名( [&hellip;], UNIQUE 索引名 (列的列表) );</li>
+<li><strong>主键：PRIMARY KEY索引</strong>
+主键是一种唯一性索引，但它必须指定为“PRIMARY KEY”。
+（1）主键一般在创建表的时候指定：“CREATE TABLE 表名( [&hellip;], PRIMARY KEY (列的列表) ); ”。
+（2）但是，我们也可以通过修改表的方式加入主键：“ALTER TABLE 表名ADD PRIMARY KEY (列的列表); ”。
+每个表只能有一个主键。 （主键相当于聚合索引，是查找最快的索引）</li>
+</ul>
+<h4 id="33-索引的使用原则">3.3 索引的使用原则</h4>
+<p><strong>（1）索引字段要尽量的小</strong></p>
+<p>道IO次数取决于b+数的高度h，假设当前数据表的数据为N，每个磁盘块的数据项的数量是m，则有h=㏒(m+1)N，当数据量N一定的情况下，m越大，h越小；而m = 磁盘块的大小 / 数据项的大小，磁盘块的大小也就是一个数据页的大小，是固定的，如果数据项占的空间越小，数据项的数量越多，树的高度越低。比如int占4字节，要比bigint8字节少一半</p>
+<p><strong>（2）最左原则</strong></p>
+<p>​		b+树的数据项是复合的数据结构，按照从左到右的顺序来建立搜索树。比如当(张三,20,F)这样的数据来检索的时候，b+树会优先比较name来确定下一步的所搜方向，如果name相同再依次比较age和sex，最后得到检索的数据；但当(20,F)这样的没有name的数据来的时候，b+树就不知道下一步该查哪个节点，因为建立搜索树的时候name就是第一个比较因子，必须要先根据name来搜索才能知道下一步去哪里查询。再比如当(张三,F)这样的数据来检索时，b+树可以用name来指定搜索方向，但下一个字段age的缺失，所以只能把名字等于张三的数据都找到，然后再匹配性别是F的数据。<a href="https://tech.meituan.com/2014/06/30/mysql-index.html">参考</a></p>
+<p><strong>（3）其他注意事项</strong></p>
+<p>（A）创建索引</p>
+<ol>
+<li>较频繁的作为查询条件的字段应该创建索引</li>
+<li>尽量选择区分度高的列作为索引（唯一性太差的字段不适合单独创建索引，即使频繁作为查询条件，如<code>性别</code>）</li>
+<li>索引不应该包含有NULL值的列，组合索引中只要有一列有NULL值，那么这一列对于此条组合索引就是无效的</li>
+<li><code>=</code>和<code>in</code>可以乱序</li>
+<li>更新非常频繁的字段不适合创建索引</li>
+<li>不会出现在 WHERE 子句中的字段不该创建索引</li>
+</ol>
+<p>（B）使用索引</p>
+<ol>
+<li>
+<p>尽量将<code>col != n</code>等换成<code>col &gt;n and col &lt;n</code></p>
+</li>
+<li>
+<p>尽量避免在 where 子句中对字段进行表达式操作</p>
+</li>
+<li>
+<p>尽量避免在where子句中对字段进行null值判断</p>
+</li>
+<li>
+<p>尽量避免在where子句中使用or来连接条件</p>
+</li>
+<li>
+<p>在JOIN 查询中，两个表中Join的字段应该是被建过索引的且应该是相同的类型的</p>
+</li>
+<li>
+<p>模糊查询时，<code>LIKE &quot;%aaaaa%&quot;</code>不会使用索引，但是<code>LIKE &quot;aaa%&quot;</code>却可以使用索引</p>
+</li>
+</ol>
+<h2 id="三-性能优化">三 性能优化</h2>
+<h3 id="1-系统配置">1 系统配置</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-mysql" data-lang="mysql"><span class="c1">#公共参数默认值
+</span><span class="c1"></span><span class="n">max_connections</span> <span class="o">=</span> <span class="mi">151</span> <span class="c1"># 同时处理最大连接数，建议设置最大连接数是上限连接数的80%左右
+</span><span class="c1"></span><span class="n">sort_buffer_size</span> <span class="o">=</span> <span class="mi">2</span><span class="n">M</span> <span class="c1"># 查询排序时缓冲区大小，只对order by和group by起作用，建议增大为16M
+</span><span class="c1"></span><span class="n">open_files_limit</span> <span class="o">=</span> <span class="mi">1024</span>  <span class="c1"># 打开文件数限制，如果show global status like &#39;open_files&#39;查看的值等于或者大于open_files_limit值时，程序会无法连接数据库或卡死
+</span><span class="c1"></span>
+<span class="c1"># MyISAM参数默认值
+</span><span class="c1"></span><span class="n">key_buffer_size</span> <span class="o">=</span> <span class="mi">16</span><span class="n">M</span> <span class="c1"># 索引缓存区大小，一般设置物理内存的30-40%
+</span><span class="c1"></span><span class="n">read_buffer_size</span> <span class="o">=</span> <span class="mi">128</span><span class="n">K</span>   <span class="c1"># 读操作缓冲区大小，建议设置16M或32M
+</span><span class="c1"></span><span class="n">query_cache_type</span> <span class="o">=</span> <span class="k">ON</span> <span class="c1"># 打开查询缓存功能
+</span><span class="c1"></span><span class="n">query_cache_limit</span> <span class="o">=</span> <span class="mi">1</span><span class="n">M</span>  <span class="c1"># 查询缓存限制，只有1M以下查询结果才会被缓存，以免结果数据较大把缓存池覆盖
+</span><span class="c1"></span><span class="n">query_cache_size</span> <span class="o">=</span> <span class="mi">16</span><span class="n">M</span>  <span class="c1"># 查看缓冲区大小，用于缓存SELECT查询结果，下一次有同样SELECT查询将直接从缓存池返回结果，可适当成倍增加此值
+</span><span class="c1"></span>
+<span class="c1"># InnoDB参数默认值：
+</span><span class="c1"></span><span class="n">innodb_buffer_pool_size</span> <span class="o">=</span> <span class="mi">128</span><span class="n">M</span> <span class="c1"># 索引和数据缓冲区大小，建议设置物理内存的70%左右
+</span><span class="c1"></span><span class="n">innodb_buffer_pool_instances</span> <span class="o">=</span> <span class="mi">1</span> <span class="c1"># 缓冲池实例个数，推荐设置4个或8个
+</span><span class="c1"></span><span class="n">innodb_flush_log_at_trx_commit</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># 关键参数，0代表大约每秒写入到日志并同步到磁盘，数据库故障会丢失1秒左右事务数据。1为每执行一条SQL后写入到日志并同步到磁盘，I/O开销大，执行完SQL要等待日志读写，效率低。2代表只把日志写入到系统缓存区，再每秒同步到磁盘，效率很高，如果服务器故障，才会丢失事务数据。对数据安全性要求不是很高的推荐设置2，性能高，修改后效果明显。
+</span><span class="c1"></span><span class="n">innodb_file_per_table</span> <span class="o">=</span> <span class="n">OFF</span>  <span class="c1"># 是否共享表空间，5.7+版本默认ON，共享表空间idbdata文件不断增大，影响一定的I/O性能。建议开启独立表空间模式，每个表的索引和数据都存在自己独立的表空间中，可以实现单表在不同数据库中移动。
+</span><span class="c1"></span><span class="n">innodb_log_buffer_size</span> <span class="o">=</span> <span class="mi">8</span><span class="n">M</span> <span class="c1"># 日志缓冲区大小，由于日志最长每秒钟刷新一次，所以一般不用超过16M
+</span><span class="c1"></span> 
+ <span class="c1"># 系统内核参数优化
+</span><span class="c1"></span><span class="n">net</span><span class="p">.</span><span class="n">ipv4</span><span class="p">.</span><span class="n">tcp_fin_timeout</span> <span class="o">=</span> <span class="mi">30</span> <span class="c1"># TIME_WAIT超时时间，默认是60s
+</span><span class="c1"></span><span class="n">net</span><span class="p">.</span><span class="n">ipv4</span><span class="p">.</span><span class="n">tcp_tw_reuse</span> <span class="o">=</span> <span class="mi">1</span> <span class="c1"># 1表示开启复用，允许TIME_WAIT socket重新用于新的TCP连接，0表示关闭
+</span><span class="c1"></span><span class="n">net</span><span class="p">.</span><span class="n">ipv4</span><span class="p">.</span><span class="n">tcp_tw_recycle</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># 1表示开启TIME_WAIT socket快速回收，0表示关闭
+</span><span class="c1"></span><span class="n">net</span><span class="p">.</span><span class="n">ipv4</span><span class="p">.</span><span class="n">tcp_max_tw_buckets</span> <span class="o">=</span> <span class="mi">4096</span> <span class="c1"># 系统保持TIME_WAIT socket最大数量，如果超出这个数，系统将随机清除一些TIME_WAIT并打印警告信息
+</span><span class="c1"></span><span class="n">net</span><span class="p">.</span><span class="n">ipv4</span><span class="p">.</span><span class="n">tcp_max_syn_backlog</span> <span class="o">=</span> <span class="mi">4096</span><span class="c1"># 进入SYN队列最大长度，加大队列长度可容纳更多的等待连接。在Linux系统中，如果进程打开的文件句柄数量超过系统默认值1024，就会提示“too many files open”信息，所以要调整打开文件句柄限制。
+</span></code></pre></td></tr></table>
+</div>
+</div><h3 id="2-基准测试">2 基准测试</h3>
+<p>​	数据库的基准测试是对数据库的性能指标进行定量的、可复现的、可对比的测试，不要求数据的真实性。通过数据库的基准测试的作用，可以分析在当前的配置下（包括硬件配置、OS、数据库设置等），数据库的性能表现，从而找出MySQL的性能阈值，并根据实际系统的要求调整配置。</p>
+<h4 id="21基准测试的指标">2.1基准测试的指标</h4>
+<ul>
+<li>
+<p>TPS/QPS：衡量吞吐量。</p>
+</li>
+<li>
+<p>响应时间：包括平均响应时间、最小响应时间、最大响应时间、时间百分比等，其中时间百分比参考意义较大，如前95%的请求的最大响应时间。。</p>
+</li>
+<li>
+<p>并发量：同时处理的查询请求的数量。</p>
+</li>
+</ul>
+<h4 id="22基准测试的工具">2.2基准测试的工具</h4>
+<ul>
+<li>使用sysbench进行基准测试</li>
+</ul>
+<h3 id="3-慢查询及explain分析">3 慢查询及explain分析</h3>
+<h4 id="31慢查询配置">3.1慢查询配置</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="nv">slow_query_log</span><span class="o">=</span><span class="m">1</span>       <span class="c1">#是否启用慢查询日志，1为启用，0为禁用</span>  
+<span class="nv">slow_query_log_file</span><span class="o">=</span>slow.log       <span class="c1">#指定慢查询日志文件的路径和名字，可使用绝对路径指定；默认值是&#39;主机名_slow.log&#39;，位于datadir目录</span>  
+<span class="nv">long_query_time</span><span class="o">=</span><span class="m">2</span>     <span class="c1">#SQL语句运行时间阈值，执行时间大于参数值的语句才会被记录下来</span>  
+<span class="nv">min_examined_row_limit</span><span class="o">=</span><span class="m">100</span>     <span class="c1">#SQL语句检测的记录数少于设定值的语句不会被记录到慢查询日志，即使这个语句执行时间超过了long_query_time的阈值</span>  
+<span class="nv">log_queries_not_using_indexes</span><span class="o">=</span><span class="m">1</span>   <span class="c1">#将没有使用索引的语句记录到慢查询日志</span>  
+<span class="nv">log_throttle_queries_not_using_indexes</span><span class="o">=</span><span class="m">10</span>     <span class="c1">#设定每分钟记录到日志的未使用索引的语句数目，超过这个数目后只记录语句数量和花费的总时间</span>  
+log-slow-admin-statements<span class="o">=</span><span class="m">1</span>    <span class="c1">#记录执行缓慢的管理SQL，如alter table,analyze table, check table, create index, drop index, optimize table, repair table等。</span>  
+<span class="nv">log_slow_slave_statements</span><span class="o">=</span><span class="m">0</span>    <span class="c1">#记录从库上执行的慢查询语句</span>  
+<span class="nv">log_timestamps</span><span class="o">=</span>system     <span class="c1">#5.7版本新增时间戳所属时区参数，默认记录UTC时区的时间戳到慢查询日志，应修改为记录系统时区</span>  
+<span class="nv">log_output</span><span class="o">=</span>FILE,TABLE     <span class="c1">#指定慢查询日志的输出方式，从5.5版本开始可以记录到日志文件(FILE，慢查询日志)和数据库表(TABLE，mysql.slow_log)中</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>开启慢查询 <img src="https://blog.summer90.top/images/mysql/slowlog.png" style="zoom: 80%;" /></p>
+<p>慢查询日志内容 <img src="https://blog.summer90.top/images/mysql/slowlog2.png" style="zoom:75%;" /></p>
+<h4 id="32explain分析">3.2explain分析</h4>
+<p><img src="https://blog.summer90.top/images/mysql/explain.png" style="zoom:67%;" /></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">explain字段说明：
+select_type：select 类型
+table：输出结果集的表
+type：表示表的连接类型
+	①当表中仅有一行是type的值为system是最佳的连接类型；
+	②当select操作中使用索引进行表连接时type的值为ref；
+	③当select的表连接没有使用索引时，经常会看到type的值为ALL，表示对该表进行了全表扫描，这时需要考虑通过创建索引来提高表连接的效率。
+	④const时表示表中最多有一个匹配行
+possible_keys：表示查询时,可能使用的索引列.
+key：表示实际使用的索引
+key_len：索引长度
+rows：扫描范围
+Extra：执行情况的说明和描述
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="4-sql语句优化">4 sql语句优化</h3>
+<h4 id="41优化insert">4.1优化insert</h4>
+<ul>
+<li>同一个客户端插入多条数据,使用 <code>INSERT INTO table VALUES(1,2),(8,5),(6,5),(4,3)</code>这个形式</li>
+<li>不同的客户端插入多行，可以使用<code>inset delayed</code>语句得到更高的速度</li>
+<li>批量插入时可以通过<code>SET bulk_insert_buffer_size =1024*1024*256</code>这个参数设置的是 <em>bulk insert</em> 的缓存大小，默认是 <em><code>8M</code></em></li>
+</ul>
+<h4 id="42优化group">4.2优化group</h4>
+<p>默认情况下使用group by col1,col2&hellip;.会对查询进行相应的排序，如果用户想要避免排序结果的消耗，可以指定order by null 禁止排序来加快效率。（mysql8.0好像没有这个问题）</p>
+<h4 id="43优化order-by">4.3优化order by</h4>
+<ul>
+<li>order by 的字段最好是索引</li>
+<li>最好where条件和order by使用相同的索引</li>
+</ul>
+<h4 id="44优化含有or">4.4优化含有or</h4>
+<p>​		含有or的查询子句，如果要使用索引，则or之间的每个条件列必须用到索引</p>
+<h4 id="45优化select">4.5优化select</h4>
+<ul>
+<li>
+<p>避免 select *</p>
+</li>
+<li>
+<p>慎用join操作,可用先从一张表中先取出数据id，再从另外一张表中使用<code>where in</code>查询的两次单表查询操作来代替</p>
+</li>
+<li>
+<p>在性能要求比较高的场景中，杜绝查询中使用<code>临时表</code>，通过<code>explain</code>查看<code>Extra</code>列的结果，如果出现<code>Using temporary</code>则需要注意</p>
+</li>
+<li>
+<p>尽量别使用子查询，尽可能的使用关联来代替</p>
+</li>
+<li>
+<p>充分利用数据库缓存机制，应避免在查询语句中写动态变量</p>
+</li>
+<li>
+<p>数据分页时，原始方法<code>limit offset,size</code>当<code>offset</code>值非常大时会导致MySQL扫描大量不需要的行然后再抛弃掉。所以此时最好使用 <code>id(升序排序)+limit</code>,如</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-mysql" data-lang="mysql"><span class="c1"># 第一页
+</span><span class="c1"></span><span class="k">select</span> <span class="n">id</span><span class="p">,</span><span class="n">name</span><span class="p">,</span><span class="n">age</span> <span class="k">from</span> <span class="k">user</span> <span class="k">limit</span> <span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">;</span>
+<span class="c1"># 第二页 (id为上一页中最大的id值)
+</span><span class="c1"></span><span class="k">select</span> <span class="n">id</span><span class="p">,</span><span class="n">name</span><span class="p">,</span><span class="n">age</span> <span class="k">from</span> <span class="k">user</span> <span class="k">where</span> <span class="n">id</span> <span class="o">&gt;</span><span class="mi">10</span> <span class="k">limit</span> <span class="mi">10</span><span class="p">;</span>
+<span class="c1"># 第三页(id为上一页中最大的id值)
+</span><span class="c1"></span><span class="k">select</span> <span class="n">id</span><span class="p">,</span><span class="n">name</span><span class="p">,</span><span class="n">age</span> <span class="k">from</span> <span class="k">user</span> <span class="k">where</span> <span class="n">id</span> <span class="o">&gt;</span><span class="mi">20</span> <span class="k">limit</span> <span class="mi">10</span><span class="p">;</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+<h3 id="5-硬件选择">5 硬件选择</h3>
+<ul>
+<li>要SSD固态硬盘代替SAS机械硬盘，将RAID级别调整为RAID1+0，相对于RAID1和RAID5有更好的读写性能，毕竟数据库的压力主要来自磁盘I/O方面</li>
+<li>为了磁盘I/O预读，建议物理内存至少富裕50%以上。</li>
+</ul>
+<h3 id="6-分库分表分区技术">6 分库分表分区技术</h3>
+<ul>
+<li>
+<p>分库：根据业务将数据库中相关的表分离到不同的数据库中，例如web、bbs、blog等库。如果业务量很大，还可将分离后的数据库做主从复制架构，进一步避免单库压力过大。</p>
+</li>
+<li>
+<p>分表：把一个表拆分成多个小表，来减轻单个表的压力，提高处理效率。可以用<code>merge</code>存储引擎实现分表，相对简单许多。分表后，程序是对一个总表进行操作，这个总表不存放数据，只有一些分表的关系，以及更新数据的方式，总表会根据不同的查询，将压力分到不同的小表上，因此提高并发能力和磁盘I/O性能。</p>
+</li>
+<li>
+<p>分区就是把一张表的数据根据表结构中的字段（如range、list、hash等）分成多个区块，这些区块可以在一个磁盘上，也可以在不同的磁盘上，分区后，表面上还是一张表，但数据散列在多个位置，这样一来，多块硬盘同时处理不同的请求，从而提高磁盘I/O读写性能。</p>
+</li>
+</ul>
+<h2 id="四-高可用">四 高可用</h2>
+<h3 id="1-基于主从复制">1 基于主从复制</h3>
+<h4 id="11-双节点主从--keepalivedheartbeat">1.1 双节点主从 + keepalived/heartbeat</h4>
+<h4 id="12-多节点主从--mhammm">1.2 多节点主从 + MHA/MMM</h4>
+<h4 id="13-多节点主从--etcdzookeeper">1.3 多节点主从 + etcd/zookeeper</h4>
+<h3 id="2-基于galera协议">2 基于Galera协议</h3>
+<hr>
+<h2 id="五-相关扩展">五 相关扩展</h2>
+<ol>
+<li>解决主从复制延迟问题，使用mysql5.7以上版本</li>
+<li>查看变量值 <code>show variable like </code></li>
+<li>磁盘IO与预读</li>
+</ol>
+<blockquote>
+<p>磁盘IO是非常高昂的操作，每次查找数据时应该把磁盘IO次数控制在一个很小的数量级，最好是常数数量级。计算机操作系统做了一些优化，当一次IO时，不光把当前磁盘地址的数据，而是把相邻的数据也都读取到内存缓冲区内，因为局部预读性原理告诉我们，当计算机访问一个地址的数据的时候，与其相邻的数据也会很快被访问到。每一次IO读取的数据我们称之为一页(page)。具体一页有多大数据跟操作系统有关，一般为4k或8k，也就是我们读取一页内的数据时候，实际上才发生了一次IO。基于此背景，我们需要一个高度可控的多路搜索树来满足需求，于是B+树应运而生。</p>
+</blockquote>
+<p>​	 4.<a href="https://learnku.com/articles/25879">主要概念</a> &ndash; 【面试】</p>
+<p>​	 5. Mysql 流程图</p>
+<p>​	Mysql 逻辑架构: <img src="https://blog.summer90.top/images/mysql/mysql.png"  /></p>
+<p>MySQL查询过程 :<img src="https://blog.summer90.top/images/mysql/guocheng.jpg"  /></p>
+<hr>
+<p>参考资料：</p>
+<p><a href="https://dbaplus.cn/news-155-1531-1.html">https://dbaplus.cn/news-155-1531-1.html</a></p>
+<p><a href="https://tech.meituan.com/2014/08/20/innodb-lock.html">https://tech.meituan.com/2014/08/20/innodb-lock.html</a></p>
+<p><a href="https://cloud.tencent.com/developer/information/mysql%E7%9A%84%E4%BC%98%E5%8C%96%E6%AD%A5%E9%AA%A4">https://cloud.tencent.com/developer/information/mysql%E7%9A%84%E4%BC%98%E5%8C%96%E6%AD%A5%E9%AA%A4</a></p>
+<p><a href="https://www.wencst.com/archives/1781">https://www.wencst.com/archives/1781</a></p>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Summer</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2019-12-20
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/mysql/">mysql</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/mysql-replication/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">docker&#43;mysql主从复制</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/nginx2/">
+            <span class="next-text nav-default">使用docker实现nginx负载均衡</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+  <a href="https://summer90xia.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2016 - 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>Summer</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/raphael@2.2.7/raphael.min.js" integrity="sha256-67By+NpOtm9ka1R6xpUefeGOY8kWWHHRAKlvaTJ7ONI=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/flowchart.js@1.8.0/release/flowchart.min.js" integrity="sha256-zNGWjubXoY6rb5MnmpBNefO0RgoVYfle9p0tvOQM+6k=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.js" integrity="sha256-4O4pS1SH31ZqrSO2A/2QJTVjTPqVe+jnYgOWUVr7EEc=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/snapsvg@0.5.1/dist/snap.svg-min.js" integrity="sha256-oI+elz+sIm+jpn8F/qEspKoKveTc5uKeFHNNVexe6d8=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/underscore@1.8.3/underscore-min.js" integrity="sha256-obZACiHd7gkOk9iIL/pimWMTJ4W/pBsKu+oZnSeBIek=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.js" integrity="sha384-8748Vn52gHJYJI0XEuPB2QlPVNUkJlJn9tHqKec6J3q2r9l8fvRxrgn/E5ZHV0sP" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.css" integrity="sha384-6QbLKJMz5dS3adWSeINZe74uSydBGFbnzaAYmp+tKyq60S7H2p6V7g1TysM5lAaF" crossorigin="anonymous">
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+<script id="baidu_analytics">
+  var _hmt = _hmt || [];
+  (function() {
+    if (window.location.hostname === 'localhost') return;
+    var hm = document.createElement("script"); hm.async = true;
+    hm.src = "https://hm.baidu.com/hm.js?fc8cf18648f58ac4ad0594547ec6c1e3";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+<script id="baidu_push">
+  (function(){
+    if (window.location.hostname === 'localhost') return;
+    var bp = document.createElement('script'); bp.async = true;
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+      bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+      bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+  })();
+</script>
+
+
+<script src="/js/"></script>
+
+
+</body>
+</html>

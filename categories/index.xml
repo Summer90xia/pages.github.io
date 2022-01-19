@@ -6,22 +6,26 @@
     <description>Recent content in Categories on Summer&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 02 Dec 2020 09:53:13 +0800</lastBuildDate><atom:link href="https://summer90xia.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>学电脑</title>
-      <link>https://summer90xia.github.io/categories/%E5%AD%A6%E7%94%B5%E8%84%91/</link>
-      <pubDate>Wed, 02 Dec 2020 09:53:13 +0800</pubDate>
-      
-      <guid>https://summer90xia.github.io/categories/%E5%AD%A6%E7%94%B5%E8%84%91/</guid>
-      <description></description>
-    </item>
+    <lastBuildDate>Wed, 19 Jan 2022 15:37:16 +0800</lastBuildDate>
+    
+	<atom:link href="https://summer90xia.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>伪文艺</title>
       <link>https://summer90xia.github.io/categories/%E4%BC%AA%E6%96%87%E8%89%BA/</link>
-      <pubDate>Tue, 28 Jul 2020 09:47:48 +0800</pubDate>
+      <pubDate>Wed, 19 Jan 2022 15:37:16 +0800</pubDate>
       
       <guid>https://summer90xia.github.io/categories/%E4%BC%AA%E6%96%87%E8%89%BA/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>学电脑</title>
+      <link>https://summer90xia.github.io/categories/%E5%AD%A6%E7%94%B5%E8%84%91/</link>
+      <pubDate>Thu, 09 Dec 2021 15:38:53 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/categories/%E5%AD%A6%E7%94%B5%E8%84%91/</guid>
       <description></description>
     </item>
     

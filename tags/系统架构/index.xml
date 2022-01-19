@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>系统架构 on Summer&#39;s Blog</title>
+    <link>https://summer90xia.github.io/tags/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/</link>
+    <description>Recent content in 系统架构 on Summer&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sat, 29 May 2021 16:00:51 +0800</lastBuildDate>
+    
+	<atom:link href="https://summer90xia.github.io/tags/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>如何设计高并发框架</title>
+      <link>https://summer90xia.github.io/post/framework2/</link>
+      <pubDate>Sat, 29 May 2021 16:00:51 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/framework2/</guid>
+      <description>前言 高并发经常会发生在有大活跃用户量，用户高聚集的业务场景中，如：秒杀活动，定时领取红包等。 为了让业务可以流畅的运行并且给用户一个好的交互体</description>
+    </item>
+    
+  </channel>
+</rss>

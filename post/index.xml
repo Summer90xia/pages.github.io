@@ -6,7 +6,206 @@
     <description>Recent content in Posts on Summer&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 02 Dec 2020 09:53:13 +0800</lastBuildDate><atom:link href="https://summer90xia.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 19 Jan 2022 15:37:16 +0800</lastBuildDate>
+    
+	<atom:link href="https://summer90xia.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>年终总结</title>
+      <link>https://summer90xia.github.io/post/year-summary/</link>
+      <pubDate>Wed, 19 Jan 2022 15:37:16 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/year-summary/</guid>
+      <description>律回春晖渐，万象始更新。在忙碌的工作，不知不觉迎来了新的一年。回顾过去一年的工作经历，我深深感到，企业的蓬勃发展的战斗精神。与此同时，在领导</description>
+    </item>
+    
+    <item>
+      <title>Nginx如何实现高性能低消耗</title>
+      <link>https://summer90xia.github.io/post/nginx3/</link>
+      <pubDate>Thu, 09 Dec 2021 15:38:53 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/nginx3/</guid>
+      <description>Nginx 是一个轻量级的HTTP 服务程序，相比其他服务器程序如Apache，Nginx占用内存少，稳定性高，并发处理能力强。 同时Nginx 还是一个反</description>
+    </item>
+    
+    <item>
+      <title>一个高性能，高并发，高可用的系统是如何演变来的</title>
+      <link>https://summer90xia.github.io/post/framework/</link>
+      <pubDate>Mon, 29 Nov 2021 15:48:23 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/framework/</guid>
+      <description>大型电商系统或社交网站的系统架构从一开始就没有设计具有完整的高性能，高可用性，高可伸缩性等特性的。它是随着用户的增加和业务功能的扩展，逐步演</description>
+    </item>
+    
+    <item>
+      <title>如何保证缓存与数据库的双写一致性</title>
+      <link>https://summer90xia.github.io/post/redis1/</link>
+      <pubDate>Wed, 13 Oct 2021 15:49:34 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/redis1/</guid>
+      <description>只要用缓存，就可能会涉及到缓存与数据库双存储双写，你只要是双写，就一定会有数据一致性的问题，那么你如何解决一致性问题？ 题剖析一般来说，如果允</description>
+    </item>
+    
+    <item>
+      <title>IO模型详解</title>
+      <link>https://summer90xia.github.io/post/io/</link>
+      <pubDate>Wed, 08 Sep 2021 15:50:22 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/io/</guid>
+      <description>同步IO、异步IO、阻塞IO、非阻塞IO，这几个词常见于各种各样的与网络相关的文章之中，往往不同上下文中它们的意思是不一样的，以致于我在很长</description>
+    </item>
+    
+    <item>
+      <title>常见502故障有哪些解决方案</title>
+      <link>https://summer90xia.github.io/post/502/</link>
+      <pubDate>Mon, 23 Aug 2021 15:50:47 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/502/</guid>
+      <description>如果你服务器用的是Nginx的话，在开发的过程中，偶尔会出现 Nginx 502 Bad Gateway，那你会如何排查这种问题呢？ 下面给大家总结了一些排查问题与解</description>
+    </item>
+    
+    <item>
+      <title>Mysql唯一索引性能问题</title>
+      <link>https://summer90xia.github.io/post/mysql1/</link>
+      <pubDate>Sun, 18 Jul 2021 15:51:40 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/mysql1/</guid>
+      <description>Q：如果业务保证了唯一。从性能的角度考虑，选择唯一索引还是普通索引呢？ 查询过程： 唯一索引：查找到第一个满足的条件就停止检索 普通索引：直到不满</description>
+    </item>
+    
+    <item>
+      <title>接口性能优化的11技巧</title>
+      <link>https://summer90xia.github.io/post/api/</link>
+      <pubDate>Wed, 30 Jun 2021 15:52:08 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/api/</guid>
+      <description>前言 接口性能优化对于从事后端开发的同学来说，肯定再熟悉不过了，因为它是一个跟开发语言无关的公共问题。 该问题说简单也简单，说复杂也复杂。 有时候</description>
+    </item>
+    
+    <item>
+      <title>如何快速定位错误信息</title>
+      <link>https://summer90xia.github.io/post/error-log/</link>
+      <pubDate>Sun, 27 Jun 2021 15:52:44 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/error-log/</guid>
+      <description>如何快速定位错误信息 系统奔溃了，或者网站响应很慢，网站出现502。。。这些问题在工作上，或者开发过程中经常出现吧。这些问题或许在面试的时候也</description>
+    </item>
+    
+    <item>
+      <title>详解Redis数据结构</title>
+      <link>https://summer90xia.github.io/post/redis2/</link>
+      <pubDate>Sun, 13 Jun 2021 15:53:36 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/redis2/</guid>
+      <description>前言 Redis 为什么那么快？ 除了它是内存数据库，使得所有的操作都在内存上进行之外，还有一个重要因素，它实现的数据结构，使得我们对数据进行增删查改操作</description>
+    </item>
+    
+    <item>
+      <title>Redis实现限流的三种方式</title>
+      <link>https://summer90xia.github.io/post/redis3/</link>
+      <pubDate>Thu, 03 Jun 2021 15:54:04 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/redis3/</guid>
+      <description>面对越来越多的高并发场景，限流显示的尤为重要。 当然，限流有许多种实现的方式，Redis具有很强大的功能，我用Redis实践了三种的实现方式，</description>
+    </item>
+    
+    <item>
+      <title>如何设计高并发框架</title>
+      <link>https://summer90xia.github.io/post/framework2/</link>
+      <pubDate>Sat, 29 May 2021 16:00:51 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/framework2/</guid>
+      <description>前言 高并发经常会发生在有大活跃用户量，用户高聚集的业务场景中，如：秒杀活动，定时领取红包等。 为了让业务可以流畅的运行并且给用户一个好的交互体</description>
+    </item>
+    
+    <item>
+      <title>Graylog使用方法简介</title>
+      <link>https://summer90xia.github.io/post/graylog/</link>
+      <pubDate>Thu, 13 May 2021 16:01:32 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/graylog/</guid>
+      <description>前言 当我们公司内部部署很多服务以及测试、正式环境的时候，查看日志就变成了一个非常刚需的需求了。 是多个环境的日志统一收集，然后使用 Nginx 对外提供服</description>
+    </item>
+    
+    <item>
+      <title>Http3简介</title>
+      <link>https://summer90xia.github.io/post/http3/</link>
+      <pubDate>Mon, 26 Apr 2021 16:02:33 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/http3/</guid>
+      <description>PART. 1 引言 作为系列文章的第一篇，引言部分就先稍微繁琐一点，让大家对这个系列文章有一些简单的认知。 先介绍下这个系列文章的诞生背景。**QUIC、</description>
+    </item>
+    
+    <item>
+      <title>微服务简介</title>
+      <link>https://summer90xia.github.io/post/micro-service/</link>
+      <pubDate>Mon, 12 Apr 2021 16:03:26 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/micro-service/</guid>
+      <description>基本思路 基于微服务的架构通常有几个独立的单元，它们协同工作以接收和处理各种请求。这个复杂的某些部分可以是插件，这意味着在需要的情况下，你可以</description>
+    </item>
+    
+    <item>
+      <title>RabbitMQ如何保证全链路数据100%不丢失</title>
+      <link>https://summer90xia.github.io/post/rabbitmq/</link>
+      <pubDate>Tue, 09 Mar 2021 16:04:32 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/rabbitmq/</guid>
+      <description>前言 我们都知道，消息从生产端到消费端消费要经过3个步骤： 生产端发送消息到RabbitMQ； RabbitMQ发送消息到消费端； 消费端消费这条消</description>
+    </item>
+    
+    <item>
+      <title>详解Redis 数据结构</title>
+      <link>https://summer90xia.github.io/post/redis4/</link>
+      <pubDate>Sat, 27 Feb 2021 16:05:05 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/redis4/</guid>
+      <description>前言 Redis 为什么那么快？ 除了它是内存数据库，使得所有的操作都在内存上进行之外，还有一个重要因素，它实现的数据结构，使得我们对数据进行增删查改操作</description>
+    </item>
+    
+    <item>
+      <title>学习资料搜集</title>
+      <link>https://summer90xia.github.io/post/learn-document/</link>
+      <pubDate>Fri, 19 Feb 2021 15:34:31 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/learn-document/</guid>
+      <description>资源列表： java: javaweb： 链接：https://pan.baidu.com/s/1bWBgTvVGe2nDG1TGFxgG8A 提取码：k3</description>
+    </item>
+    
+    <item>
+      <title>TCP详解</title>
+      <link>https://summer90xia.github.io/post/tcp/</link>
+      <pubDate>Sun, 14 Feb 2021 16:05:46 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/tcp/</guid>
+      <description>你是一台电脑，你的名字叫 A 经过《如果让你来设计网络，你会把它弄成啥样？》这篇文章中的一番折腾，只要你知道另一位伙伴 B 的 IP 地址，且你们之间的网</description>
+    </item>
+    
+    <item>
+      <title>I/O多路复用</title>
+      <link>https://summer90xia.github.io/post/io2/</link>
+      <pubDate>Sat, 23 Jan 2021 16:07:01 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/io2/</guid>
+      <description>&lt;blockquote&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;这次，我们以最简单 socket 网络模型，一步一步地过渡到 I/O 多路复用。&lt;/p&gt;
+&lt;p&gt;但我不会具体细节说到每个系统调用的参数，这方面书上肯定比我说的详细。&lt;/p&gt;
+&lt;p&gt;好了，发车！&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Mysql优化方法</title>
+      <link>https://summer90xia.github.io/post/mysql2/</link>
+      <pubDate>Tue, 19 Jan 2021 16:07:36 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/mysql2/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;总结了一些mysql的优化方法&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
     <item>
       <title>为什么SELECT * 会导致查询效率低</title>
       <link>https://summer90xia.github.io/post/mysql-select/</link>

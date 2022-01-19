@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>tcp on Summer&#39;s Blog</title>
+    <link>https://summer90xia.github.io/tags/tcp/</link>
+    <description>Recent content in tcp on Summer&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sun, 14 Feb 2021 16:05:46 +0800</lastBuildDate>
+    
+	<atom:link href="https://summer90xia.github.io/tags/tcp/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>TCP详解</title>
+      <link>https://summer90xia.github.io/post/tcp/</link>
+      <pubDate>Sun, 14 Feb 2021 16:05:46 +0800</pubDate>
+      
+      <guid>https://summer90xia.github.io/post/tcp/</guid>
+      <description>你是一台电脑，你的名字叫 A 经过《如果让你来设计网络，你会把它弄成啥样？》这篇文章中的一番折腾，只要你知道另一位伙伴 B 的 IP 地址，且你们之间的网</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>RabbitMQ如何保证全链路数据100%不丢失 - Summer&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Summer" /><meta name="description" content="前言 我们都知道，消息从生产端到消费端消费要经过3个步骤： 生产端发送消息到RabbitMQ； RabbitMQ发送消息到消费端； 消费端消费这条消" /><meta name="keywords" content="RabbitMQ" />
+
+
+<meta name="baidu-site-verification" content="QuqVC3Anf0" />
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://summer90xia.github.io/post/rabbitmq/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/">
+
+
+<meta property="og:title" content="RabbitMQ如何保证全链路数据100%不丢失" />
+<meta property="og:description" content="前言 我们都知道，消息从生产端到消费端消费要经过3个步骤： 生产端发送消息到RabbitMQ； RabbitMQ发送消息到消费端； 消费端消费这条消" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://summer90xia.github.io/post/rabbitmq/" />
+<meta property="article:published_time" content="2021-03-09T16:04:32+08:00" />
+<meta property="article:modified_time" content="2021-03-09T16:04:32+08:00" />
+<meta itemprop="name" content="RabbitMQ如何保证全链路数据100%不丢失">
+<meta itemprop="description" content="前言 我们都知道，消息从生产端到消费端消费要经过3个步骤： 生产端发送消息到RabbitMQ； RabbitMQ发送消息到消费端； 消费端消费这条消">
+<meta itemprop="datePublished" content="2021-03-09T16:04:32&#43;08:00" />
+<meta itemprop="dateModified" content="2021-03-09T16:04:32&#43;08:00" />
+<meta itemprop="wordCount" content="2688">
+
+
+
+<meta itemprop="keywords" content="RabbitMQ," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="RabbitMQ如何保证全链路数据100%不丢失"/>
+<meta name="twitter:description" content="前言 我们都知道，消息从生产端到消费端消费要经过3个步骤： 生产端发送消息到RabbitMQ； RabbitMQ发送消息到消费端； 消费端消费这条消"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Summer&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">栏目</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Summer&#39;s Blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">栏目</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">RabbitMQ如何保证全链路数据100%不丢失</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-03-09 </span>
+        <div class="post-category">
+            <a href="/categories/%E5%AD%A6%E7%94%B5%E8%84%91/"> 学电脑 </a>
+            </div>
+          <span class="more-meta"> 约 2688 字 </span>
+          <span class="more-meta"> 预计阅读 6 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#前言">前言</a>
+      <ul>
+        <li><a href="#heading"></a></li>
+        <li><a href="#heading-1"></a></li>
+        <li><a href="#heading-2"></a></li>
+        <li><a href="#heading-3"></a></li>
+        <li><a href="#消息入库">消息入库</a></li>
+        <li><a href="#消费端消息不丢失">消费端消息不丢失</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p><img src="https://mmbiz.qpic.cn/mmbiz_png/9TPn66HT930CzevNBb2yMhKjOn9yuJqscN6FicEzJ7iaIdeV8ibJEyVBJNVD6VdujVn2zyicOYIKribkoPEBP1Vb4icQ/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="图片"></p>
+<h2 id="前言">前言</h2>
+<p>我们都知道，消息从生产端到消费端消费要经过3个步骤：</p>
+<ol>
+<li>生产端发送消息到RabbitMQ；</li>
+<li>RabbitMQ发送消息到消费端；</li>
+<li>消费端消费这条消息；</li>
+</ol>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/eQPyBffYbufkckcjYTr8iaaq35h4uFdHCDGO5HWqt7r10xvYcoSOebSTMrQSgBl2oWoKyic4pKRCBZicdy9D2LTfw/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="图片"></p>
+<p>这3个步骤中的每一步都有可能导致消息丢失，消息丢失不可怕，可怕的是丢失了我们还不知道，所以要有一些措施来保证系统的可靠性。</p>
+<p>这里的可靠并不是一定就100%不丢失了，磁盘损坏，机房爆炸等等都能导致数据丢失，当然这种都是极小概率发生，能做到99.999999%消息不丢失，就是可靠的了。下面来具体分析一下问题以及解决方案。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/9TPn66HT930CzevNBb2yMhKjOn9yuJqscN6FicEzJ7iaIdeV8ibJEyVBJNVD6VdujVn2zyicOYIKribkoPEBP1Vb4icQ/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="图片"></p>
+<p><em><em><em>*-*</em>   *<em>生产端可靠性投递*</em>  *</em>-*</em>**</p>
+<h3 id="heading"></h3>
+<p>生产端可靠性投递，即生产端要确保将消息正确投递到RabbitMQ中。生产端投递的消息丢失的原因有很多，比如消息在网络传输的过程中发生网络故障消息丢失，或者消息投递到RabbitMQ时RabbitMQ挂了，那消息也可能丢失，而我们根本不知道发生了什么。针对以上情况，RabbitMQ本身提供了一些机制。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/9TPn66HT930CzevNBb2yMhKjOn9yuJqscN6FicEzJ7iaIdeV8ibJEyVBJNVD6VdujVn2zyicOYIKribkoPEBP1Vb4icQ/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="图片"></p>
+<p><em><em><em>*-*</em>   *<em>事务消息机制*</em>  *</em>-*</em>**</p>
+<h3 id="heading-1"></h3>
+<p>事务消息机制由于会严重降低性能，所以一般不采用这种方法，我就不介绍了，而采用另一种轻量级的解决方案——confirm消息确认机制。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/9TPn66HT930CzevNBb2yMhKjOn9yuJqscN6FicEzJ7iaIdeV8ibJEyVBJNVD6VdujVn2zyicOYIKribkoPEBP1Vb4icQ/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="图片"></p>
+<p><em><em><em>*-*</em>   *<em>Confirm 消息确认机制*</em>  *</em>-*</em>**</p>
+<h3 id="heading-2"></h3>
+<p>什么是confirm消息确认机制？顾名思义，就是生产端投递的消息一旦投递到RabbitMQ后，RabbitMQ就会发送一个确认消息给生产端，让生产端知道我已经收到消息了，否则这条消息就可能已经丢失了，需要生产端重新发送消息了。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/eQPyBffYbufkckcjYTr8iaaq35h4uFdHCL9dric5f3GH6WnXqPYQVKickamq4RicmQjnaQKibs67VFZ269PniaQAsIpA/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="图片"></p>
+<p>通过下面这句代码来开启确认模式：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">channel.confirmSelect();// 开启发送方确认模式
+</code></pre></td></tr></table>
+</div>
+</div><p>然后异步监听确认和未确认的消息：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">channel.addConfirmListener(new ConfirmListener() {
+    //消息正确到达broker
+    @Override
+    public void handleAck(long deliveryTag, boolean multiple) throws IOException {
+        System.out.println(&#34;已收到消息&#34;);
+        //做一些其他处理
+    }
+
+    //RabbitMQ因为自身内部错误导致消息丢失，就会发送一条nack消息
+    @Override
+    public void handleNack(long deliveryTag, boolean multiple) throws IOException {
+        System.out.println(&#34;未确认消息，标识：&#34; + deliveryTag);
+        //做一些其他处理，比如消息重发等
+    }
+});
+</code></pre></td></tr></table>
+</div>
+</div><p>这样就可以让生产端感知到消息是否投递到RabbitMQ中了，当然这样还不够，稍后我会说一下极端情况。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/9TPn66HT930CzevNBb2yMhKjOn9yuJqscN6FicEzJ7iaIdeV8ibJEyVBJNVD6VdujVn2zyicOYIKribkoPEBP1Vb4icQ/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="图片"></p>
+<p><em><em><em>*-*</em>   *<em>消息持久化*</em>  *</em>-*</em>**</p>
+<h3 id="heading-3"></h3>
+<p>那消息持久化呢？我们知道，RabbitMQ收到消息后将这个消息暂时存在了内存中，那这就会有个问题，如果RabbitMQ挂了，那重启后数据就丢失了，所以相关的数据应该持久化到硬盘中，这样就算RabbitMQ重启后也可以到硬盘中取数据恢复。那如何持久化呢？</p>
+<p>message消息到达RabbitMQ后先是到exchange交换机中，然后路由给queue队列，最后发送给消费端。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/eQPyBffYbufkckcjYTr8iaaq35h4uFdHCcibmxeyClrucS7uq0CxB4guscurIugbwiav8V4nJVDUudYcYIonUhhdw/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="图片"></p>
+<p>所有需要给exchange、queue和message都进行持久化：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">//第三个参数true表示这个exchange持久化
+channel.exchangeDeclare(EXCHANGE_NAME, &#34;direct&#34;, true);
+</code></pre></td></tr></table>
+</div>
+</div><p>queue持久化：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">//第二个参数true表示这个queue持久化
+channel.queueDeclare(QUEUE_NAME, true, false, false, null);
+</code></pre></td></tr></table>
+</div>
+</div><p>message持久化：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">//第三个参数MessageProperties.PERSISTENT_TEXT_PLAIN表示这条消息持久化
+channel.basicPublish(EXCHANGE_NAME, ROUTING_KEY, MessageProperties.PERSISTENT_TEXT_PLAIN, message.getBytes(StandardCharsets.UTF_8));
+</code></pre></td></tr></table>
+</div>
+</div><p>这样，如果RabbitMQ收到消息后挂了，重启后会自行恢复消息。</p>
+<p>到此，RabbitMQ提供的几种机制都介绍完了，但这样还不足以保证消息可靠性投递RabbitMQ中，上面我也提到了会有极端情况，比如RabbitMQ收到消息还没来得及将消息持久化到硬盘时，RabbitMQ挂了，这样消息还是丢失了，或者RabbitMQ在发送确认消息给生产端的过程中，由于网络故障而导致生产端没有收到确认消息，这样生产端就不知道RabbitMQ到底有没有收到消息，就不好做接下来的处理。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/eQPyBffYbufkckcjYTr8iaaq35h4uFdHC9ymbJzWDbibm0ZBt6uzz7W59juPXad2EHTJvEyqeUbOG6aIzuULIFuQ/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="图片"></p>
+<p>所以除了RabbitMQ提供的一些机制外，我们自己也要做一些消息补偿机制，以应对一些极端情况。接下来我就介绍其中的一种解决方案——消息入库。</p>
+<h3 id="消息入库">消息入库</h3>
+<p>消息入库，顾名思义就是将要发送的消息保存到数据库中。</p>
+<p>首先发送消息前先将消息保存到数据库中，有一个状态字段status=0，表示生产端将消息发送给了RabbitMQ但还没收到确认；在生产端收到确认后将status设为1，表示RabbitMQ已收到消息。这里有可能会出现上面说的两种情况，所以生产端这边开一个定时器，定时检索消息表，将status=0并且超过固定时间后（可能消息刚发出去还没来得及确认这边定时器刚好检索到这条status=0的消息，所以给个时间）还没收到确认的消息取出重发（第二种情况下这里会造成消息重复，消费者端要做幂等性），可能重发还会失败，所以可以做一个最大重发次数，超过就做另外的处理。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/eQPyBffYbufkckcjYTr8iaaq35h4uFdHC4cQ4naicUczXxv4OaqCu2iaWmmyFlhFDEAVHtAUlibRDcKibCpgibH0Lbkw/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="图片"></p>
+<p>这样消息就可以可靠性投递到RabbitMQ中了，而生产端也可以感知到了。</p>
+<h3 id="消费端消息不丢失">消费端消息不丢失</h3>
+<p>既然已经可以让生产端100%可靠性投递到RabbitMQ了，那接下来就改看看消费端的了，如何让消费端不丢失消息。</p>
+<p>默认情况下，以下3种情况会导致消息丢失：</p>
+<ul>
+<li>在RabbitMQ将消息发出后，消费端还没接收到消息之前，发生网络故障，消费端与RabbitMQ断开连接，此时消息会丢失；</li>
+<li>在RabbitMQ将消息发出后，消费端还没接收到消息之前，消费端挂了，此时消息会丢失；</li>
+<li>消费端正确接收到消息，但在处理消息的过程中发生异常或宕机了，消息也会丢失。</li>
+</ul>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/eQPyBffYbufkckcjYTr8iaaq35h4uFdHCZvkLgfeNwoT3ztodXYlANpCg9Uz84wrSr42ztEz8ECgZ7klulGiclZQ/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="图片"></p>
+<p>其实，上述3中情况导致消息丢失归根结底是因为RabbitMQ的自动ack机制，即默认RabbitMQ在消息发出后就立即将这条消息删除，而不管消费端是否接收到，是否处理完，导致消费端消息丢失时RabbitMQ自己又没有这条消息了。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/eQPyBffYbufkckcjYTr8iaaq35h4uFdHCfW1RgXjXh5ZjZFH7ibvNBB1oauN2gdTsoibMpQhjrXQNL2ZecOfzcgHw/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="图片"></p>
+<p>所以就需要将自动ack机制改为手动ack机制。</p>
+<p>消费端手动确认消息：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">DeliverCallback deliverCallback = (consumerTag, delivery) -&gt; {
+    try {
+        //接收到消息，做处理
+        //手动确认
+        channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false);
+    } catch (Exception e) {
+        //出错处理，这里可以让消息重回队列重新发送或直接丢弃消息
+    }
+};
+//第二个参数autoAck设为false表示关闭自动确认机制，需手动确认
+channel.basicConsume(QUEUE_NAME, false, deliverCallback, consumerTag -&gt; {});
+</code></pre></td></tr></table>
+</div>
+</div><p>这样，当autoAck参数置为false，对于RabbitMQ服务端而言，队列中的消息分成了两个部分：一部分是等待投递给消费端的消息；一部分是已经投递给消费端，但是还没有收到消费端确认信号的消息。</p>
+<p>如果RabbitMQ一直没有收到消费端的确认信号，并且消费此消息的消费端已经断开连接或宕机（RabbitMQ会自己感知到），则RabbitMQ会安排该消息重新进入队列（放在队列头部），等待投递给下一个消费者，当然也有能还是原来的那个消费端，当然消费端也需要确保幂等性。</p>
+<p>好了，到此从生产端到RabbitMQ再到消费端的全链路，就可以保证数据的不丢失。</p>
+<p>由于个人水平有限，有些地方可能理解错了或理解不到位的，请大家多多指出！</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Summer</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2021-03-09
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/rabbitmq/">RabbitMQ</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/micro-service/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">微服务简介</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/redis4/">
+            <span class="next-text nav-default">详解Redis 数据结构</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+  <a href="https://summer90xia.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2016 - 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>Summer</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/raphael@2.2.7/raphael.min.js" integrity="sha256-67By+NpOtm9ka1R6xpUefeGOY8kWWHHRAKlvaTJ7ONI=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/flowchart.js@1.8.0/release/flowchart.min.js" integrity="sha256-zNGWjubXoY6rb5MnmpBNefO0RgoVYfle9p0tvOQM+6k=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.js" integrity="sha256-4O4pS1SH31ZqrSO2A/2QJTVjTPqVe+jnYgOWUVr7EEc=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/snapsvg@0.5.1/dist/snap.svg-min.js" integrity="sha256-oI+elz+sIm+jpn8F/qEspKoKveTc5uKeFHNNVexe6d8=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/underscore@1.8.3/underscore-min.js" integrity="sha256-obZACiHd7gkOk9iIL/pimWMTJ4W/pBsKu+oZnSeBIek=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.js" integrity="sha384-8748Vn52gHJYJI0XEuPB2QlPVNUkJlJn9tHqKec6J3q2r9l8fvRxrgn/E5ZHV0sP" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.css" integrity="sha384-6QbLKJMz5dS3adWSeINZe74uSydBGFbnzaAYmp+tKyq60S7H2p6V7g1TysM5lAaF" crossorigin="anonymous">
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+<script id="baidu_analytics">
+  var _hmt = _hmt || [];
+  (function() {
+    if (window.location.hostname === 'localhost') return;
+    var hm = document.createElement("script"); hm.async = true;
+    hm.src = "https://hm.baidu.com/hm.js?fc8cf18648f58ac4ad0594547ec6c1e3";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+<script id="baidu_push">
+  (function(){
+    if (window.location.hostname === 'localhost') return;
+    var bp = document.createElement('script'); bp.async = true;
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+      bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+      bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+  })();
+</script>
+
+
+<script src="/js/"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Graylog使用方法简介 - Summer&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Summer" /><meta name="description" content="前言 当我们公司内部部署很多服务以及测试、正式环境的时候，查看日志就变成了一个非常刚需的需求了。 是多个环境的日志统一收集，然后使用 Nginx 对外提供服" /><meta name="keywords" content="Graylog" />
+
+
+<meta name="baidu-site-verification" content="QuqVC3Anf0" />
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://summer90xia.github.io/post/graylog/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/">
+
+
+<meta property="og:title" content="Graylog使用方法简介" />
+<meta property="og:description" content="前言 当我们公司内部部署很多服务以及测试、正式环境的时候，查看日志就变成了一个非常刚需的需求了。 是多个环境的日志统一收集，然后使用 Nginx 对外提供服" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://summer90xia.github.io/post/graylog/" />
+<meta property="article:published_time" content="2021-05-13T16:01:32+08:00" />
+<meta property="article:modified_time" content="2021-05-13T16:01:32+08:00" />
+<meta itemprop="name" content="Graylog使用方法简介">
+<meta itemprop="description" content="前言 当我们公司内部部署很多服务以及测试、正式环境的时候，查看日志就变成了一个非常刚需的需求了。 是多个环境的日志统一收集，然后使用 Nginx 对外提供服">
+<meta itemprop="datePublished" content="2021-05-13T16:01:32&#43;08:00" />
+<meta itemprop="dateModified" content="2021-05-13T16:01:32&#43;08:00" />
+<meta itemprop="wordCount" content="3743">
+
+
+
+<meta itemprop="keywords" content="Graylog," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Graylog使用方法简介"/>
+<meta name="twitter:description" content="前言 当我们公司内部部署很多服务以及测试、正式环境的时候，查看日志就变成了一个非常刚需的需求了。 是多个环境的日志统一收集，然后使用 Nginx 对外提供服"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Summer&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">栏目</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Summer&#39;s Blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">栏目</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Graylog使用方法简介</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-05-13 </span>
+        <div class="post-category">
+            <a href="/categories/%E5%AD%A6%E7%94%B5%E8%84%91/"> 学电脑 </a>
+            </div>
+          <span class="more-meta"> 约 3743 字 </span>
+          <span class="more-meta"> 预计阅读 8 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#前言">前言</a>
+      <ul>
+        <li><a href="#filebeat-工具介绍">Filebeat 工具介绍</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h2 id="前言">前言</h2>
+<p>当我们公司内部部署很多服务以及测试、正式环境的时候，查看日志就变成了一个非常刚需的需求了。</p>
+<p>是多个环境的日志统一收集，然后使用 Nginx 对外提供服务，还是使用专用的日志收集服务 ELK 呢？这就变成了一个问题！</p>
+<p>而 Graylog 作为整合方案，使用 Elasticsearch 来存储，使用 MongoDB 来缓存，并且还有带流量控制的（throttling），同时其界面查询简单易用且易于扩展。所以，使用 Graylog 成为了不二之选，为我们省了不少心。</p>
+<h3 id="filebeat-工具介绍">Filebeat 工具介绍</h3>
+<p><strong>①Filebeat 日志文件托运服务</strong></p>
+<p>Filebeat 是一个日志文件托运工具，在你的服务器上安装客户端后，Filebeat 会自动监控给定的日志目录或者指定的日志文件，追踪读取这些文件，不停的读取，并且转发这些信息到 Elasticsearch 或者 Logstarsh 或者 Graylog 中存放。</p>
+<p><strong>②Filebeat 工作流程介绍</strong></p>
+<p>当你安装并启用 Filebeat 程序的时候，它会启动一个或多个探测器（prospectors）去检测你指定的日志目录或文件。</p>
+<p>对于探测器找出的每一个日志文件，Filebeat 都会启动一个收割进程（harvester）。</p>
+<p>每一个收割进程读取一个日志文件的最新内容，并发送这些新的日志数据到处理程序（spooler），处理程序会集合这些事件。</p>
+<p>最后 Filebeat 会发送集合的数据到你指定的地址上去（我们这里就是发送给 Graylog 服务了）。</p>
+<p><strong>③Filebeat 图示理解记忆</strong></p>
+<p>我们这里不适用 Logstash 服务，主要是因为 Filebeat 相比于 Logstash 更加轻量级。</p>
+<p>当我们需要收集信息的机器配置或资源并不是特别多时，且并没有那么复杂的时候，还是建议使用 Filebeat 来收集日志。</p>
+<p>日常使用中，Filebeat 的安装部署方式多样且运行十分稳定。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/A1HKVXsfHNm6GlYJhzBmJKzTk0bQg8hXkqFDbqb4OosAUBSLlTgdBdRv2CrxqS60iaRlq1GVOhSFXRPpX23icoOQ/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="图片"></p>
+<p>图示服务架构理解记忆</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/9TPn66HT930CzevNBb2yMhKjOn9yuJqscN6FicEzJ7iaIdeV8ibJEyVBJNVD6VdujVn2zyicOYIKribkoPEBP1Vb4icQ/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="图片"></p>
+<p><em><em><em>*-*</em>   *<em>Filebeat 配置文件*</em>  *</em>-*</em>**</p>
+<p>配置 Filebeat 工具的核心就是如何编写其对应的配置文件！</p>
+<p>对应 Filebeat 工具的配置主要是通过编写其配置文件来控制的，对于通过 rpm 或者 deb 包来安装的情况，配置文件默认会存储在，/etc/filebeat/filebeat.yml 这个路径下面。</p>
+<p>而对于，对于 Mac 或者 Win 系统来说，请查看解压文件中相关文件，其中都有涉及。</p>
+<p>下面展示了 Filebeat 工具的主配置文件，注释信息中都对其各个字段含义进行了详细的解释，我这里就不再赘述了。</p>
+<p>需要注意的是，我们将日志的输入来源统统定义去读取 inputs.d 目录下的所有 yml 配置。</p>
+<p>所以，我们可以更加不用的服务（测试、正式服务）来定义不同的配置文件，根据物理机部署的实际情况具体配置。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># 配置输入来源的日志信息
+# 我们合理将其配置到了 inputs.d 目录下的所有 yml 文件
+filebeat.config.inputs:
+  enabled: true
+  path: ${path.config}/inputs.d/*.yml
+  # 若收取日志格式为 json 的 log 请开启此配置
+  # json.keys_under_root: true
+
+# 配置 Filebeat 需要加载的模块
+filebeat.config.modules:
+  path: ${path.config}/modules.d/*.yml
+  reload.enabled: false
+
+setup.template.settings:
+  index.number_of_shards: 1
+
+# 配置将日志信息发送那个地址上面
+output.logstash:
+  hosts: [&#34;11.22.33.44:5500&#34;]
+
+# output.file:
+#   enable: true
+
+processors:
+  - add_host_metadata: ~
+  - rename:
+      fields:
+        - from: &#34;log&#34;
+          to: &#34;message&#34;
+  - add_fields:
+      target: &#34;&#34;
+      fields:
+        # 加 Token 是为了防止无认证的服务上 Graylog 服务发送数据
+        token: &#34;0uxxxxaM-1111-2222-3333-VQZJxxxxxwgX &#34;
+</code></pre></td></tr></table>
+</div>
+</div><p>下面展示一个简单的 inputs.d 目录下面的 yml 配置文件的具体内容，其主要作用就是配置单独服务的独立日志数据，以及追加不同的数据 tag 类型。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">
+# 收集的数据类型
+- type: log
+  enabled: true
+  # 日志文件的路径地址
+  paths:
+    - /var/log/supervisor/app_escape_worker-stderr.log
+    - /var/log/supervisor/app_escape_prod-stderr.log
+  symlinks: true
+  # 包含的关键字信息
+  include_lines: [&#34;WARNING&#34;, &#34;ERROR&#34;]
+  # 打上数据标签
+  tags: [&#34;app&#34;, &#34;escape&#34;, &#34;test&#34;]
+  # 防止程序堆栈信息被分行识别
+  multiline.pattern: &#39;^\[?[0-9]...{3}&#39;
+  multiline.negate: true
+  multiline.match: after
+
+# 需要配置多个日志时可加多个 type 字段
+- type: log
+  enabled: true
+  ......
+</code></pre></td></tr></table>
+</div>
+</div><p>需要注意的是，针对于不同的日志类型，filebeat 还提供了不同了模块来配置不同的服务日志以及其不同的模块特性，比如我们常见的 PostgreSQl、Redis、Iptables 等。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># iptables
+- module: iptables
+  log:
+    enabled: true
+    var.paths: [&#34;/var/log/iptables.log&#34;]
+    var.input: &#34;file&#34;
+
+# postgres
+- module: postgresql
+  log:
+    enabled: true
+    var.paths: [&#34;/path/to/log/postgres/*.log*&#34;]
+
+# nginx
+- module: nginx
+  access:
+    enabled: true
+    var.paths: [&#34;/path/to/log/nginx/access.log*&#34;]
+  error:
+    enabled: true
+    var.paths: [&#34;/path/to/log/nginx/error.log*&#34;]
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://mmbiz.qpic.cn/mmbiz_png/9TPn66HT930CzevNBb2yMhKjOn9yuJqscN6FicEzJ7iaIdeV8ibJEyVBJNVD6VdujVn2zyicOYIKribkoPEBP1Vb4icQ/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="图片"></p>
+<p><em><em><em>*-*</em>   *<em>Graylog 服务介绍*</em>  *</em>-*</em>**</p>
+<p><strong>①Graylog 日志监控系统</strong></p>
+<p>Graylog 是一个开源的日志聚合、分析、审计、展现和预警工具。在功能上来说，和 ELK 类似，但又比 ELK 要简单很多。</p>
+<p>依靠着更加简洁，高效，部署使用简单的优势很快受到许多人的青睐。当然，在扩展性上面确实没有比 ELK 好，但是其有商业版本可以选择。</p>
+<p><strong>②Graylog 工作流程介绍</strong></p>
+<p>部署 Graylog 最简单的架构就是单机部署，复杂的也是部署集群模式，架构图示如下所示。</p>
+<p>我们可以看到其中包含了三个组件，分别是 Elasticsearch、MongoDB 和 Graylog。</p>
+<p>其中，Elasticsearch 用来持久化存储和检索日志文件数据（IO 密集），MongoDB 用来存储关于 Graylog 的相关配置，而 Graylog 来提供 Web 界面和对外接口的（CPU 密集）。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/A1HKVXsfHNm6GlYJhzBmJKzTk0bQg8hXFJCKbkjmfMpS2wDsnpf1KPyyqDA1rvfI2VmrrSC8iahJT5hlrp76iaiaw/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="图片"></p>
+<p>最小化单机部署</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/A1HKVXsfHNm6GlYJhzBmJKzTk0bQg8hXeNOOcRfc5B6RsWvRWibGSFSuib1nL9EvEaFBqiaHCjyXe2hS6HONEnlhQ/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="图片"></p>
+<p>最优化集群部署</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/9TPn66HT930CzevNBb2yMhKjOn9yuJqscN6FicEzJ7iaIdeV8ibJEyVBJNVD6VdujVn2zyicOYIKribkoPEBP1Vb4icQ/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="图片"></p>
+<p><em><em><em>*-*</em>   *<em>Graylog 组件功能*</em>  *</em>-*</em>**</p>
+<p>配置 Graylog 服务的核心就是理解对应组件的功能以及其运作方式！</p>
+<p>简单来讲，Input 表示日志数据的来源，对不同来源的日志可以通过 Extractors 来进行日志的字段转换，比如将 Nginx 的状态码变成对应的英文表述等。</p>
+<p>然后，通过不同的标签类型分组成不用的 Stream，并将这些日志数据存储到指定的 Index 库中进行持久化保存。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_jpg/A1HKVXsfHNm6GlYJhzBmJKzTk0bQg8hXOvyrezqnZqfhwFYLcGibwMCW8zP9LeyuGOKH5fSkGIC5Ty7r57hroWg/640?wx_fmt=jpeg&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="图片"></p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/A1HKVXsfHNm6GlYJhzBmJKzTk0bQg8hXg3bkEkmAz2Jt9omRd1yFBVibrbPA0k3dsFou3sQ0RRe7fODkmxS5yiaA/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="图片"></p>
+<p>Graylog 中的核心服务组件</p>
+<p>Graylog 通过 Input 搜集日志，每个 Input 单独配置 Extractors 用来做字段转换。</p>
+<p>Graylog 中日志搜索的基本单位是 Stream，每个 Stream 可以有自己单独的 Elastic Index Set，也可以共享一个 Index Set。</p>
+<p>Extractor 在 System/Input 中配置。Graylog 中很方便的一点就是可以加载一条日志，然后基于这个实际的例子进行配置并能直接看到结果。</p>
+<p>内置的 Extractor 基本可以完成各种字段提取和转换的任务，但是也有些限制，在应用里写日志的时候就需要考虑到这些限制。Input 可以配置多个 Extractors，按照顺序依次执行。</p>
+<p>系统会有一个默认的 Stream，所有日志默认都会保存到这个 Stream 中，除非匹配了某个 Stream，并且这个 Stream 里配置了不保存日志到默认 Stream。</p>
+<p>可以通过菜单 Streams 创建更多的 Stream，新创建的 Stream 是暂停状态，需要在配置完成后手动启动。</p>
+<p>Stream 通过配置条件匹配日志，满足条件的日志添加 stream ID 标识字段并保存到对应的 Elastic Index Set 中。</p>
+<p>Index Set 通过菜单 System/Indices 创建。日志存储的性能，可靠性和过期策略都通过 Index Set 来配置。</p>
+<p>性能和可靠性就是配置 Elastic Index 的一些参数，主要参数包括，Shards 和 Replicas。</p>
+<p>除了上面提到的日志处理流程，Graylog 还提供了 Pipeline 脚本实现更灵活的日志处理方案。</p>
+<p>这里不详细阐述，只介绍如果使用 Pipelines 来过滤不需要的日志。下面是丢弃 level &gt; 6 的所有日志的 Pipeline Rule 的例子。</p>
+<p>从数据采集（input），字段解析（extractor），分流到 stream，再到 Pipeline 的清洗，一气呵成，无需在通过其他方式进行二次加工。</p>
+<p>Sidecar 是一个轻量级的日志采集器，通过访问 Graylog 进行集中式管理，支持 Linux 和 windows 系统。</p>
+<p>Sidecar 守护进程会定期访问 Graylog 的 REST API 接口获取 Sidecar 配置文件中定义的标签（tag），Sidecar 在首次运行时会从 Graylog 服务器拉取配置文件中指定标签（tag）的配置信息同步到本地。</p>
+<p>目前 Sidecar 支持 NXLog，Filebeat 和 Winlogbeat。他们都通过 Graylog 中的 web 界面进行统一配置，支持 Beats、CEF、Gelf、Json API、NetFlow 等输出类型。</p>
+<p>Graylog 最厉害的在于可以在配置文件中指定 Sidecar 把日志发送到哪个 Graylog 群集，并对 Graylog 群集中的多个 input 进行负载均衡，这样在遇到日志量非常庞大的时候，Graylog 也能应付自如。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">rule &#34;discard debug messages&#34;
+when
+  to_long($message.level) &gt; 6
+then
+  drop_message();
+end
+</code></pre></td></tr></table>
+</div>
+</div><p>日志集中保存到 Graylog 后就可以方便的使用搜索了。不过有时候还是需要对数据进行近一步的处理。</p>
+<p>主要有两个途径，分别是直接访问 Elastic 中保存的数据，或者通过 Graylog 的 Output 转发到其它服务。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/9TPn66HT930CzevNBb2yMhKjOn9yuJqscN6FicEzJ7iaIdeV8ibJEyVBJNVD6VdujVn2zyicOYIKribkoPEBP1Vb4icQ/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="图片"></p>
+<p><em><em><em>*-*</em>   *<em>服务安装和部署*</em>  *</em>-*</em>**</p>
+<p>主要介绍部署 Filebeat+Graylog 的安装步骤和注意事项！</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/A1HKVXsfHNm6GlYJhzBmJKzTk0bQg8hXHGv3KquTyZyCT9PP0HkOoVW1GrxDFrZy5k9N4MFbaxfI1e1uTzVIJQ/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="图片"></p>
+<p>使用 Graylog 来收集日志</p>
+<p><strong>①部署 Filebeat 工具</strong></p>
+<p>官方提供了多种的部署方式，包括通过 rpm 和 deb 包安装服务，以及源代码编译的方式安装服务，同时包括了使用 Docker 或者 kubernetes 的方式安装服务。</p>
+<p>我们根据自己的实际需要，进行安装即可：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">
+# Ubuntu(deb)
+$ curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-7.8.1-amd64.deb
+$ sudo dpkg -i filebeat-7.8.1-amd64.deb
+$ sudo systemctl enable filebeat
+$ sudo service filebeat start
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># 使用 Docker 启动
+docker run -d --name=filebeat --user=root \
+  --volume=&#34;./filebeat.docker.yml:/usr/share/filebeat/filebeat.yml:ro&#34; \
+  --volume=&#34;/var/lib/docker/containers:/var/lib/docker/containers:ro&#34; \
+  --volume=&#34;/var/run/docker.sock:/var/run/docker.sock:ro&#34; \
+  docker.elastic.co/beats/filebeat:7.8.1 filebeat -e -strict.perms=false \
+  -E output.elasticsearch.hosts=[&#34;elasticsearch:9200&#34;]
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>②部署 Graylog 服务</strong></p>
+<p>我们这里主要介绍使用 Docker 容器来部署服务，如果你需要使用其他方式来部署的话，请自行查看官方文档对应章节的安装部署步骤。</p>
+<p>在服务部署之前，我们需要给 Graylog 服务生成等相关信息，生成部署如下所示：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># 生成 password_secret 密码（最少 16 位）
+$ sudo apt install -y pwgen
+$ pwgen -N 1 -s 16
+zscMb65...FxR9ag
+
+# 生成后续 Web 登录时所需要使用的密码
+$ echo -n &#34;Enter Password: &#34; &amp;&amp; head -1 &lt;/dev/stdin | tr -d &#39;\n&#39; | sha256sum | cut -d&#34; &#34; -f1
+Enter Password: zscMb65...FxR9ag
+77e29e0f...557515f
+</code></pre></td></tr></table>
+</div>
+</div><p>生成所需密码信息之后，我们将如下 yml 信息保存到 docker-comopse.yml 文件中，使用 docker-compose 命令启动该服务，即可完成部署。</p>
+<p>之后，通过浏览器访问对应服务器地址的 9000 端口，即可登录主页。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">
+version: &#34;3&#34;
+
+services:
+  mongo:
+    restart: on-failure
+    container_name: graylog_mongo
+    image: &#34;mongo:3&#34;
+    volumes:
+      - &#34;./mongodb:/data/db&#34;
+    networks:
+      - graylog_network
+
+  elasticsearch:
+    restart: on-failure
+    container_name: graylog_es
+    image: &#34;elasticsearch:6.8.5&#34;
+    volumes:
+      - &#34;./es_data:/usr/share/elasticsearch/data&#34;
+    environment:
+      - http.host=0.0.0.0
+      - transport.host=localhost
+      - network.host=0.0.0.0
+      - &#34;ES_JAVA_OPTS=-Xms512m -Xmx5120m&#34;
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    deploy:
+      resources:
+        limits:
+          memory: 12g
+    networks:
+      - graylog_network
+
+  graylog:
+    restart: on-failure
+    container_name: graylog_web
+    image: &#34;graylog/graylog:3.3&#34;
+    ports:
+      - 9000:9000 # Web 服务提供的访问端口
+      - 5044:5044 # Filebeat 工具提供端口
+      - 12201:12201 # GELF TCP
+      - 12201:12201/udp # GELF UDP
+      - 1514:1514 # Syslog TCP
+      - 1514:1514/udp # Syslog UDP
+    volumes:
+      - &#34;./graylog_journal:/usr/share/graylog/data/journal&#34;
+    environment:
+      - GRAYLOG_PASSWORD_SECRET=zscMb65...FxR9ag
+      - GRAYLOG_ROOT_PASSWORD_SHA2=77e29e0f...557515f
+      - GRAYLOG_HTTP_EXTERNAL_URI=http://11.22.33.44:9000/
+      - GRAYLOG_TIMEZONE=Asia/Shanghai
+      - GRAYLOG_ROOT_TIMEZONE=Asia/Shanghai
+    networks:
+      - graylog
+    depends_on:
+      - mongo
+      - elasticsearch
+
+networks:
+  graylog_network:
+    driver: bridge
+</code></pre></td></tr></table>
+</div>
+</div><p>需要注意的是，GELF（Graylog Extended Log Format）的 input 模式可以接受结构化的事件，支持压缩和分块。恰好，Docker 服务的 log-driver 驱动原生提供了 GELF 的支持。</p>
+<p>只需要我们在 Graylog 的 system/inputs 下面创建对应的 input 之后，启动容器时候指定 log-driver，就可以将容器内的输出都会发送到 Graylog 里面了。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/A1HKVXsfHNm6GlYJhzBmJKzTk0bQg8hXQ39BVN9s0bH3WnvkYCVT0hRKhLZbicSMfzSsoedic7SUgl4WlNRxWUCg/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="图片"></p>
+<p>使用 Graylog 来收集日志</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">
+# [docker] 启动容器指定地址和 driver
+docker run --rm=true \
+    --log-driver=gelf \
+    --log-opt gelf-address=udp://11.22.33.44:12201 \
+    --log-opt tag=myapp \
+    myapp:0.0.1
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># [docker-compose] 启动使用方式
+version: &#34;3&#34;
+services:
+  redis:
+    restart: always
+    image: redis
+    container_name: &#34;redis&#34;
+    logging:
+      driver: gelf
+      options:
+        gelf-address: udp://11.22.33.44:12201
+        tag: &#34;redis&#34;
+  ......
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://mmbiz.qpic.cn/mmbiz_png/9TPn66HT930CzevNBb2yMhKjOn9yuJqscN6FicEzJ7iaIdeV8ibJEyVBJNVD6VdujVn2zyicOYIKribkoPEBP1Vb4icQ/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="图片"></p>
+<p><em><em><em>*-*</em>   *<em>Graylog 界面功能*</em>  *</em>-*</em>**</p>
+<p>主要介绍 Graylog 界面的相关功能和对应特点！</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/A1HKVXsfHNm6GlYJhzBmJKzTk0bQg8hXgaLLlLWf1vIPXBKouZxJ5HnozRDqmZicrTjm7Bap6xhTtyvc3cWwwkQ/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="图片"></p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/A1HKVXsfHNm6GlYJhzBmJKzTk0bQg8hXVZUXLXyHwNnuGQ4ibibkexeg9BVVbuFGtojZqc397yyVVpFqX1ia491YA/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="图片"></p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/A1HKVXsfHNm6GlYJhzBmJKzTk0bQg8hXCHpTOILQHLiacsHr2s1mP4z9bzCiaV4mryLeygickswTTfqcRpP1M1uQQ/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="图片"></p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/A1HKVXsfHNm6GlYJhzBmJKzTk0bQg8hXBbTPMiamibPHY7n1p8Tn3Zd8XPYkM2ibIP962IcBsYYkleibcSCmCpY7HA/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="图片"></p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/A1HKVXsfHNm6GlYJhzBmJKzTk0bQg8hXJjsztenic5FLqoj0FRib4zafOAFia9LAjv94DNt3Go0hBKicKTU0pSZPvQ/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="图片"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Summer</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2021-05-13
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/graylog/">Graylog</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/framework2/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">如何设计高并发框架</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/http3/">
+            <span class="next-text nav-default">Http3简介</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+  <a href="https://summer90xia.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2016 - 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>Summer</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/raphael@2.2.7/raphael.min.js" integrity="sha256-67By+NpOtm9ka1R6xpUefeGOY8kWWHHRAKlvaTJ7ONI=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/flowchart.js@1.8.0/release/flowchart.min.js" integrity="sha256-zNGWjubXoY6rb5MnmpBNefO0RgoVYfle9p0tvOQM+6k=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.js" integrity="sha256-4O4pS1SH31ZqrSO2A/2QJTVjTPqVe+jnYgOWUVr7EEc=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/snapsvg@0.5.1/dist/snap.svg-min.js" integrity="sha256-oI+elz+sIm+jpn8F/qEspKoKveTc5uKeFHNNVexe6d8=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/underscore@1.8.3/underscore-min.js" integrity="sha256-obZACiHd7gkOk9iIL/pimWMTJ4W/pBsKu+oZnSeBIek=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.js" integrity="sha384-8748Vn52gHJYJI0XEuPB2QlPVNUkJlJn9tHqKec6J3q2r9l8fvRxrgn/E5ZHV0sP" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.css" integrity="sha384-6QbLKJMz5dS3adWSeINZe74uSydBGFbnzaAYmp+tKyq60S7H2p6V7g1TysM5lAaF" crossorigin="anonymous">
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+<script id="baidu_analytics">
+  var _hmt = _hmt || [];
+  (function() {
+    if (window.location.hostname === 'localhost') return;
+    var hm = document.createElement("script"); hm.async = true;
+    hm.src = "https://hm.baidu.com/hm.js?fc8cf18648f58ac4ad0594547ec6c1e3";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+<script id="baidu_push">
+  (function(){
+    if (window.location.hostname === 'localhost') return;
+    var bp = document.createElement('script'); bp.async = true;
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+      bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+      bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+  })();
+</script>
+
+
+<script src="/js/"></script>
+
+
+</body>
+</html>

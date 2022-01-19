@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>如何设计高并发框架 - Summer&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Summer" /><meta name="description" content="前言 高并发经常会发生在有大活跃用户量，用户高聚集的业务场景中，如：秒杀活动，定时领取红包等。 为了让业务可以流畅的运行并且给用户一个好的交互体" /><meta name="keywords" content="高并发, 高可用" />
+
+
+<meta name="baidu-site-verification" content="QuqVC3Anf0" />
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://summer90xia.github.io/post/framework2/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/">
+
+
+<meta property="og:title" content="如何设计高并发框架" />
+<meta property="og:description" content="前言 高并发经常会发生在有大活跃用户量，用户高聚集的业务场景中，如：秒杀活动，定时领取红包等。 为了让业务可以流畅的运行并且给用户一个好的交互体" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://summer90xia.github.io/post/framework2/" />
+<meta property="article:published_time" content="2021-05-29T16:00:51+08:00" />
+<meta property="article:modified_time" content="2021-05-29T16:00:51+08:00" />
+<meta itemprop="name" content="如何设计高并发框架">
+<meta itemprop="description" content="前言 高并发经常会发生在有大活跃用户量，用户高聚集的业务场景中，如：秒杀活动，定时领取红包等。 为了让业务可以流畅的运行并且给用户一个好的交互体">
+<meta itemprop="datePublished" content="2021-05-29T16:00:51&#43;08:00" />
+<meta itemprop="dateModified" content="2021-05-29T16:00:51&#43;08:00" />
+<meta itemprop="wordCount" content="6272">
+
+
+
+<meta itemprop="keywords" content="系统架构," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何设计高并发框架"/>
+<meta name="twitter:description" content="前言 高并发经常会发生在有大活跃用户量，用户高聚集的业务场景中，如：秒杀活动，定时领取红包等。 为了让业务可以流畅的运行并且给用户一个好的交互体"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Summer&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">栏目</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Summer&#39;s Blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">栏目</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">如何设计高并发框架</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-05-29 </span>
+        <div class="post-category">
+            <a href="/categories/%E5%AD%A6%E7%94%B5%E8%84%91/"> 学电脑 </a>
+            </div>
+          <span class="more-meta"> 约 6272 字 </span>
+          <span class="more-meta"> 预计阅读 13 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+    <li><a href="#分层分割分布式">分层、分割、分布式</a></li>
+    <li><a href="#集群">集群</a></li>
+    <li><a href="#heading"></a></li>
+    <li><a href="#异步">异步</a></li>
+    <li><a href="#图片httpsmmbizqpiccnmmbiz_pngicnyeyk3vqgmib0j7evicdwuibeusrdcfe3lxmeum4ires1b1fric0oxjp4ckvs6colsqbr2a2scf8fn5mfskcpphg640wx_fmtpngtpwebpwxfrom5wx_lazy1wx_co1"><img src="https://mmbiz.qpic.cn/mmbiz_png/icNyEYk3VqGmib0j7eVicDwuibeusRDcFe3lxmeUm4IreS1B1FRIC0oXJP4CkVS6COLSQbR2a2scf8fN5MfskcpPHg/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="图片"></a></li>
+    <li><a href="#缓存">缓存</a></li>
+    <li><a href="#面向服务">面向服务</a></li>
+    <li><a href="#冗余自动化">冗余，自动化</a></li>
+    <li><a href="#总结">总结</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p><strong>前言</strong></p>
+<p>高并发经常会发生在有大活跃用户量，用户高聚集的业务场景中，如：秒杀活动，定时领取红包等。</p>
+<p>为了让业务可以流畅的运行并且给用户一个好的交互体验，我们需要根据业务场景预估达到的并发量等因素，来设计适合自己业务场景的高并发处理方案。</p>
+<p>在电商相关产品开发的这些年，我有幸的遇到了并发下的各种坑，这一路摸爬滚打过来有着不少的血泪史，这里进行的总结，作为自己的归档记录，同时分享给大家。</p>
+<p><strong>服务器架构</strong></p>
+<p>业务从发展的初期到逐渐成熟，服务器架构也是从相对单一到集群，再到分布式服务。</p>
+<p>一个可以支持高并发的服务少不了好的服务器架构，需要有均衡负载，数据库需要主从集群，nosql缓存需要主从集群，静态文件需要上传，这些都是能让业务程序流畅运行的强大后盾。</p>
+<p>服务器这块多是需要运维人员来配合搭建，具体我就不多说了，点到为止。</p>
+<p>大致需要用到的服务器架构如下：</p>
+<ul>
+<li>
+<p>服务器</p>
+</li>
+<li>
+<ul>
+<li>均衡负载(如：nginx，阿里云SLB)</li>
+<li>资源监控</li>
+<li>分布式</li>
+</ul>
+</li>
+<li>
+<p>数据库</p>
+</li>
+<li>
+<ul>
+<li>主从分离，集群</li>
+<li>DBA 表优化，索引优化，等</li>
+<li>分布式</li>
+</ul>
+</li>
+<li>
+<p>nosql</p>
+</li>
+<li>
+<ul>
+<li>主从分离，集群</li>
+<li>主从分离，集群</li>
+<li>主从分离，集群</li>
+<li>redis</li>
+<li>mongodb</li>
+<li>memcache</li>
+</ul>
+</li>
+<li>
+<p>cdn</p>
+</li>
+<li>
+<ul>
+<li>html</li>
+<li>css</li>
+<li>js</li>
+<li>image</li>
+</ul>
+</li>
+</ul>
+<p><strong>并发测试</strong></p>
+<p>高并发相关的业务，需要进行并发的测试，通过大量的数据分析评估出整个架构可以支撑的并发量。</p>
+<p>测试高并发可以使用第三方服务器或者自己测试服务器，利用测试工具进行并发请求测试，分析测试数据得到可以支撑并发数量的评估，这个可以作为一个预警参考，俗话说知己自彼百战不殆。</p>
+<p>第三方服务：</p>
+<ul>
+<li>阿里云性能测试</li>
+</ul>
+<p>并发测试工具：</p>
+<ul>
+<li>Apache JMeter</li>
+<li>Visual Studio性能负载测试</li>
+<li>Microsoft Web Application Stress Tool</li>
+</ul>
+<p><strong>实战方案</strong></p>
+<h4 id="通用方案"><strong>通用方案</strong></h4>
+<blockquote>
+<p>日用户流量大，但是比较分散，偶尔会有用户高聚的情况；</p>
+</blockquote>
+<p>场景：用户签到，用户中心，用户订单等。</p>
+<p>服务器架构图：</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/XaklVibwUKn54d2UVtJl3RicnTzDV9Og6Ziaz1UTfgLr8sBuG2ga3AUia3sBX20TlbSoOLbQFqHPAyu3OACfrpJhdA/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="图片"></p>
+<p>说明：</p>
+<p>场景中的这些业务基本是用户进入APP后会操作到的，除了活动日(618,双11，等)，这些业务的用户量都不会高聚集，同时这些业务相关的表都是大数据表，业务多是查询操作，所以我们需要减少用户直接命中DB的查询；优先查询缓存，如果缓存不存在，再进行DB查询，将查询结果缓存起来。</p>
+<p>更新用户相关缓存需要分布式存储，比如使用用户ID进行hash分组，把用户分布到不同的缓存中，这样一个缓存集合的总量不会很大，不会影响查询效率。</p>
+<p>方案如下：</p>
+<ul>
+<li>
+<p>用户签到获取积分</p>
+</li>
+<li>
+<ul>
+<li>
+<p>计算出用户分布的key,redis hash中查找用户今日签到信息</p>
+</li>
+<li>
+<p>如果查询到签到信息，返回签到信息</p>
+</li>
+<li>
+<p>如果没有查询到，DB查询今日是否签到过，如果有签到过，就把签到信息同步redis缓存。</p>
+</li>
+<li>
+<p>如果DB中也没有查询到今日的签到记录，就进行签到逻辑，操作DB添加今日签到记录，添加签到积分(这整个DB操作是一个事务)</p>
+</li>
+<li>
+<p>缓存签到信息到redis，返回签到信息</p>
+</li>
+<li>
+<p>注意这里会有并发情况下的逻辑问题，如：一天签到多次，发放多次积分给用户。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>用户订单</p>
+</li>
+<li>
+<ul>
+<li>
+<p>这里我们只缓存用户第一页的订单信息，一页40条数据，用户一般也只会看第一页的订单数据</p>
+</li>
+<li>
+<p>用户访问订单列表，如果是第一页读缓存，如果不是读DB</p>
+</li>
+<li>
+<p>计算出用户分布的key,redis hash中查找用户订单信息</p>
+</li>
+<li>
+<p>如果查询到用户订单信息，返回订单信息</p>
+</li>
+<li>
+<p>如果不存在就进行DB查询第一页的订单数据，然后缓存redis，返回订单信息</p>
+</li>
+</ul>
+</li>
+<li>
+<p>用户中心</p>
+</li>
+<li>
+<ul>
+<li>
+<p>计算出用户分布的key,redis hash中查找用户订单信息</p>
+</li>
+<li>
+<p>如果查询到用户信息，返回用户信息</p>
+</li>
+<li>
+<p>如果不存在进行用户DB查询，然后缓存redis，返回用户信息</p>
+</li>
+</ul>
+</li>
+<li>
+<p>其他业务</p>
+</li>
+<li>
+<ul>
+<li>上面例子多是针对用户存储缓存，如果是公用的缓存数据需要注意一些问题，如下</li>
+<li>注意公用的缓存数据需要考虑并发下的可能会导致大量命中DB查询，可以使用管理后台更新缓存，或者DB查询的锁住操作。</li>
+<li>博文《大话Redis进阶》对更新缓存问题和推荐方案的分享。</li>
+</ul>
+</li>
+</ul>
+<p>以上例子是一个相对简单的高并发架构，并发量不是很高的情况可以很好的支撑，但是随着业务的壮大，用户并发量增加，我们的架构也会进行不断的优化和演变，比如对业务进行服务化，每个服务有自己的并发架构，自己的均衡服务器，分布式数据库，nosql主从集群，如：用户服务、订单服务；</p>
+<h4 id="消息队列">消息队列</h4>
+<blockquote>
+<p>秒杀、秒抢等活动业务，用户在瞬间涌入产生高并发请求</p>
+</blockquote>
+<p>场景：定时领取红包等</p>
+<p>服务器架构图：</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/XaklVibwUKn54d2UVtJl3RicnTzDV9Og6ZTicPcAhqsxBaG4aB9cjU95kGpVvqKTFNahC2k9rGWR4MB1dMJxEJRicg/640?wx_fmt=other&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="图片"></p>
+<p>说明：</p>
+<p>场景中的定时领取是一个高并发的业务，像秒杀活动用户会在到点的时间涌入，DB瞬间就接受到一记暴击，hold不住就会宕机，然后影响整个业务；</p>
+<p>像这种不是只有查询的操作并且会有高并发的插入或者更新数据的业务，前面提到的通用方案就无法支撑，并发的时候都是直接命中DB；</p>
+<p>设计这块业务的时候就会使用消息队列的，可以将参与用户的信息添加到消息队列中，然后再写个多线程程序去消耗队列，给队列中的用户发放红包；</p>
+<p>方案如下：</p>
+<p>定时领取红包</p>
+<ul>
+<li>一般习惯使用 redis的 list</li>
+<li>当用户参与活动，将用户参与信息push到队列中</li>
+<li>然后写个多线程程序去pop数据，进行发放红包的业务</li>
+<li>这样可以支持高并发下的用户可以正常的参与活动，并且避免数据库服务器宕机的危险</li>
+</ul>
+<p>附加：</p>
+<p>通过消息队列可以做很多的服务。</p>
+<p>如：定时短信发送服务，使用sset(sorted set)，发送时间戳作为排序依据，短信数据队列根据时间升序，然后写个程序定时循环去读取sset队列中的第一条，当前时间是否超过发送时间，如果超过就进行短信发送。</p>
+<h4 id="一级缓存">一级缓存</h4>
+<p>高并发请求连接缓存服务器超出服务器能够接收的请求连接量，部分用户出现建立连接超时无法读取到数据的问题；</p>
+<p>因此需要有个方案当高并发时候时候可以减少命中缓存服务器；</p>
+<p>这时候就出现了一级缓存的方案，一级缓存就是使用站点服务器缓存去存储数据，注意只存储部分请求量大的数据，并且缓存的数据量要控制，不能过分的使用站点服务器的内存而影响了站点应用程序的正常运行，一级缓存需要设置秒单位的过期时间，具体时间根据业务场景设定，目的是当有高并发请求的时候可以让数据的获取命中到一级缓存，而不用连接缓存nosql数据服务器，减少nosql数据服务器的压力。</p>
+<p>比如APP首屏商品数据接口，这些数据是公共的不会针对用户自定义，而且这些数据不会频繁的更新，像这种接口的请求量比较大就可以加入一级缓存；</p>
+<p>服务器架构图：</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/icNyEYk3VqGmib0j7eVicDwuibeusRDcFe3lFlWcGKnPRuYIxXJlx9qE45VT41Z30Odiaibcr4ZRKMAd0Niak4gzBhS4g/640?wx_fmt=jpeg&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="图片"></p>
+<p>合理的规范和使用nosql缓存数据库，根据业务拆分缓存数据库的集群，这样基本可以很好支持业务，一级缓存毕竟是使用站点服务器缓存所以还是要善用。</p>
+<h4 id="静态化数据">静态化数据</h4>
+<p>高并发请求数据不变化的情况下如果可以不请求自己的服务器获取数据那就可以减少服务器的资源压力。</p>
+<p>对于更新频繁度不高，并且数据允许短时间内的延迟，可以通过数据静态化成JSON，XML,HTML等数据文件上传CDN，在拉取数据的时候优先到CDN拉取，如果没有获取到数据再从缓存，数据库中获取，当管理人员操作后台编辑数据再重新生成静态文件上传同步到CDN，这样在高并发的时候可以使数据的获取命中在CDN服务器上。</p>
+<p>CDN节点同步有一定的延迟性，所以找一个靠谱的CDN服务器商也很重要。</p>
+<h4 id="其他方案">其他方案</h4>
+<ul>
+<li>对于更新频繁度不高的数据，APP,PC浏览器，可以缓存数据到本地，然后每次请求接口的时候上传当前缓存数据的版本号，服务端接收到版本号判断版本号与最新数据版本号是否一致，如果不一样就进行最新数据的查询并返回最新数据和最新版本号，如果一样就返回状态码告知数据已经是最新。减少服务器压力：资源、带宽等。</li>
+</ul>
+<h2 id="分层分割分布式">分层、分割、分布式</h2>
+<p>大型网站要很好支撑高并发，这是需要长期的规划设计。</p>
+<p>在初期就需要把系统进行分层，在发展过程中把核心业务进行拆分成模块单元，根据需求进行分布式部署，可以进行独立团队维护开发。</p>
+<ul>
+<li>
+<p>分层</p>
+</li>
+<li>
+<ul>
+<li>将系统在横向维度上切分成几个部分，每个部门负责一部分相对简单并比较单一的职责，然后通过上层对下层的依赖和调度组成一个完整的系统</li>
+<li>比如把电商系统分成：应用层，服务层，数据层。(具体分多少个层次根据自己的业务场景)</li>
+<li>应用层：网站首页，用户中心，商品中心，购物车，红包业务，活动中心等，负责具体业务和视图展示</li>
+<li>服务层：订单服务，用户管理服务，红包服务，商品服务等，为应用层提供服务支持</li>
+<li>数据层：关系数据库，nosql数据库 等，提供数据存储查询服务</li>
+<li>分层架构是逻辑上的，在物理部署上可以部署在同一台物理机器上，但是随着网站业务的发展，必然需要对已经分层的模块分离部署，分别部署在不同的服务器上，使网站可以支撑更多用户访问</li>
+</ul>
+</li>
+<li>
+<p>分割</p>
+</li>
+<li>
+<ul>
+<li>在纵向方面对业务进行切分，将一块相对复杂的业务分割成不同的模块单元</li>
+<li>包装成高内聚低耦合的模块不仅有助于软件的开发维护，也便于不同模块的分布式部署，提高网站的并发处理能力和功能扩展</li>
+<li>比如用户中心可以分割成：账户信息模块，订单模块，充值模块，提现模块，优惠券模块等</li>
+</ul>
+</li>
+<li>
+<p>分布式</p>
+</li>
+<li>
+<ul>
+<li>分布式应用和服务,将分层或者分割后的业务分布式部署，独立的应用服务器，数据库，缓存服务器</li>
+<li>当业务达到一定用户量的时候，再进行服务器均衡负载，数据库，缓存主从集群</li>
+<li>分布式静态资源，比如：静态资源上传cdn</li>
+<li>分布式计算，比如：使用hadoop进行大数据的分布式计算</li>
+<li>分布式数据和存储,比如：各分布节点根据哈希算法或其他算法分散存储数据</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_jpg/icNyEYk3VqGmib0j7eVicDwuibeusRDcFe3lj2o1FwgmcvZFibJBQq3qfcCCEuZ3sRdJKic4HFMBkP9Pk2wCt41nylvg/640?wx_fmt=jpeg&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="图片"></p>
+<h2 id="集群">集群</h2>
+<p>对于用户访问集中的业务独立部署服务器，应用服务器，数据库，nosql数据库。核心业务基本上需要搭建集群，即多台服务器部署相同的应用构成一个集群，通过负载均衡设备共同对外提供服务， 服务器集群能够为相同的服务提供更多的并发支持，因此当有更多的用户访问时，只需要向集群中加入新的机器即可, 另外可以实现当其中的某台服务器发生故障时，可以通过负载均衡的失效转移机制将请求转移至集群中其他的服务器上，因此可以提高系统的可用性。</p>
+<ul>
+<li>
+<p>应用服务器集群</p>
+</li>
+<li>
+<ul>
+<li>nginx 反向代理</li>
+<li>slb</li>
+<li>… …</li>
+</ul>
+</li>
+<li>
+<p>(关系/nosql)数据库集群</p>
+</li>
+<li>
+<ul>
+<li>主从分离，从库集群</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/icNyEYk3VqGmib0j7eVicDwuibeusRDcFe3lW2wMpZSLVxwqxGfzr7IZdHibkdMW3Yx4p4k4Y73qX91PbSFJt5x45eg/640?wx_fmt=jpeg&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="图片"></p>
+<p>通过反向代理均衡负载</p>
+<h2 id="heading"></h2>
+<h2 id="异步">异步</h2>
+<p>在高并发业务中如果涉及到数据库操作，主要压力都是在数据库服务器上面，虽然使用主从分离，但是数据库操作都是在主库上操作，单台数据库服务器连接池允许的最大连接数量是有限的。</p>
+<p>当连接数量达到最大值的时候，其他需要连接数据操作的请求就需要等待有空闲的连接，这样高并发的时候很多请求就会出现connection time out 的情况。</p>
+<p>那么像这种高并发业务我们要如何设计开发方案可以降低数据库服务器的压力呢？</p>
+<ul>
+<li>
+<p>如：</p>
+</li>
+<li>
+<ul>
+<li>自动弹窗签到，双11跨0点的时候并发请求签到接口</li>
+<li>双11抢红包活动</li>
+<li>双11订单入库</li>
+<li>等</li>
+</ul>
+</li>
+<li>
+<p>设计考虑：</p>
+</li>
+<li>
+<ul>
+<li>逆向思维，压力在数据库，那业务接口就不进行数据库操作不就没压力了</li>
+<li>数据持久化是否允许延迟？</li>
+<li>如何让业务接口不直接操作DB，又可以让数据持久化？</li>
+</ul>
+</li>
+<li>
+<p>方案设计：</p>
+</li>
+<li>
+<ul>
+<li>像这种涉及数据库操作的高并发的业务，就要考虑使用异步了</li>
+<li>客户端发起接口请求，服务端快速响应，客户端展示结果给用户，数据库操作通过异步同步</li>
+<li>如何实现异步同步？</li>
+<li>使用消息队列，将入库的内容enqueue到消息队列中，业务接口快速响应给用户结果(可以温馨提示高峰期延迟到账)</li>
+<li>然后再写个独立程序从消息队列dequeue数据出来进行入库操作，入库成功后刷新用户相关缓存，如果入库失败记录日志，方便反馈查询和重新持久化</li>
+<li>这样一来数据库操作就只有一个程序(多线程)来完成，不会给数据带来压力</li>
+</ul>
+</li>
+<li>
+<p>补充：</p>
+</li>
+<li>
+<ul>
+<li>消息队列除了可以用在高并发业务，其他只要有相同需求的业务也是可以使用，如：短信发送中间件等</li>
+<li>高并发下异步持久化数据可能会影响用户的体验，可以通过可配置的方式，或者自动化监控资源消耗来切换时时或者使用异步，这样在正常流量的情况下可以使用时时操作数据库来提高用户体验</li>
+<li>异步同时也可以指编程上的异步函数，异步线程，在有的时候可以使用异步操作，把不需要等待结果的操作放到异步中，然后继续后面的操作，节省了等待的这部分操作的时间</li>
+</ul>
+</li>
+</ul>
+<h2 id="图片httpsmmbizqpiccnmmbiz_pngicnyeyk3vqgmib0j7evicdwuibeusrdcfe3lxmeum4ires1b1fric0oxjp4ckvs6colsqbr2a2scf8fn5mfskcpphg640wx_fmtpngtpwebpwxfrom5wx_lazy1wx_co1"><img src="https://mmbiz.qpic.cn/mmbiz_png/icNyEYk3VqGmib0j7eVicDwuibeusRDcFe3lxmeUm4IreS1B1FRIC0oXJP4CkVS6COLSQbR2a2scf8fN5MfskcpPHg/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="图片"></h2>
+<h2 id="缓存">缓存</h2>
+<p>高并发业务接口多数都是进行业务数据的查询，如：商品列表，商品信息，用户信息，红包信息等，这些数据都是不会经常变化，并且持久化在数据库中。</p>
+<p>高并发的情况下直接连接从库做查询操作，多台从库服务器也抗不住这么大量的连接请求数（前面说过，单台数据库服务器允许的最大连接数量是有限的）。</p>
+<p>那么我们在这种高并发的业务接口要如何设计呢？</p>
+<ul>
+<li>
+<p>设计考虑：</p>
+</li>
+<li>
+<ul>
+<li>还是逆向思维，压力在数据库，那么我们就不进行数据库查询</li>
+<li>数据不经常变化，我们为啥要一直查询DB？</li>
+<li>数据不变化客户端为啥要向服务器请求返回一样的数据？</li>
+</ul>
+</li>
+<li>
+<p>方案设计：</p>
+</li>
+<li>
+<ul>
+<li>数据不经常变化，我们可以把数据进行缓存，缓存的方式有很多种，一般的：应用服务器直接Cache内存，主流的：存储在memcache、redis内存数据库</li>
+<li>Cache是直接存储在应用服务器中，读取速度快，内存数据库服务器允许连接数可以支撑到很大，而且数据存储在内存，读取速度快，再加上主从集群，可以支撑很大的并发查询</li>
+<li>根据业务情景，使用配合客户端本地存，如果我们数据内容不经常变化，为啥要一直请求服务器获取相同数据，可以通过匹配数据版本号，如果版本号不一样接口重新查询缓存返回数据和版本号，如果一样则不查询数据直接响应</li>
+<li>这样不仅可以提高接口响应速度，也可以节约服务器带宽，虽然有些服务器带宽是按流量计费，但是也不是绝对无限的，在高并发的时候服务器带宽也可能导致请求响应慢的问题</li>
+</ul>
+</li>
+<li>
+<p>补充：</p>
+</li>
+<li>
+<ul>
+<li>缓存同时也指静态资源客户端缓存</li>
+<li>cdn缓存，静态资源通过上传cdn，cdn节点缓存我们的静态资源，减少服务器压力</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/icNyEYk3VqGmib0j7eVicDwuibeusRDcFe3l7GPMgIHkTDVDs2cr4VxlACREr73CFblyicEyktadaia12VyYa5BQUoRQ/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="图片"></p>
+<h2 id="面向服务">面向服务</h2>
+<ul>
+<li>SOA面向服务架构设计</li>
+<li>微服务更细粒度服务化，一系列的独立的服务共同组成系统</li>
+</ul>
+<p>使用服务化思维，将核心业务或者通用的业务功能抽离成服务独立部署，对外提供接口的方式提供功能。</p>
+<p>最理想化的设计是可以把一个复杂的系统抽离成多个服务，共同组成系统的业务，优点：松耦合，高可用性，高伸缩性，易维护。</p>
+<p>通过面向服务化设计，独立服务器部署，均衡负载，数据库集群，可以让服务支撑更高的并发。</p>
+<ul>
+<li>
+<p>服务例子：</p>
+</li>
+<li>
+<ul>
+<li>用户行为跟踪记录统计</li>
+</ul>
+</li>
+<li>
+<p>说明：</p>
+</li>
+<li>
+<ul>
+<li>通过上报应用模块，操作事件，事件对象，等数据，记录用户的操作行为</li>
+<li>比如：记录用户在某个商品模块，点击了某一件商品，或者浏览了某一件商品</li>
+</ul>
+</li>
+<li>
+<p>背景：</p>
+</li>
+<li>
+<ul>
+<li>由于服务需要记录用户的各种操作行为，并且可以重复上报，准备接入服务的业务又是核心业务的用户行为跟踪，所以请求量很大，高峰期会产生大量并发请求。</li>
+</ul>
+</li>
+<li>
+<p>架构：</p>
+</li>
+<li>
+<ul>
+<li>nodejs WEB应用服务器均衡负载</li>
+<li>redis主从集群</li>
+<li>mysql主</li>
+<li>nodejs+express+ejs+redis+mysql</li>
+<li>服务端采用nodejs,nodejs是单进程（PM2根据cpu核数开启多个工作进程），采用事件驱动机制，适合I/O密集型业务，处理高并发能力强</li>
+</ul>
+</li>
+<li>
+<p>业务设计：</p>
+</li>
+<li>
+<ul>
+<li>并发量大，所以不能直接入库，采用：异步同步数据,消息队列</li>
+<li>请求接口上报数据，接口将上报数据push到redis的list队列中</li>
+<li>nodejs写入库脚本，循环pop redis list数据，将数据存储入库，并进行相关统计Update，无数据时sleep几秒</li>
+<li>因为数据量会比较大，上报的数据表按天命名存储</li>
+</ul>
+</li>
+<li>
+<p>接口：</p>
+</li>
+<li>
+<ul>
+<li>上报数据接口</li>
+<li>统计查询接口</li>
+</ul>
+</li>
+<li>
+<p>上线跟进：</p>
+</li>
+<li>
+<ul>
+<li>服务业务基本正常</li>
+<li>每天的上报表有上千万的数据</li>
+</ul>
+</li>
+</ul>
+<h2 id="冗余自动化">冗余，自动化</h2>
+<p>当高并发业务所在的服务器出现宕机的时候，需要有备用服务器进行快速的替代，在应用服务器压力大的时候可以快速添加机器到集群中，所以我们就需要有备用机器可以随时待命。</p>
+<p>最理想的方式是可以通过自动化监控服务器资源消耗来进行报警，自动切换降级方案，自动的进行服务器替换和添加操作等，通过自动化可以减少人工的操作的成本，而且可以快速操作，避免人为操作上面的失误。</p>
+<ul>
+<li>
+<p>冗余</p>
+</li>
+<li>
+<ul>
+<li>数据库备份</li>
+<li>备用服务器</li>
+</ul>
+</li>
+<li>
+<p>自动化</p>
+</li>
+<li>
+<ul>
+<li>自动化监控</li>
+<li>自动化报警</li>
+<li>自动化降级</li>
+</ul>
+</li>
+</ul>
+<p>通过GitLab事件，我们应该反思，做了备份数据并不代表就万无一失了，我们需要保证高可用性，首先备份是否正常进行，备份数据是否可用，需要我们进行定期的检查，或者自动化监控， 还有包括如何避免人为上的操作失误问题(不过事件中gitlab的开放性姿态，积极的处理方式还是值得学习的)。</p>
+<h2 id="总结">总结</h2>
+<p>高并发架构是一个不断衍变的过程，冰洞三尺非一日之寒，长城筑成非一日之功 。打好基础架构方便以后的拓展，这点很重要。</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Summer</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2021-05-29
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/">系统架构</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/redis3/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Redis实现限流的三种方式</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/graylog/">
+            <span class="next-text nav-default">Graylog使用方法简介</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+  <a href="https://summer90xia.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2016 - 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>Summer</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/raphael@2.2.7/raphael.min.js" integrity="sha256-67By+NpOtm9ka1R6xpUefeGOY8kWWHHRAKlvaTJ7ONI=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/flowchart.js@1.8.0/release/flowchart.min.js" integrity="sha256-zNGWjubXoY6rb5MnmpBNefO0RgoVYfle9p0tvOQM+6k=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.js" integrity="sha256-4O4pS1SH31ZqrSO2A/2QJTVjTPqVe+jnYgOWUVr7EEc=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/snapsvg@0.5.1/dist/snap.svg-min.js" integrity="sha256-oI+elz+sIm+jpn8F/qEspKoKveTc5uKeFHNNVexe6d8=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/underscore@1.8.3/underscore-min.js" integrity="sha256-obZACiHd7gkOk9iIL/pimWMTJ4W/pBsKu+oZnSeBIek=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.js" integrity="sha384-8748Vn52gHJYJI0XEuPB2QlPVNUkJlJn9tHqKec6J3q2r9l8fvRxrgn/E5ZHV0sP" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.css" integrity="sha384-6QbLKJMz5dS3adWSeINZe74uSydBGFbnzaAYmp+tKyq60S7H2p6V7g1TysM5lAaF" crossorigin="anonymous">
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+<script id="baidu_analytics">
+  var _hmt = _hmt || [];
+  (function() {
+    if (window.location.hostname === 'localhost') return;
+    var hm = document.createElement("script"); hm.async = true;
+    hm.src = "https://hm.baidu.com/hm.js?fc8cf18648f58ac4ad0594547ec6c1e3";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+<script id="baidu_push">
+  (function(){
+    if (window.location.hostname === 'localhost') return;
+    var bp = document.createElement('script'); bp.async = true;
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+      bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+      bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+  })();
+</script>
+
+
+<script src="/js/"></script>
+
+
+</body>
+</html>

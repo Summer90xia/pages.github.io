@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>如何快速定位错误信息 - Summer&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Summer" /><meta name="description" content="如何快速定位错误信息 系统奔溃了，或者网站响应很慢，网站出现502。。。这些问题在工作上，或者开发过程中经常出现吧。这些问题或许在面试的时候也" /><meta name="keywords" content="log" />
+
+
+<meta name="baidu-site-verification" content="QuqVC3Anf0" />
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://summer90xia.github.io/post/error-log/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/">
+
+
+<meta property="og:title" content="如何快速定位错误信息" />
+<meta property="og:description" content="如何快速定位错误信息 系统奔溃了，或者网站响应很慢，网站出现502。。。这些问题在工作上，或者开发过程中经常出现吧。这些问题或许在面试的时候也" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://summer90xia.github.io/post/error-log/" />
+<meta property="article:published_time" content="2021-06-27T15:52:44+08:00" />
+<meta property="article:modified_time" content="2021-06-27T15:52:44+08:00" />
+<meta itemprop="name" content="如何快速定位错误信息">
+<meta itemprop="description" content="如何快速定位错误信息 系统奔溃了，或者网站响应很慢，网站出现502。。。这些问题在工作上，或者开发过程中经常出现吧。这些问题或许在面试的时候也">
+<meta itemprop="datePublished" content="2021-06-27T15:52:44&#43;08:00" />
+<meta itemprop="dateModified" content="2021-06-27T15:52:44&#43;08:00" />
+<meta itemprop="wordCount" content="2155">
+
+
+
+<meta itemprop="keywords" content="实战技巧," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何快速定位错误信息"/>
+<meta name="twitter:description" content="如何快速定位错误信息 系统奔溃了，或者网站响应很慢，网站出现502。。。这些问题在工作上，或者开发过程中经常出现吧。这些问题或许在面试的时候也"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Summer&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">栏目</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Summer&#39;s Blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">栏目</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">如何快速定位错误信息</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-06-27 </span>
+        <div class="post-category">
+            <a href="/categories/%E5%AD%A6%E7%94%B5%E8%84%91/"> 学电脑 </a>
+            </div>
+          <span class="more-meta"> 约 2155 字 </span>
+          <span class="more-meta"> 预计阅读 5 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents"></nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="如何快速定位错误信息">如何快速定位错误信息</h1>
+<p>系统奔溃了，或者网站响应很慢，网站出现502。。。这些问题在工作上，或者开发过程中经常出现吧。这些问题或许在面试的时候也会经常被问到。那么你是怎么在第一时间检查错误，定位错误信息的呢！</p>
+<p>出现以上的错误的话，我们经常想到的是日志吧。是的，作为一名程序员，比码代码还重要那么一点点的东西就是日志的分析和查询。下面来看看一些常见日志及设置方法:<code>Nginx</code>的日志设置与<code>php-fpm</code>的一些日志设置</p>
+<p><strong>Nginx的<code>access.log</code> 和 <code>error.log</code></strong></p>
+<p><strong>1 <code>nginx</code> 常用的配置文件有两种：<code>access.log</code> 和 <code>error.log</code></strong>``</p>
+<p><code>access.log</code>的作用是：记录用户所有的访问请求，不论状态码，包括200 ，404,500等请求，404,500的请求并不会出现在<code>error.log</code>中。</p>
+<p><code>error.log</code>的作用是：记录<code>nginx</code> 本身运行时的一些错误，不会记录用户访问的请求。比如记录模块错误信息日志，以及nginx配置文件的错误日志等，格式不支持自定义，可以设置级别。</p>
+<p><strong>2 设置 <code>access_log</code></strong>
+访问日志主要用于记录客户端的请求。客户端向<code>nginx</code>服务器发起的每一次请求都会被记录到<code>access_log</code> 中。包含请求 <code>IP</code>、时间、访问<code>url</code>等等，当然访问日志中具体记录哪些日志信息我们可以通过 <code>log_format</code> 设置.</p>
+<p>查看日志存放地址</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">find / -name nginx.conf
+</code></pre></td></tr></table>
+</div>
+</div><p>根据查询出来地址，进入<code>nginx.conf</code> 文件查找 <code>access_log</code> 和 <code>error_log</code> 文件的路径</p>
+<p><code>access_log</code>的设置语法：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">log_format  combined  <span class="s1">&#39;$remote_addr - $remote_user  [$time_local]&#39;</span>
+                      <span class="s1">&#39; &#34;$request&#34;  $status  $body_bytes_sent&#39;</span>
+                      <span class="s1">&#39; &#34;$http_referer&#34;  &#34;$http_user_agent&#34;&#39;</span><span class="p">;</span>
+
+
+<span class="c1">#日志格式允许包含的变量注释如下：</span>
+<span class="nv">$remote_addr</span>, <span class="nv">$http_x_forwarded_for</span>  //记录客户端IP地址
+<span class="nv">$remote_user</span>   //记录客户端用户名称
+<span class="nv">$request</span>      //记录请求的URL和HTTP协议
+<span class="nv">$status</span>    //记录请求状态
+<span class="nv">$body_bytes_sent</span>    //发送给客户端的字节数，不包括响应头的大小； 该变量与Apache模块mod_log_config里的“%B”参数兼容。
+<span class="nv">$bytes_sent</span>   //发送给客户端的总字节数。
+<span class="nv">$connection</span>   //连接的序列号。
+<span class="nv">$connection_requests</span>   //当前通过一个连接获得的请求数量。
+<span class="nv">$msec</span>        //日志写入时间。单位为秒，精度是毫秒。
+<span class="nv">$pipe</span>       //如果请求是通过HTTP流水线<span class="o">(</span>pipelined<span class="o">)</span>发送，pipe值为“p”，否则为“.”。
+<span class="nv">$http_referer</span>      //记录从哪个页面链接访问过来的
+<span class="nv">$http_user_agent</span>   //记录客户端浏览器相关信息
+<span class="nv">$request_length</span>   //请求的长度（包括请求行，请求头和请求正文）。
+<span class="nv">$request_time</span>    //请求处理时间，单位为秒，精度毫秒； 从读入客户端的第一个字节开始，直到把最后一个字符发送给客户端后进行日志写入为止。
+<span class="nv">$time_iso8601</span>    //ISO8601标准格式下的本地时间。
+<span class="nv">$time_local</span>      //通用日志格式下的本地时间。
+</code></pre></td></tr></table>
+</div>
+</div><p>参考实例</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-nginx" data-lang="nginx"><span class="k">http</span> <span class="p">{</span>
+    <span class="kn">log_format</span>  <span class="s">main</span>  <span class="s">&#39;</span><span class="nv">$remote_addr</span> <span class="s">-</span> <span class="nv">$remote_user</span> <span class="s">[</span><span class="nv">$time_local]</span> <span class="s">&#34;</span><span class="nv">$request&#34;</span> <span class="s">&#39;</span>
+                                        <span class="s">&#39;&#34;</span><span class="nv">$status&#34;</span> <span class="nv">$body_bytes_sent</span> <span class="s">&#34;</span><span class="nv">$http_referer&#34;</span> <span class="s">&#39;</span>
+                                        <span class="s">&#39;&#34;</span><span class="nv">$http_user_agent&#34;</span> <span class="s">&#34;</span><span class="nv">$http_x_forwarded_for&#34;</span> <span class="s">&#39;</span>
+                                        <span class="s">&#39;&#34;</span><span class="nv">$gzip_ratio&#34;</span> <span class="nv">$request_time</span> <span class="nv">$bytes_sent</span> <span class="nv">$request_length&#39;</span><span class="p">;</span>
+
+    <span class="kn">log_format</span> <span class="s">srcache_log</span> <span class="s">&#39;</span><span class="nv">$remote_addr</span> <span class="s">-</span> <span class="nv">$remote_user</span> <span class="s">[</span><span class="nv">$time_local]</span> <span class="s">&#34;</span><span class="nv">$request&#34;</span> <span class="s">&#39;</span>
+                                <span class="s">&#39;&#34;</span><span class="nv">$status&#34;</span> <span class="nv">$body_bytes_sent</span> <span class="nv">$request_time</span> <span class="nv">$bytes_sent</span> <span class="nv">$request_length</span> <span class="s">&#39;</span>
+                                <span class="s">&#39;[</span><span class="nv">$upstream_response_time]</span> <span class="s">[</span><span class="nv">$srcache_fetch_status]</span> <span class="s">[</span><span class="nv">$srcache_store_status]</span> <span class="s">[</span><span class="nv">$srcache_expire]&#39;</span><span class="p">;</span>
+
+    <span class="kn">open_log_file_cache</span> <span class="s">max=1000</span> <span class="s">inactive=60s</span><span class="p">;</span>
+
+    <span class="kn">server</span> <span class="p">{</span>
+        <span class="kn">server_name</span> <span class="p">~</span><span class="sr">^(www\.)?(.+)$;</span>
+        <span class="s">access_log</span> <span class="s">logs/</span><span class="nv">$2-access.log</span> <span class="s">main</span><span class="p">;</span>
+        <span class="kn">error_log</span> <span class="s">logs/</span><span class="nv">$2-error.log</span><span class="p">;</span>
+
+        <span class="kn">location</span> <span class="s">/srcache</span> <span class="p">{</span>
+            <span class="kn">access_log</span> <span class="s">logs/access-srcache.log</span> <span class="s">srcache_log</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>3 设置 <code>error_log</code></strong></p>
+<p>配置错误日志文件的路径和级别</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-nginx" data-lang="nginx"><span class="k">error_log</span> <span class="s">file</span> <span class="s">[level]</span><span class="p">;</span>
+<span class="k">Default:</span>   
+<span class="s">error_log</span> <span class="s">logs/error.log</span> <span class="s">error</span><span class="p">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>第一个参数指写入错误日志的路径
+第二个参数指日志的级别。<code>level</code> 可以是：<code>debug</code>、<code>info</code>、<code>notice</code>、<code>warn</code>、<code>error</code>、<code>crit</code>、<code>alert</code>、<code>emerg</code> 中的任意值。只有日志的错误级别大于等于<code>level</code> 指定的值才会被写入错误日志中，默认值是 <code>error</code>.</p>
+<p><code>error.log</code>配置示例：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-nginx" data-lang="nginx"><span class="c1">#错误日志保存位置
+</span><span class="c1">#error_log logs/error.log;
+</span><span class="c1"></span>
+<span class="c1">#指定错误日志的位置和级别
+</span><span class="c1">#error_log logs/error.log notice;
+</span><span class="c1">#error_log logs/error.log info;
+</span></code></pre></td></tr></table>
+</div>
+</div><p><strong>PHP开发中需要了解的两种日志是什么</strong></p>
+<p><strong>有这么一种情景</strong>
+在测试环境多番测试没有遇到问题，但在一次上线过程中，在线上环境出现20秒的响应超时，这个显然是环境的问题了，尽管在线上数据量大，可Mysql也不至于慢到20秒，而且发现每次都是20.01~20.04秒之间，相差不到一秒钟，mysql也不至于这么均匀，这个时候你可能会去查看Mysql慢查询日志，如果发现没有超时的sql日志，那这有可能就是php这边出现的问题，这个时候你就要看看php的慢日志了。</p>
+<p><strong>php-fpm 慢日志</strong>
+php慢日志需要在<code>php-fpm.conf</code>设置，如果使用源码包安装默认请执行下面命令</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">cp php-fpm.conf.default php-fpm.conf
+</code></pre></td></tr></table>
+</div>
+</div><p>默认通过源码包编译安装php目录应在</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">/usr/local/php
+</code></pre></td></tr></table>
+</div>
+</div><p>目录下，如果你通过<code>yum</code>或者其他方式安装，不清楚或不知道php具体安装目录，可以使用</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">find / -name php-fpm.conf
+</code></pre></td></tr></table>
+</div>
+</div><p>或者</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">php -i <span class="p">|</span> grep Path
+------------------------------------------
+<span class="o">[</span>root@xxxx etc<span class="o">]</span><span class="c1"># php -i | grep Path</span>
+Configuration File <span class="o">(</span>php.ini<span class="o">)</span> <span class="nv">Path</span> <span class="o">=</span><span class="p">&amp;</span>gt<span class="p">;</span> /usr/local/php/etc
+XPath <span class="nv">Support</span> <span class="o">=</span><span class="p">&amp;</span>gt<span class="p">;</span> enabled
+Path to <span class="nv">sendmail</span> <span class="o">=</span><span class="p">&amp;</span>gt<span class="p">;</span> /usr/sbin/sendmail -t -i
+<span class="o">[</span>root@xxxx etc<span class="o">]</span>#
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>开启慢查询日志</strong>
+php旧的版本是在php-fpm.conf这里设置的，而<code>php7.x</code>版本源码包编译后需要<code>www.conf</code>修改慢查询配置</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">vim /usr/local/php/etc/php-fpm.d/www.conf
+</code></pre></td></tr></table>
+</div>
+</div><p>配置项都是一样的，如果你在<code>php-fpm.conf</code>找不到，就去他的同级目录<code>php-fpm.d</code>下面找找。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-php" data-lang="php">; The log file for slow requests
+; Default Value: not set
+; Note: slowlog is mandatory if request_slowlog_timeout is set
+;slowlog = log/$pool.log.slow
+
+; The timeout for serving a single request after which a PHP backtrace will be
+; dumped to the &#39;slowlog&#39; file. A value of &#39;0s&#39; means &#39;off&#39;.
+; Available units: s(econds)(default), m(inutes), h(ours), or d(ays)
+; Default Value: 0
+;request_slowlog_timeout = 0
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><code>slowlog</code> 设置慢查询日志的生成目录</li>
+<li><code>request_slowlog_timeout</code> 设置慢查询的标准时间（打开此配置就相当于开启了慢查询日志），配置以秒为单位，一般设置3s。</li>
+</ul>
+<p><strong>php-error 错误日志</strong>
+在生产环境中是不允许php报错的，就算报错也是白屏或者500，所以在生产环境中的日志收集是非常重要的。</p>
+<p><strong>开启错误日志</strong>
+一般情况下，php错误日志的配置都在<code>php.ini</code>文件中</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">/usr/local/php/etc/php.ini
+
+---------------------------
+<span class="nv">error_reporting</span> <span class="o">=</span> E_ALL <span class="p">&amp;</span>amp<span class="p">;</span> ~E_DEPRECATED <span class="p">&amp;</span>amp<span class="p">;</span> ~E_STRICT
+<span class="nv">display_errors</span> <span class="o">=</span> Off
+<span class="nv">log_errors</span> <span class="o">=</span> On
+<span class="p">;</span> Log errors to specified file. PHP<span class="err">&#39;</span>s default behavior is to leave this value
+<span class="p">;</span> empty.
+<span class="p">;</span> http://php.net/error-log
+<span class="p">;</span> Example:
+<span class="p">;</span><span class="nv">error_log</span> <span class="o">=</span> php_errors.log
+<span class="p">;</span> Log errors to syslog <span class="o">(</span>Event Log on Windows<span class="o">)</span>.
+<span class="p">;</span><span class="nv">error_log</span> <span class="o">=</span> syslog
+error_log 错误日志的生成目录
+error_reporting 生产环境错误级别应全开
+display_errors 在页面上不显示错误
+log_errors 开启错误日志
+</code></pre></td></tr></table>
+</div>
+</div><p>最终的结果是</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="nv">error_log</span> <span class="o">=</span> /var/log/php_error.log
+<span class="nv">display_errors</span> <span class="o">=</span> Off
+<span class="nv">error_reporting</span> <span class="o">=</span> E_ALL
+<span class="nv">log_errors</span> <span class="o">=</span> On
+</code></pre></td></tr></table>
+</div>
+</div>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Summer</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2021-06-27
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/%E5%AE%9E%E6%88%98%E6%8A%80%E5%B7%A7/">实战技巧</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/api/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">接口性能优化的11技巧</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/redis2/">
+            <span class="next-text nav-default">详解Redis数据结构</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+  <a href="https://summer90xia.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2016 - 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>Summer</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/raphael@2.2.7/raphael.min.js" integrity="sha256-67By+NpOtm9ka1R6xpUefeGOY8kWWHHRAKlvaTJ7ONI=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/flowchart.js@1.8.0/release/flowchart.min.js" integrity="sha256-zNGWjubXoY6rb5MnmpBNefO0RgoVYfle9p0tvOQM+6k=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.js" integrity="sha256-4O4pS1SH31ZqrSO2A/2QJTVjTPqVe+jnYgOWUVr7EEc=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/snapsvg@0.5.1/dist/snap.svg-min.js" integrity="sha256-oI+elz+sIm+jpn8F/qEspKoKveTc5uKeFHNNVexe6d8=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/underscore@1.8.3/underscore-min.js" integrity="sha256-obZACiHd7gkOk9iIL/pimWMTJ4W/pBsKu+oZnSeBIek=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.js" integrity="sha384-8748Vn52gHJYJI0XEuPB2QlPVNUkJlJn9tHqKec6J3q2r9l8fvRxrgn/E5ZHV0sP" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.css" integrity="sha384-6QbLKJMz5dS3adWSeINZe74uSydBGFbnzaAYmp+tKyq60S7H2p6V7g1TysM5lAaF" crossorigin="anonymous">
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+<script id="baidu_analytics">
+  var _hmt = _hmt || [];
+  (function() {
+    if (window.location.hostname === 'localhost') return;
+    var hm = document.createElement("script"); hm.async = true;
+    hm.src = "https://hm.baidu.com/hm.js?fc8cf18648f58ac4ad0594547ec6c1e3";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+<script id="baidu_push">
+  (function(){
+    if (window.location.hostname === 'localhost') return;
+    var bp = document.createElement('script'); bp.async = true;
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+      bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+      bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+  })();
+</script>
+
+
+<script src="/js/"></script>
+
+
+</body>
+</html>

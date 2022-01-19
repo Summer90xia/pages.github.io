@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.79.0 with theme even" />
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
 
 
 <link rel="canonical" href="https://summer90xia.github.io/post/questions/" />
@@ -35,7 +35,7 @@
 
 <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
-<link href="/sass/main.min.b5a744db6de49a86cadafb3b70f555ab443f83c307a483402259e94726b045ff.css" rel="stylesheet">
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 <link rel="stylesheet" href="/css/">
 
@@ -48,14 +48,13 @@
 <meta property="article:modified_time" content="2020-03-29T10:14:57+08:00" />
 <meta itemprop="name" content="经典面试题">
 <meta itemprop="description" content="经典面试题">
-<meta itemprop="datePublished" content="2020-03-29T10:14:57+08:00" />
-<meta itemprop="dateModified" content="2020-03-29T10:14:57+08:00" />
+<meta itemprop="datePublished" content="2020-03-29T10:14:57&#43;08:00" />
+<meta itemprop="dateModified" content="2020-03-29T10:14:57&#43;08:00" />
 <meta itemprop="wordCount" content="2659">
 
 
 
-<meta itemprop="keywords" content="面试题," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="面试题," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="经典面试题"/>
 <meta name="twitter:description" content="经典面试题"/>
 
@@ -233,24 +232,24 @@ ET:边缘触发
 </span><span class="lnt">18
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-php" data-lang="php"><span class="k">function</span> <span class="nf">isSub</span><span class="p">(</span><span class="nv">$a</span><span class="p">,</span><span class="nv">$b</span><span class="p">){</span>
-   <span class="k">if</span><span class="p">(</span><span class="nx">count</span><span class="p">(</span><span class="nv">$b</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">){</span>
-       <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
-   <span class="p">}</span>
-   <span class="nv">$pa</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-   <span class="nv">$pb</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
-   <span class="k">while</span><span class="p">(</span><span class="nv">$pa</span> <span class="o">&lt;</span> <span class="nx">count</span><span class="p">(</span><span class="nv">$a</span><span class="p">)){</span>
-       <span class="k">if</span><span class="p">(</span><span class="nv">$b</span><span class="p">[</span><span class="nv">$pb</span><span class="p">]</span> <span class="o">==</span> <span class="nv">$a</span><span class="p">[</span><span class="nv">$pa</span><span class="p">]){</span>
-           <span class="nv">$pb</span><span class="o">++</span><span class="p">;</span>
-           <span class="k">if</span><span class="p">(</span><span class="nv">$pb</span> <span class="o">==</span><span class="nx">count</span><span class="p">(</span><span class="nv">$b</span><span class="p">)){</span> 
-               <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
-           <span class="p">}</span>
-       <span class="p">}</span>
-       <span class="nv">$pa</span> <span class="o">++</span><span class="p">;</span>
-   <span class="p">}</span>
+<pre class="chroma"><code class="language-php" data-lang="php">function isSub($a,$b){
+   if(count($b) == 0){
+       return true;
+   }
+   $pa = 0;
+   $pb=0;
+   while($pa <span class="p">&lt;</span> <span class="nt">count</span><span class="err">($</span><span class="na">a</span><span class="err">)){</span>
+       <span class="na">if</span><span class="err">($</span><span class="na">b</span><span class="err">[$</span><span class="na">pb</span><span class="err">]</span> <span class="err">==</span> <span class="err">$</span><span class="na">a</span><span class="err">[$</span><span class="na">pa</span><span class="err">]){</span>
+           <span class="err">$</span><span class="na">pb</span><span class="err">++;</span>
+           <span class="na">if</span><span class="err">($</span><span class="na">pb </span><span class="o">=</span><span class="s">=count($b)){</span> 
+               <span class="na">return</span> <span class="na">true</span><span class="err">;</span>
+           <span class="err">}</span>
+       <span class="err">}</span>
+       <span class="err">$</span><span class="na">pa</span> <span class="err">++;</span>
+   <span class="err">}</span>
    
-   <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
-<span class="p">}</span>
+   <span class="na">return</span> <span class="na">false</span><span class="err">;</span>
+<span class="err">}</span>
 </code></pre></td></tr></table>
 </div>
 </div><ol start="2">
@@ -291,35 +290,35 @@ ET:边缘触发
 </span><span class="lnt">29
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-php" data-lang="php"><span class="k">function</span> <span class="nf">findNum</span><span class="p">(</span><span class="nv">$arr</span><span class="p">)</span>
-<span class="p">{</span>
-    <span class="nv">$l</span> <span class="o">=</span> <span class="nx">count</span><span class="p">(</span><span class="nv">$arr</span><span class="p">);</span>  
-    <span class="k">if</span><span class="p">(</span><span class="nv">$l</span><span class="o">&lt;</span><span class="mi">1</span><span class="p">){</span>
-        <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
-    <span class="p">}</span>
+<pre class="chroma"><code class="language-php" data-lang="php">function findNum($arr)
+{
+    $l = count($arr);  
+    if($l<span class="p">&lt;</span><span class="nt">1</span><span class="err">){</span>
+        <span class="na">return</span> <span class="na">false</span><span class="err">;</span>
+    <span class="err">}</span>
     
-    <span class="nv">$right</span><span class="p">[</span><span class="nv">$l</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$arr</span><span class="p">[</span><span class="nv">$l</span><span class="o">-</span><span class="mi">1</span><span class="p">];</span> <span class="c1">// 记录当前位置上对应的最小值
-</span><span class="c1"></span>    <span class="k">for</span><span class="p">(</span><span class="nv">$i</span><span class="o">=</span><span class="nv">$l</span><span class="o">-</span><span class="mi">2</span><span class="p">;</span><span class="nv">$i</span><span class="o">&gt;=</span><span class="mi">0</span><span class="p">;</span><span class="nv">$i</span><span class="o">--</span><span class="p">){</span>
-        <span class="k">if</span><span class="p">(</span><span class="nv">$arr</span><span class="p">[</span><span class="nv">$i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="nv">$right</span><span class="p">[</span><span class="nv">$i</span><span class="o">+</span><span class="mi">1</span><span class="p">]){</span>
-            <span class="nv">$right</span><span class="p">[</span><span class="nv">$i</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$arr</span><span class="p">[</span><span class="nv">$i</span><span class="p">];</span>
-        <span class="p">}</span><span class="k">else</span><span class="p">{</span>
-            <span class="nv">$right</span><span class="p">[</span><span class="nv">$i</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$right</span><span class="p">[</span><span class="nv">$i</span><span class="o">+</span><span class="mi">1</span><span class="p">];</span>
-        <span class="p">}</span>
-    <span class="p">}</span> <span class="c1">// [1,2,2,5,8]
-</span><span class="c1"></span>    
-    <span class="nv">$leftMax</span> <span class="o">=</span> <span class="nv">$arr</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
-    <span class="nv">$result</span> <span class="o">=</span> <span class="p">[];</span>
-    <span class="k">for</span><span class="p">(</span><span class="nv">$j</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="nv">$j</span><span class="o">&lt;</span><span class="nv">$l</span><span class="p">;</span><span class="nv">$j</span><span class="o">++</span><span class="p">){</span>
-        <span class="k">if</span><span class="p">(</span><span class="nv">$leftMax</span> <span class="o">&lt;=</span> <span class="nv">$arr</span><span class="p">[</span><span class="nv">$j</span><span class="p">]</span> <span class="p">){</span>
-            <span class="nv">$leftMax</span> <span class="o">=</span> <span class="nv">$arr</span><span class="p">[</span><span class="nv">$j</span><span class="p">];</span>
-            <span class="k">if</span><span class="p">(</span><span class="nv">$arr</span><span class="p">[</span><span class="nv">$j</span><span class="p">]</span> <span class="o">==</span> <span class="nv">$right</span><span class="p">[</span><span class="nv">$j</span><span class="p">]){</span>
-				<span class="nv">$result</span><span class="p">[]</span> <span class="o">=</span> <span class="nv">$arr</span><span class="p">[</span><span class="nv">$j</span><span class="p">];</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
+    <span class="err">$</span><span class="na">right</span><span class="err">[$</span><span class="na">l-1</span><span class="err">]</span> <span class="err">=</span> <span class="err">$</span><span class="na">arr</span><span class="err">[$</span><span class="na">l-1</span><span class="err">];</span> <span class="err">//</span> <span class="na">记录当前位置上对应的最小值</span>
+    <span class="na">for</span><span class="err">($</span><span class="na">i</span><span class="o">=</span><span class="s">$l-2;$i</span><span class="p">&gt;</span>=0;$i--){
+        if($arr[$i] <span class="err">&lt;</span> $right[$i+1]){
+            $right[$i] = $arr[$i];
+        }else{
+            $right[$i] = $right[$i+1];
+        }
+    } // [1,2,2,5,8]
     
-    <span class="k">return</span> <span class="nv">$result</span><span class="p">;</span>
-<span class="p">}</span>
+    $leftMax = $arr[0];
+    $result = [];
+    for($j=0;$j<span class="err">&lt;</span>$l;$j++){
+        if($leftMax <span class="err">&lt;</span>= $arr[$j] ){
+            $leftMax = $arr[$j];
+            if($arr[$j] == $right[$j]){
+				$result[] = $arr[$j];
+            }
+        }
+    }
+    
+    return $result;
+}
 </code></pre></td></tr></table>
 </div>
 </div><ol start="3">
@@ -358,35 +357,35 @@ ET:边缘触发
 </span><span class="lnt">29
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-php" data-lang="php"><span class="k">function</span> <span class="nf">mySort</span><span class="p">(</span><span class="nv">$arr</span><span class="p">){</span>
+<pre class="chroma"><code class="language-php" data-lang="php">function mySort($arr){
        
-    <span class="nv">$l</span> <span class="o">=</span> <span class="nx">count</span><span class="p">(</span><span class="nv">$arr</span><span class="p">);</span>
-    <span class="k">if</span><span class="p">(</span><span class="nv">$l</span> <span class="o">&lt;</span><span class="mi">1</span><span class="p">){</span>
-        <span class="k">return</span> <span class="k">false</span><span class="p">;</span> 
-    <span class="p">}</span>
+    $l = count($arr);
+    if($l <span class="p">&lt;</span><span class="nt">1</span><span class="err">){</span>
+        <span class="na">return</span> <span class="na">false</span><span class="err">;</span> 
+    <span class="err">}</span>
        
-    <span class="nv">$pa</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-    <span class="k">for</span><span class="p">(</span><span class="nv">$i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="nv">$i</span><span class="o">&lt;</span><span class="nv">$l</span><span class="p">;</span><span class="nv">$i</span><span class="o">++</span><span class="p">){</span>
-        <span class="k">if</span><span class="p">(</span><span class="nv">$arr</span><span class="p">[</span><span class="nv">$i</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;a&#39;</span><span class="p">){</span>
-            <span class="nv">$tmp</span> <span class="o">=</span> <span class="nv">$arr</span><span class="p">[</span><span class="nv">$i</span><span class="p">];</span>
-            <span class="nv">$arr</span><span class="p">[</span><span class="nv">$i</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$arr</span><span class="p">[</span><span class="nv">$pa</span><span class="p">];</span>
-            <span class="nv">$arr</span><span class="p">[</span><span class="nv">$pa</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$tmp</span><span class="p">;</span>
-            <span class="nv">$pa</span> <span class="o">++</span><span class="p">;</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
+    <span class="err">$</span><span class="na">pa </span><span class="o">=</span> <span class="s">0;</span>
+    <span class="na">for</span><span class="err">($</span><span class="na">i</span><span class="o">=</span><span class="s">0;$i&lt;$l;$i++){</span>
+        <span class="na">if</span><span class="err">($</span><span class="na">arr</span><span class="err">[$</span><span class="na">i</span><span class="err">]</span> <span class="err">==</span> <span class="err">&#39;</span><span class="na">a</span><span class="err">&#39;){</span>
+            <span class="err">$</span><span class="na">tmp </span><span class="o">=</span> <span class="s">$arr[$i];</span>
+            <span class="err">$</span><span class="na">arr</span><span class="err">[$</span><span class="na">i</span><span class="err">]</span> <span class="err">=</span> <span class="err">$</span><span class="na">arr</span><span class="err">[$</span><span class="na">pa</span><span class="err">];</span>
+            <span class="err">$</span><span class="na">arr</span><span class="err">[$</span><span class="na">pa</span><span class="err">]</span> <span class="err">=</span> <span class="err">$</span><span class="na">tmp</span><span class="err">;</span>
+            <span class="err">$</span><span class="na">pa</span> <span class="err">++;</span>
+        <span class="err">}</span>
+    <span class="err">}</span>
        
-    <span class="nv">$pb</span> <span class="o">=</span> <span class="nv">$pa</span><span class="p">;</span>
-    <span class="k">for</span><span class="p">(</span><span class="nv">$i</span><span class="o">=</span><span class="nv">$pa</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span><span class="nv">$i</span><span class="o">&lt;</span><span class="nv">$l</span><span class="p">;</span><span class="nv">$i</span><span class="o">++</span><span class="p">){</span>
-        <span class="k">if</span><span class="p">(</span><span class="nv">$arr</span><span class="p">[</span><span class="nv">$i</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;b&#39;</span><span class="p">){</span>
-            <span class="nv">$tmp</span> <span class="o">=</span> <span class="nv">$arr</span><span class="p">[</span><span class="nv">$i</span><span class="p">];</span>
-            <span class="nv">$arr</span><span class="p">[</span><span class="nv">$i</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$arr</span><span class="p">[</span><span class="nv">$pb</span><span class="p">];</span>
-            <span class="nv">$arr</span><span class="p">[</span><span class="nv">$pb</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$tmp</span><span class="p">;</span>
-            <span class="nv">$pb</span> <span class="o">++</span><span class="p">;</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
+    <span class="err">$</span><span class="na">pb </span><span class="o">=</span> <span class="s">$pa;</span>
+    <span class="na">for</span><span class="err">($</span><span class="na">i</span><span class="o">=</span><span class="s">$pa-1;$i&lt;$l;$i++){</span>
+        <span class="na">if</span><span class="err">($</span><span class="na">arr</span><span class="err">[$</span><span class="na">i</span><span class="err">]</span> <span class="err">==</span> <span class="err">&#39;</span><span class="na">b</span><span class="err">&#39;){</span>
+            <span class="err">$</span><span class="na">tmp </span><span class="o">=</span> <span class="s">$arr[$i];</span>
+            <span class="err">$</span><span class="na">arr</span><span class="err">[$</span><span class="na">i</span><span class="err">]</span> <span class="err">=</span> <span class="err">$</span><span class="na">arr</span><span class="err">[$</span><span class="na">pb</span><span class="err">];</span>
+            <span class="err">$</span><span class="na">arr</span><span class="err">[$</span><span class="na">pb</span><span class="err">]</span> <span class="err">=</span> <span class="err">$</span><span class="na">tmp</span><span class="err">;</span>
+            <span class="err">$</span><span class="na">pb</span> <span class="err">++;</span>
+        <span class="err">}</span>
+    <span class="err">}</span>
        
-    <span class="k">return</span> <span class="nv">$arr</span><span class="p">;</span>
-<span class="p">}</span>
+    <span class="na">return</span> <span class="err">$</span><span class="na">arr</span><span class="err">;</span>
+<span class="err">}</span>
 </code></pre></td></tr></table>
 </div>
 </div></li>
@@ -444,52 +443,52 @@ ET:边缘触发
 </span><span class="lnt">46
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-php" data-lang="php"><span class="k">class</span> <span class="nc">Node</span> 
-<span class="p">{</span>
-    <span class="k">public</span> <span class="nv">$left</span><span class="p">;</span>
-    <span class="k">public</span> <span class="nv">$right</span><span class="p">;</span>
-    <span class="k">public</span> <span class="nv">$data</span><span class="p">;</span>
+<pre class="chroma"><code class="language-php" data-lang="php">class Node 
+{
+    public $left;
+    public $right;
+    public $data;
 
-    <span class="k">public</span> <span class="k">function</span> <span class="fm">__construct</span><span class="p">(</span><span class="nv">$data</span><span class="p">)</span> 
-    <span class="p">{</span>
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">data</span> <span class="o">=</span> <span class="nv">$data</span><span class="p">;</span>
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">left</span> <span class="o">=</span> <span class="k">null</span><span class="p">;</span>
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">right</span> <span class="o">=</span> <span class="k">null</span><span class="p">;</span>
-    <span class="p">}</span>
-<span class="p">}</span>
+    public function __construct($data) 
+    {
+        $this-&gt;data = $data;
+        $this-&gt;left = null;
+        $this-&gt;right = null;
+    }
+}
 
-<span class="k">class</span> <span class="nc">BinaryTree</span>
-<span class="p">{</span>
-    <span class="k">public</span> <span class="nv">$root</span> <span class="o">=</span> <span class="k">null</span><span class="p">;</span>
+class BinaryTree
+{
+    public $root = null;
  
-    <span class="c1">//插入节点
-</span><span class="c1"></span>    <span class="k">public</span> <span class="k">function</span> <span class="nf">insert</span><span class="p">(</span><span class="nv">$data</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nv">$newNode</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Node</span><span class="p">(</span><span class="nv">$data</span><span class="p">);</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">root</span> <span class="o">==</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">root</span> <span class="o">=</span> <span class="nv">$newNode</span><span class="p">;</span>
-        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">insertNode</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">root</span><span class="p">,</span> <span class="nv">$newNode</span><span class="p">);</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
+    //插入节点
+    public function insert($data)
+    {
+        $newNode = new Node($data);
+        if ($this-&gt;root == null) {
+            $this-&gt;root = $newNode;
+        } else {
+            $this-&gt;insertNode($this-&gt;root, $newNode);
+        }
+    }
 
-    <span class="k">private</span> <span class="k">function</span> <span class="nf">insertNode</span><span class="p">(</span><span class="nv">$node</span><span class="p">,</span> <span class="nv">$newNode</span><span class="p">)</span> 
-    <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nv">$newNode</span><span class="o">-&gt;</span><span class="na">data</span> <span class="o">&lt;</span> <span class="nv">$node</span><span class="o">-&gt;</span><span class="na">data</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">if</span> <span class="p">(</span><span class="nv">$node</span><span class="o">-&gt;</span><span class="na">left</span> <span class="o">==</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
-                <span class="nv">$node</span><span class="o">-&gt;</span><span class="na">left</span> <span class="o">=</span> <span class="nv">$newNode</span><span class="p">;</span>
-            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-                <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">insertNode</span><span class="p">(</span><span class="nv">$node</span><span class="o">-&gt;</span><span class="na">left</span><span class="p">,</span> <span class="nv">$newNode</span><span class="p">);</span>
-            <span class="p">}</span>
-        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-            <span class="k">if</span> <span class="p">(</span><span class="nv">$node</span><span class="o">-&gt;</span><span class="na">right</span> <span class="o">==</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
-                <span class="nv">$node</span><span class="o">-&gt;</span><span class="na">right</span> <span class="o">=</span> <span class="nv">$newNode</span><span class="p">;</span>
-            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-                <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">insertNode</span><span class="p">(</span><span class="nv">$node</span><span class="o">-&gt;</span><span class="na">right</span><span class="p">,</span> <span class="nv">$newNode</span><span class="p">);</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-<span class="p">}</span>
+    private function insertNode($node, $newNode) 
+    {
+        if ($newNode-&gt;data <span class="err">&lt;</span> $node-&gt;data) {
+            if ($node-&gt;left == null) {
+                $node-&gt;left = $newNode;
+            } else {
+                $this-&gt;insertNode($node-&gt;left, $newNode);
+            }
+        } else {
+            if ($node-&gt;right == null) {
+                $node-&gt;right = $newNode;
+            } else {
+                $this-&gt;insertNode($node-&gt;right, $newNode);
+            }
+        }
+    }
+}
 </code></pre></td></tr></table>
 </div>
 </div><h3 id="智力题">智力题</h3>
@@ -607,7 +606,7 @@ request_terminate_timeout设置单个请求的超时终止时间。还应该注�
   <span class="copyright-year">
     &copy; 
     2016 - 
-    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>Summer</span>
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>Summer</span>
   </span>
 </div>
 

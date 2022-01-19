@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.79.0 with theme even" />
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
 
 
 <link rel="canonical" href="https://summer90xia.github.io/post/wechat_auth/" />
@@ -35,7 +35,7 @@
 
 <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
-<link href="/sass/main.min.b5a744db6de49a86cadafb3b70f555ab443f83c307a483402259e94726b045ff.css" rel="stylesheet">
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 <link rel="stylesheet" href="/css/">
 
@@ -48,14 +48,13 @@
 <meta property="article:modified_time" content="2019-04-21T12:16:06+08:00" />
 <meta itemprop="name" content="微信授权登录">
 <meta itemprop="description" content="微信授权登录">
-<meta itemprop="datePublished" content="2019-04-21T12:16:06+08:00" />
-<meta itemprop="dateModified" content="2019-04-21T12:16:06+08:00" />
+<meta itemprop="datePublished" content="2019-04-21T12:16:06&#43;08:00" />
+<meta itemprop="dateModified" content="2019-04-21T12:16:06&#43;08:00" />
 <meta itemprop="wordCount" content="697">
 
 
 
-<meta itemprop="keywords" content="wechat," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="wechat," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="微信授权登录"/>
 <meta name="twitter:description" content="微信授权登录"/>
 
@@ -159,12 +158,12 @@
 </span><span class="lnt">6
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-php" data-lang="php">	<span class="nv">$params</span><span class="p">[</span><span class="s1">&#39;appid&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$appid</span><span class="p">;</span>
-        <span class="nv">$params</span><span class="p">[</span><span class="s1">&#39;redirect_uri&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nx">urldecode</span><span class="p">(</span><span class="nv">$redirect_uri</span><span class="p">);</span>
-        <span class="nv">$params</span><span class="p">[</span><span class="s1">&#39;response_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;code&#39;</span><span class="p">;</span>
-        <span class="nv">$params</span><span class="p">[</span><span class="s1">&#39;scope&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&#34;snsapi_userinfo&#34;</span><span class="p">;</span>
-        <span class="nv">$params</span><span class="p">[</span><span class="s1">&#39;state&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">null</span><span class="p">;</span>
-        <span class="k">echo</span> <span class="s2">&#34;https://open.weixin.qq.com/connect/oauth2/authorize?&#34;</span> <span class="o">.</span> <span class="nx">http_build_query</span><span class="p">(</span><span class="nv">$params</span><span class="p">)</span><span class="o">.</span><span class="s1">&#39;#wechat_redirect&#39;</span><span class="p">;</span>
+<pre class="chroma"><code class="language-php" data-lang="php">	$params[&#39;appid&#39;] = $appid;
+        $params[&#39;redirect_uri&#39;] = urldecode($redirect_uri);
+        $params[&#39;response_type&#39;] = &#39;code&#39;;
+        $params[&#39;scope&#39;] = &#34;snsapi_userinfo&#34;;
+        $params[&#39;state&#39;] = null;
+        echo &#34;https://open.weixin.qq.com/connect/oauth2/authorize?&#34; . http_build_query($params).&#39;#wechat_redirect&#39;;
 </code></pre></td></tr></table>
 </div>
 </div><p>3、用户授权后，微信服务器会请求 $redirect_uri/?code=CODE&amp;state=STATE，将code保存</p>
@@ -306,24 +305,24 @@
 </span><span class="lnt">18
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-php" data-lang="php"><span class="sd">/**
-</span><span class="sd"> * 生成用户授权链接
-</span><span class="sd"> *
-</span><span class="sd"> * @param string $redirect_uri 微信授权页面配置地址
-</span><span class="sd"> * @param string $scope snsapi_base（静默授权）| snsapi_userinfo（非静默授权）
-</span><span class="sd"> * @param null $state
-</span><span class="sd"> * @return string
-</span><span class="sd"> */</span>
-<span class="k">public</span> <span class="k">function</span> <span class="nf">getAuthURL</span><span class="p">(</span><span class="nv">$redirect_uri</span><span class="p">,</span> <span class="nv">$scope</span> <span class="o">=</span> <span class="s1">&#39;snsapi_userinfo&#39;</span><span class="p">,</span> <span class="nv">$state</span> <span class="o">=</span> <span class="k">null</span><span class="p">)</span>
-<span class="p">{</span>
-    <span class="nv">$params</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
-    <span class="nv">$params</span><span class="p">[</span><span class="s1">&#39;appid&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">appid</span><span class="p">;</span>
-    <span class="nv">$params</span><span class="p">[</span><span class="s1">&#39;redirect_uri&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nx">urldecode</span><span class="p">(</span><span class="nv">$redirect_uri</span><span class="p">);</span>
-    <span class="nv">$params</span><span class="p">[</span><span class="s1">&#39;response_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;code&#39;</span><span class="p">;</span>
-    <span class="nv">$params</span><span class="p">[</span><span class="s1">&#39;scope&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$scope</span><span class="p">;</span>
-    <span class="nv">$params</span><span class="p">[</span><span class="s1">&#39;state&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$state</span><span class="p">;</span>
-    <span class="k">return</span> <span class="s2">&#34;https://open.weixin.qq.com/connect/oauth2/authorize?&#34;</span> <span class="o">.</span> <span class="nx">http_build_query</span><span class="p">(</span><span class="nv">$params</span><span class="p">)</span> <span class="o">.</span> <span class="s1">&#39;#wechat_redirect&#39;</span><span class="p">;</span>
-<span class="p">}</span>
+<pre class="chroma"><code class="language-php" data-lang="php">/**
+ * 生成用户授权链接
+ *
+ * @param string $redirect_uri 微信授权页面配置地址
+ * @param string $scope snsapi_base（静默授权）| snsapi_userinfo（非静默授权）
+ * @param null $state
+ * @return string
+ */
+public function getAuthURL($redirect_uri, $scope = &#39;snsapi_userinfo&#39;, $state = null)
+{
+    $params = array();
+    $params[&#39;appid&#39;] = $this-&gt;appid;
+    $params[&#39;redirect_uri&#39;] = urldecode($redirect_uri);
+    $params[&#39;response_type&#39;] = &#39;code&#39;;
+    $params[&#39;scope&#39;] = $scope;
+    $params[&#39;state&#39;] = $state;
+    return &#34;https://open.weixin.qq.com/connect/oauth2/authorize?&#34; . http_build_query($params) . &#39;#wechat_redirect&#39;;
+}
 </code></pre></td></tr></table>
 </div>
 </div><blockquote>
@@ -398,7 +397,7 @@
   <span class="copyright-year">
     &copy; 
     2016 - 
-    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>Summer</span>
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>Summer</span>
   </span>
 </div>
 
